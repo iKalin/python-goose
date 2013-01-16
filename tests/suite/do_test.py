@@ -2,7 +2,6 @@ from lxml import etree
 import re
 import codecs
 import os
-import justext
 import base64
 import commands
 import json
@@ -73,7 +72,7 @@ def gettext(html):
     text = ' '.join(text)
     return text
 
-def createstats(html, root, sel, f):
+def createstats(html, root, sel, f, fname):
     r = root.xpath(sel)
     lost_words = 0
     lost_len = 0
@@ -120,18 +119,18 @@ def checkfile(fname, f):
     parser = etree.HTMLParser()
     root = etree.parse(folder + "/annotated/" + fname, parser)
 #    print html
-    res = createstats(html, root, "//*[@class='x-nc-sel2']", f)
+    res = createstats(html, root, "//*[@class='x-nc-sel2']", f, fname)
     etalon_words = res[0]+res[2]
     lost_words += res[0]
     lost_len += res[1]
     excess_words -= res[2]
     excess_len -= res[3]
-    res = createstats(html, root, "//*[@class='x-nc-sel3']", None)
+    res = createstats(html, root, "//*[@class='x-nc-sel3']", None, fname)
     excess_words -= res[2]
     excess_len -= res[3]
     suppl_words += res[2]
     suppl_len +=res[3]
-    res = createstats(html, root, "//*[@class='x-nc-sel1']", None)
+    res = createstats(html, root, "//*[@class='x-nc-sel1']", None, fname)
     excess_words -= res[2]
     excess_len -= res[3]
     suppl_words += res[2]
