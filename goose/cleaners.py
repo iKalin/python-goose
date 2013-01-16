@@ -29,8 +29,8 @@ class DocumentCleaner(object):
     def __init__(self):
 
         self.regExRemoveNodes = (
-        "^side$|combx|retweet|mediaarticlerelated|menucontainer|navbar"
-        "|comment|PopularQuestions|contact|foot|footer|Footer|footnote"
+        "^side$|combx|retweet|relatedbox|mediaarticlerelated|menucontainer|navbar"
+        "|comment|PopularQuestions|foot|footer|Footer|footnote"
         "|cnn_strycaptiontxt|links|meta$|scroll|shoutbox|sponsor"
         "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
         "|cnn_stryspcvbx|^inset$|pagetools|post-attributes"
@@ -39,11 +39,16 @@ class DocumentCleaner(object):
         "|date|^print$|popup|author-dropdown|tools|socialtools|byline"
         "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
         "|source|legende|ajoutVideo|timestamp"
+#        "|contact"
         )
+        self.regExNotRemoveNodes = ("and|no|article|body|column|main|shadow")
         self.regexpNS = "http://exslt.org/regular-expressions"
         self.queryNaughtyIDs = "//*[re:test(@id, '%s', 'i')]" % self.regExRemoveNodes
         self.queryNaughtyClasses = "//*[re:test(@class, '%s', 'i')]" % self.regExRemoveNodes
         self.queryNaughtyNames = "//*[re:test(@name, '%s', 'i')]" % self.regExRemoveNodes
+        self.queryNaughtyIDs1 = "//*[re:test(@id, '%s', 'i')]" % self.regExNotRemoveNodes
+        self.queryNaughtyClasses1 = "//*[re:test(@class, '%s', 'i')]" % self.regExNotRemoveNodes
+        self.queryNaughtyNames1 = "//*[re:test(@name, '%s', 'i')]" % self.regExNotRemoveNodes
         self.divToPElementsPattern = r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)"
         self.captionPattern = "^caption$"
         self.googlePattern = " google "
@@ -112,20 +117,26 @@ class DocumentCleaner(object):
         # ids
         naughtyList = doc.xpath(self.queryNaughtyIDs,
                                         namespaces={'re': self.regexpNS})
+        naughtyList1 = doc.xpath(self.queryNaughtyIDs1,
+                                        namespaces={'re': self.regexpNS})
         for node in naughtyList:
-            Parser.remove(node)
+            if node not in naughtyList1: Parser.remove(node)
 
         # class
         naughtyClasses = doc.xpath(self.queryNaughtyClasses,
                                         namespaces={'re': self.regexpNS})
+        naughtyClasses1 = doc.xpath(self.queryNaughtyClasses1,
+                                        namespaces={'re': self.regexpNS})
         for node in naughtyClasses:
-            Parser.remove(node)
+            if node not in naughtyClasses1: Parser.remove(node)
 
         # name
         naughtyNames = doc.xpath(self.queryNaughtyNames,
                                         namespaces={'re': self.regexpNS})
+        naughtyNames1 = doc.xpath(self.queryNaughtyNames1,
+                                        namespaces={'re': self.regexpNS})
         for node in naughtyNames:
-            Parser.remove(node)
+            if node not in naughtyNames1: Parser.remove(node)
 
         return doc
 
