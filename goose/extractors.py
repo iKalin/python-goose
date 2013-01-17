@@ -482,6 +482,7 @@ class ContentExtractor(object):
         return nodesToCheck
 
     def isTableTagAndNoParagraphsExist(self, e):
+        return False
         subParagraphs = Parser.getElementsByTag(e, tag='p')
         for p in subParagraphs:
             txt = Parser.getText(p)
@@ -497,6 +498,8 @@ class ContentExtractor(object):
         topNodeScore = self.getScore(node)
         currentNodeScore = self.getScore(e)
         thresholdScore = float(topNodeScore * .08)
+
+        if topNodeScore < 0 and currentNodeScore < 0: return True
 
         if (currentNodeScore < thresholdScore) and e.tag != 'td':
             return False
