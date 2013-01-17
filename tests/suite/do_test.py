@@ -51,7 +51,7 @@ def getfilteredhtml(fname):
     test = etree.parse(folder + "/original/" + fname, parser)
     html = etree.tostring(test,method='text',encoding='unicode')
     html = html.encode('ascii', 'replace')
-    html = re.sub('[?,\'\t\r\n]',' ',html)
+    html = re.sub('[.?,\'\t\r\n]',' ',html)
     html = html.split()
     html = ' '.join(html)
     return html
@@ -67,7 +67,7 @@ def getrawhtml(fname):
 
 def gettext(html):
     text = html.encode('ascii', 'replace')
-    text = re.sub('[?,\'\t\r\n]',' ',text)
+    text = re.sub('[.?,\'\t\r\n]',' ',text)
     text = text.split()
     text = ' '.join(text)
     return text
@@ -83,7 +83,7 @@ def createstats(html, root, sel, f, fname):
          text = rr.text.encode('ascii', 'replace')
          texts = text.split('\n')
          for text in texts:
-             text = re.sub('[?,\'\t\r\n]',' ',text)
+             text = re.sub('[.?,\'\t\r\n]',' ',text)
              text = text.split()
              text = ' '.join(text)
              if html.find(text)<0:
