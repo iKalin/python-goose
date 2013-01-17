@@ -476,7 +476,7 @@ class ContentExtractor(object):
         on like paragraphs and tables
         """
         nodesToCheck = []
-        for tag in ['p', 'pre', 'td']:
+        for tag in ['p', 'pre', 'td', 'font']:
             items = Parser.getElementsByTag(doc, tag=tag)
             nodesToCheck += items
         return nodesToCheck
@@ -509,7 +509,7 @@ class ContentExtractor(object):
         """
         node = self.addSiblings(targetNode)
         for e in node.getchildren():
-            if e.tag != 'p':
+            if e.tag != 'p' and e.tag != 'pre' and e.tag != 'font':
                 if self.isHighLinkDensity(e) \
                     or self.isTableTagAndNoParagraphsExist(e) \
                     or not self.isNodeScoreThreshholdMet(node, e):
