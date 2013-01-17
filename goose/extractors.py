@@ -289,7 +289,7 @@ class ContentExtractor(object):
             cnt += 1
             i += 1
 
-        topNodeScore = 0
+        topNodeScore = -100000
         for e in parentNodes:
             score = self.getScore(e)
 
