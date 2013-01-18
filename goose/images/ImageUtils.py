@@ -95,7 +95,7 @@ class ImageUtils(object):
     @classmethod
     def writeEntityContentsToDisk(self, entity, linkhash, imageSrc, config):
         localSrcPath = self.getLocalFileName(linkhash, imageSrc, config)
-        f = open(localSrcPath, 'w')
+        f = open(localSrcPath, 'wb')
         f.write(entity)
         f.close()
         return self.readExistingFileInfo(linkhash, imageSrc, config)
