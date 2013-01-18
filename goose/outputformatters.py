@@ -98,6 +98,7 @@ class OutputFormatter(object):
         remove paragraphs that have less than x number of words,
         would indicate that it's some sort of link
         """
+        return # becouse this wrong logic, links should be removed before this stage, when we can see actual links length
         allNodes = Parser.getElementsByTags(self.getTopNode(), ['*'])  # .cssselect('*')
         allNodes.reverse()
         for el in allNodes:
