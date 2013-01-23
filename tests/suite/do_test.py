@@ -173,12 +173,12 @@ def test():
     f = codecs.open("lost_lines.txt",'wb','utf-8')
     btime = time.time();
     for fname in listing:
-        try:
-            res = checkfile(fname,f)
-        except:
-            exceptions += 1
-            res = [0,0,0,0,0,0,0,0,0]
-            print "Extractor exception, file: " + fname
+#        try:
+        res = checkfile(fname,f)
+#        except:
+#            exceptions += 1
+#            res = [0,0,0,0,0,0,0,0,0]
+#            print "Extractor exception, file: " + fname
         lost_words += res[0];
         lost_len += res[1];
         excess_words += res[2];
