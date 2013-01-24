@@ -511,14 +511,22 @@ class ContentExtractor(object):
         clusters of links, or paras with no gusto
         """
         node = self.addSiblings(targetNode)
-        for e in node.getchildren():
-            if e.tag != 'p' and e.tag != 'pre' and e.tag != 'font':
+        for e in node:
+            if e.tag in ['h2','h3','h4']: continue
+            if e.tag not in ['p','pre','font']:
                 if self.isHighLinkDensity(e) \
                     or self.isTableTagAndNoParagraphsExist(e) \
                     or not self.isNodeScoreThreshholdMet(node, e):
                     Parser.remove(e)
-        return node
 
+        for e in reversed(node):
+            if e.tag == 'p' and list(e) == []:
+               if e.text is None or re.search('[^ \t\r\n]',e.text) == None:
+                   Parser.remove(e)
+                   continue
+            if e.tag not in ['h2','h3','h4']: break
+            Parser.remove(e)
+        return node
 
 class StandardContentExtractor(ContentExtractor):
     pass
