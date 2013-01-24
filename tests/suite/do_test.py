@@ -147,7 +147,7 @@ def checkfile(fname, f):
 #        print fname
 #        print html
     if etalon_words == 0: print "Empty etalon file: " + fname
-    if lost_words != 0: f.write('----------------------------------------------------------------------------\n' + html + '\n------------------------------------------------------------------------\n')
+    if lost_words != 0: f.write('-'*60 + '\n' + html + '\n' + '-'*60 + '\n')
     return [lost_words,lost_len,excess_words,excess_len,suppl_words,suppl_len,total_words,total_len,etalon_words]
 
 

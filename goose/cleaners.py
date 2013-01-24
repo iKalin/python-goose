@@ -64,6 +64,7 @@ class DocumentCleaner(object):
     def clean(self, article):
 
         docToClean = article.doc
+        docToClean = self.removeListsWithLinks(docToClean)
         docToClean = self.cleanEmTags(docToClean)
         docToClean = self.removeDropCaps(docToClean)
         docToClean = self.removeScriptsAndStyles(docToClean)
@@ -78,6 +79,21 @@ class DocumentCleaner(object):
         docToClean = self.convertDivsToParagraphs(docToClean, 'div')
         docToClean = self.convertDivsToParagraphs(docToClean, 'span')
         return docToClean
+
+    def removeListsWithLinks(self, doc):
+        for tag in ['ol','ul']:
+            items=Parser.getElementsByTag(doc, tag=tag)
+            for item in items:
+		fa = 0
+                for li in item:
+                    if Parser.getElementsByTag(li, tag='a'):
+                        fa += 1
+                        if fa > 2:
+                            Parser.remove(item)
+                            break
+                    else:
+                       fa = 0
+        return doc
 
     def cleanEmTags(self, doc):
         ems = Parser.getElementsByTag(doc, tag='em')
