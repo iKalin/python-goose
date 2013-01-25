@@ -29,7 +29,7 @@ class DocumentCleaner(object):
     def __init__(self):
 
         self.regExRemoveNodes = (
-        "^side$|combx|retweet|relatedbox|mediaarticlerelated|menucontainer|navbar"
+        "^side$|combx|retweet|mediaarticlerelated|menucontainer|navbar"
         "|comment|PopularQuestions|foot|footer|Footer|footnote"
         "|cnn_strycaptiontxt|links|meta$|scroll|shoutbox|sponsor"
         "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
