@@ -87,13 +87,14 @@ def createstats(html, root, sel, f, fname):
              text = text.split()
              text = ' '.join(text)
              if html.find(text)<0:
-                 if f is not None: f.write(fname + ': ' + text + '\n')
+                 if f is not None: f.write(fname + ' lost: ' + text + '\n')
                  lost_words += len(text.split())
                  lost_len += len(text)
              else:
+                 if text: html = ' '.join(html.split(text,1))
                  found_words += len(text.split())
                  found_len += len(text)
-    return [lost_words, lost_len, found_words, found_len]
+    return [lost_words, lost_len, found_words, found_len, html]
 
 
 extractors = {'goosepy': ext_goosepy, 'readability': ext_readability, 'boilerpipe': ext_boilerpipe}
@@ -115,26 +116,31 @@ def checkfile(fname, f):
     total_words = excess_words
     total_len = excess_len
     etalon_words = 0
+    html1 = html
 
     parser = etree.HTMLParser()
     root = etree.parse(folder + "/annotated/" + fname, parser)
 #    print html
     res = createstats(html, root, "//*[@class='x-nc-sel2']", f, fname)
+    html = res[4]
     etalon_words = res[0]+res[2]
     lost_words += res[0]
     lost_len += res[1]
     excess_words -= res[2]
     excess_len -= res[3]
     res = createstats(html, root, "//*[@class='x-nc-sel3']", None, fname)
+    html = res[4]
     excess_words -= res[2]
     excess_len -= res[3]
     suppl_words += res[2]
     suppl_len +=res[3]
     res = createstats(html, root, "//*[@class='x-nc-sel1']", None, fname)
+    html = res[4]
     excess_words -= res[2]
     excess_len -= res[3]
     suppl_words += res[2]
     suppl_len +=res[3]
+    if f is not None and re.search('[^ \t\r\n]',html): f.write(fname + ' excess: ' + html.strip() + '\n')
     if excess_words < 0: 
         excess_words = 0
         excess_len = 0
@@ -147,7 +153,7 @@ def checkfile(fname, f):
 #        print fname
 #        print html
     if etalon_words == 0: print "Empty etalon file: " + fname
-    if lost_words != 0: f.write('-'*60 + '\n' + html + '\n' + '-'*60 + '\n')
+    if lost_words != 0 or excess_words != 0: f.write('-'*60 + '\n' + html1 + '\n' + '-'*60 + '\n')
     return [lost_words,lost_len,excess_words,excess_len,suppl_words,suppl_len,total_words,total_len,etalon_words]
 
 
@@ -195,6 +201,9 @@ def test():
         if res[0] > 0 and res[8] > 0 and 1.0*res[0]/res[8] < 0.1: 
             low_loss += 1;
             print "Low loss file: " + fname
+        elif res[0] > 0:
+            print "Truncated file: " + fname
+
     etime = time.time();
     f.close()
     truncated -= low_loss
