@@ -501,6 +501,10 @@ class ContentExtractor(object):
 
         if topNodeScore < 0 and currentNodeScore < 0: return True
 
+        if not Parser.getElementsByTag(e, tag='a') and not Parser.getElementsByTag(e, tag='img'):
+            self.updateScore(e, 11)
+            return True
+
         if (currentNodeScore < thresholdScore) and e.tag != 'td':
             return False
         return True
