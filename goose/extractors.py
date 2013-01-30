@@ -121,6 +121,37 @@ class ContentExtractor(object):
         title = titlePieces[largeTextIndex]
         return TITLE_REPLACEMENTS.replaceAll(title).strip()
 
+    def getH1(self, article):
+        """\
+        Fetch the article H1 tag
+        """
+        """\
+        Searching last h1 tag before main article text begins
+        """
+        h1 = ''
+        if article.topNode is not None:
+            lastTag = ''
+            for i in article.doc.cssselect('[rel=topnode], h1'):
+                if i.tag != 'h1':
+                    break
+                lastTag = i
+            h1 = Parser.getText(lastTag)
+            
+            # H1 into main article
+            if lastTag == '':
+                for i in article.doc.cssselect('[rel=topnode], h1'):
+                    if i.tag == 'h1':
+                        lastTag = i
+                        break
+        else:
+            # Get first H1 tag
+            h1Elem = Parser.getElementsByTag(article.doc, tag='h1')
+            """ no h1 found """
+            if h1Elem is None or len(h1Elem) == 0:
+                return h1
+            h1 = Parser.getText(h1Elem[0])
+        return h1
+        
     def getMetaFavicon(self, article):
         """\
         Extract the favicon from a website
