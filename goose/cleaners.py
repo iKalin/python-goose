@@ -115,6 +115,11 @@ class DocumentCleaner(object):
         for item in scripts:
             Parser.remove(item)
 
+        # remove noscripts
+        noscripts = Parser.getElementsByTag(doc, tag='noscript')
+        for item in noscripts:
+            Parser.remove(item)
+
         # remove styles
         styles = Parser.getElementsByTag(doc, tag='style')
         for item in styles:
