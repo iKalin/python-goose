@@ -135,7 +135,7 @@ class ContentExtractor(object):
                 if i.tag != 'h1':
                     break
                 lastTag = i
-            h1 = Parser.getText(lastTag)
+            	h1 = Parser.getText(lastTag)
             
             # H1 into main article
             if lastTag == '':
