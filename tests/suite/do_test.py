@@ -50,6 +50,7 @@ def getfilteredhtml(fname):
     parser = etree.HTMLParser()
     test = etree.parse(folder + "/original/" + fname, parser)
     html = etree.tostring(test,method='text',encoding='unicode')
+    html = re.sub(u'[\u2028]',u'',html)
     html = html.encode('ascii', 'replace')
     html = re.sub('[.?,\'\t\r\n]',' ',html)
     html = html.split()
@@ -80,7 +81,8 @@ def createstats(html, root, sel, f, fname):
     found_len = 0
     for rr in r:
          if rr.text is None: continue
-         text = rr.text.encode('ascii', 'replace')
+	 text = re.sub(u'[\u2028]',u'',rr.text)
+         text = text.encode('ascii', 'replace')
          texts = text.split('\n')
          for text in texts:
              text = re.sub('[.?,\'\t\r\n]',' ',text)
