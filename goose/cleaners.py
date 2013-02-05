@@ -29,7 +29,7 @@ class DocumentCleaner(object):
     def __init__(self):
 
         self.regExRemoveNodes = (
-        "^side$|combx|retweet|mediaarticlerelated|menucontainer|navbar"
+        "^side$|combx|retweet|fontresize|mediaarticlerelated|menucontainer|navbar"
         "|comment|PopularQuestions|foot|footer|Footer|footnote"
         "|cnn_strycaptiontxt|links|meta$|scroll|shoutbox|sponsor"
         "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
@@ -64,10 +64,10 @@ class DocumentCleaner(object):
 
         docToClean = article.doc
         docToClean = self.removeListsWithLinks(docToClean)
-        docToClean = self.cleanEmTags(docToClean)
+        docToClean = self.cleanBadTags(docToClean)
+        docToClean = self.dropTags(docToClean,['em','strong'])
         docToClean = self.removeDropCaps(docToClean)
         docToClean = self.removeScriptsAndStyles(docToClean)
-        docToClean = self.cleanBadTags(docToClean)
         docToClean = self.removeNodesViaRegEx(docToClean, self.captionPattern)
         docToClean = self.removeNodesViaRegEx(docToClean, self.googlePattern)
         docToClean = self.removeNodesViaRegEx(docToClean, self.entriesPattern)
@@ -94,12 +94,13 @@ class DocumentCleaner(object):
                        fa = 0
         return doc
 
-    def cleanEmTags(self, doc):
-        ems = Parser.getElementsByTag(doc, tag='em')
-        for node in ems:
-            images = Parser.getElementsByTag(node, tag='img')
-            if len(images) == 0:
-                node.drop_tag()
+    def dropTags(self, doc, tags):
+        for tag in tags:
+            ems = Parser.getElementsByTag(doc, tag=tag)
+            for node in ems:
+                images = Parser.getElementsByTag(node, tag='img')
+                if len(images) == 0:
+                    node.drop_tag()
         return doc
 
     def removeDropCaps(self, doc):
