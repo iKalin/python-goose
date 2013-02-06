@@ -18,35 +18,8 @@
   <META name="description" content="MELBOURNE, Dec 30 (Reuters) - Fifth-seeded Israeli Shahar
 Peer overcame a sluggish start before advancing to the second
 round of the Australian Hardcourt championships on the Gold
-Coast on ] = obj["e"+type+fn];
-	}
-}
-/*	EventCache Version 1.0	Copyright 2005 Mark Wubben */
-var EventCache = function(){
-	var listEvents = [];
-	return {
-		listEvents : listEvents,
-		add : function(node, sEventName, fHandler){
-			listEvents.push(arguments);
-		},
-		flush : function(){
-			var i, item;
-			for(i = listEvents.length - 1; i >= 0; i = i - 1){
-				item = listEvents[i];
-				if(item[0].removeEventListener){
-					item[0].removeEventListener(item[1], item[2], item[3]);
-				};
-				if(item[1].substring(0, 2) != "on"){
-					item[1] = "on" + item[1];
-				};
-				if(item[0].detachEvent){
-					item[0].detachEvent(item[1], item[2]);
-				};
-				item[0][item[1]] = null;
-			};
-		}
-	};
-}();
+Coast on">
+<script language="javascript">
 addEvent(window,'unload',EventCache.flush);
 var hasRecommendTab = 1;
 var onmousednLimit = 0;

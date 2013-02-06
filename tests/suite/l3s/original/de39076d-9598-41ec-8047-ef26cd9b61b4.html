@@ -14,22 +14,9 @@
 | Reuters
 
 </title>
-  <META name="description" content="LOS ANGELES (Reuters) - Actress Mischa Barton was arrested and briefly jailed on Thursday on suspicion of drunken driving, marijuana possession and driving without a license, Los Angeles police said.
+  <META name="description" content="LOS ANGELES (Reuters) - Actress Mischa Barton was arrested and briefly jailed on Thursday on suspicion of drunken driving, marijuana possession and driving without a license, Los Angeles police said." />
 
-Barton,">
-	pe, fn, false );
-		EventCache.add(obj, type, fn);
-	}
-	else if (obj.attachEvent) {
-		obj["e"+type+fn] = fn;
-		obj[type+fn] = function() { obj["e"+type+fn]( window.event ); }
-		obj.attachEvent( "on"+type, obj[type+fn] );
-		EventCache.add(obj, type, fn);
-	}
-	else {
-		obj["on"+type] = obj["e"+type+fn];
-	}
-}
+<script language="JavaScript">
 /*	EventCache Version 1.0	Copyright 2005 Mark Wubben */
 var EventCache = function(){
 	var listEvents = [];

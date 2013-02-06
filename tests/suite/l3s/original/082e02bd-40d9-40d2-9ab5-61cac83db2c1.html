@@ -1,382 +1,808 @@
+<!--ZOOMRESTART-->
 
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Korean Golfer Choi Kyung-ju Wins 7th US PGA Title(The Korea Times)ntById("font");
-obj.style.fontSize = fontSize+"pt";
-obj.style.lineHeight = lineHeight+"px"
-}
 
-function goPrint() {
-	window.open('/www/news/include/print.asp?newsIdx=17238', 'preview', 'width=508, height=700, scrollbars=1');
-}
-function writeComment() {
-	if (document.form1.comment.value == "")
-	{
-		alert('Please enter your comments');
-	}
-	else if (document.form1.comment.value.length > 500)
-	{
-		alert('Comments cannot be over 500 characters long.');
-	}
-	else 
-	{
-		window.open("", "write", "width=0, height=0");
-		document.form1.target = "write";
-		document.form1.submit();
-	}
-}
-function commDelete(idx) {
-	if(confirm('Are you sure you want to delete your comments?')) {
-		window.open("/www/news/comment/comment_delete.asp?idx="+idx, "del", "width=0, height=0");
-	}
-}
-//-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=8"/>
+<!-- <meta http-equiv="Last-Modified" content="Sat, 24 May 2012 00:58:08 GMT"> -->
+<meta http-equiv="Last-Modified" content="2008-01-14 15:45:00 GMT">
+
+<meta name="keywords" content=""/>
+<!--ZOOMSTOP-->
+
+<meta name="description" content="www.koreatimes.co.kr delivers the latest information on all events and stories taking place in Korea."/> 
+
+
+
+
+
+
+
+
+<!--ZOOMRESTART-->
+<title>Korean Golfer Choi Kyung-ju Wins 7th US PGA Title</title>
+<!--ZOOMSTOP-->
+<link rel="shortcut icon" href="/www/images/koreatimes.ico"/>
+<!--CSS Here-->
+<link rel="stylesheet" type="text/css" href="http://www2.koreatimes.co.kr/www/css/krtimes.css.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="http://www2.koreatimes.co.kr/www/css/view-page.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="http://www2.koreatimes.co.kr/www/css/font/fontcss.css" media="screen"/>
+<!-- <link rel="stylesheet" type="text/css" href="/koreatime_adminV2/manager/filemanager/style.css"media="screen" /> -->
+
+<!--[if IE 7]>
+<style type="text/css">
+.login_div{text-align: right; position: relative; margin: 4px 0 14px 0;}
+</style>
+<![endif]-->
+
+
+
+<script type="text/javascript">
+	<!--
+	var result = Math.floor(Math.random() * 3) + 1;
+
+	if(result == 1) {
+		if(17238 == 130038) {
+			document.location.replace('http://121.78.129.102/www/news/art/2013/02/517_130038.html');
+		}
+	} 
+	-->		
 </script>
+
+
+
+<!--ZOOMRESTART-->
+<script>
+/*
+function viewpagemail()
+{var emailx = "";
+	alert(emailx);
+	//document.write('');
+}
+*/
+function printpreview()
+{
+
+//alert(title);
+	window.open('/www/common/printpreview.asp?categoryCode=136&newsIdx=17238','printpreview','');
+}
+		//############################ PHOTO GALLERY PART  ###################################
+		var pgp=1;
+		var preLoader = "<img src='http://www2.koreatimes.co.kr/www/images/loader.gif' />";
+		function photoGalleryNext()
+		{	
+			pgp+=1;
+			if(pgp <= 2)
+			{
+				document.getElementById("pgDisplay").innerHTML = preLoader;
+				myAJAXFunction2('/www/JEDFunctions/donjebFunction.asp?page='+pgp+'&picORgallery='+2);
+			}
+			else
+				pgp-=1;
+		}
+		function photoGalleryBack()
+		{
+			pgp-=1;
+			if(pgp > 0)
+			{
+				document.getElementById("pgDisplay").innerHTML = preLoader;
+				myAJAXFunction2('/www/JEDFunctions/donjebFunction.asp?page='+pgp+'&picORgallery='+2);
+			}
+			else
+				pgp+=1;
+		}			
+		var xmlhttp2;
+		function loadXMLDoc2(url,cfunc)
+			{
+				if (window.XMLHttpRequest)
+				  {// code for IE7+, Firefox, Chrome, Opera, Safari
+					xmlhttp2=new XMLHttpRequest();
+				  }
+				else
+				  {// code for IE6, IE5
+					xmlhttp2=new ActiveXObject("Microsoft.XMLHTTP");
+				  }
+				  
+				xmlhttp2.onreadystatechange=cfunc;
+				xmlhttp2.open("GET",url,true);
+				xmlhttp2.send();
+			}
+		function myAJAXFunction2(urlToBeProcess)
+			{
+			loadXMLDoc2(urlToBeProcess,function()
+			  {	
+			  if (xmlhttp2.readyState==4 && xmlhttp2.status==200)
+				{document.getElementById("pgDisplay").innerHTML=xmlhttp2.responseText;}
+			  });
+			}
+		////////////////END of AJAX Function///////////////
+		
+		function letMeOnLoad()
+		{
+			try{
+			RefreshStaticMenu();
+			myAJAXFunction2('/www/JEDFunctions/donjebFunction.asp?page='+pgp+'&picORgallery='+2, 2);
+			}catch(err){}
+		}
+		
+		//##################### END OF PHOTO GALLERY PART  ###################################
+		
+		
+var min=8;
+var max=18;
+function increaseFontSize() {
+ 
+   //var p = document.getElementsByTagName('div');
+/*
+   var p = document.getElementById('p');
+   for(i=0;i<p.length;i++) {
+ 
+      if(p[i].style.fontSize) {
+         var s = parseInt(p[i].style.fontSize.replace("px",""));
+      } else {
+ 
+         var s = 12;
+      }
+      if(s!=max) {
+ 
+         s += 1;
+      }
+      p[i].style.fontSize = s+"px"
+ 
+   }
+*/
+   var pp = document.getElementById('p');
+
+ 
+      if(p.style.fontSize) {
+         var s = parseInt(p.style.fontSize.replace("px",""));
+      } else {
+ 
+         var s = 14;
+      }
+      if(s!=max) {
+ 
+         s += 1;
+      }
+      p.style.fontSize = s+"px"
+	  
+ 
+
+}
+function decreaseFontSize() {
+   var p = document.getElementById('p');
+      if(p.style.fontSize) {
+         var s = parseInt(p.style.fontSize.replace("px",""));
+      } else {
+ 
+         var s = 14;
+      }
+      if(s!=min) {
+ 
+         s -= 1;
+      }
+      p.style.fontSize = s+"px"
+ 
+   }
+	function jumpToAnchor() {
+	//window.location = window.location + "#top";
+	window.location = String(window.location).replace(/\#.*$/, "") + "#top";	
+	}
+	/*
+	function urlPath()
+	{
+		$(document).ready(function() {
+			var pathname = window.location.pathname;
+			window.location.replace('https://www.facebook.com/sharer.php?u=http://koreatimes.co.kr'+pathname+'&t=Korean Golfer Choi Kyung-ju Wins 7th US PGA Title');
+			//window.location.replace('http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4fe18fac792c4480');
+			//alert(pathname);
+		});
+		
+		
+	}
+	*/
+	function loginPlease()
+	{alert("Please login!."); }
+	
+	function addmyscrap()
+	{	
+		myAJAXFunction3('/www/registration/myscrap_add.asp?idx=17238&userId=');
+	}
+	
+	////////////////START of AJAX Function///////////////
+		var xmlhttp2;
+		function loadXMLDoc2(url,cfunc)
+			{	
+				if (window.XMLHttpRequest)
+				  {// code for IE7+, Firefox, Chrome, Opera, Safari 
+					xmlhttp2=new XMLHttpRequest();
+				  }
+				else
+				  {// code for IE6, IE5
+					xmlhttp2=new ActiveXObject("Microsoft.XMLHTTP");
+				  }
+				  
+				xmlhttp2.onreadystatechange=cfunc;
+				xmlhttp2.open("GET",url,true);
+				xmlhttp2.send();
+			}
+		function myAJAXFunction3(urlToBeProcess)
+			{ 
+			loadXMLDoc2(urlToBeProcess,function()
+			  {
+			  if (xmlhttp2.readyState==4 && xmlhttp2.status==200)
+				{
+					alert("Successfully added to scrap.");
+				}
+			  });
+			}
+	////////////////END of AJAX Function///////////////
+	
+	function emailFriend()
+	{
+		var urlx = document.URL;
+		var titlex = 'Korean Golfer Choi Kyung-ju Wins 7th US PGA Title';
+		window.open('/www/common/emailAfriend.asp?title='+titlex+'&url='+urlx+'','email_a_friend','width=322, height=450');
+	}
+	
+</script>
+
+<!--
+<script language="JavaScript" type="text/JavaScript">
+		
+		var stmnLEFT = 980; 				
+		var stmnGAP1 = 50; 				
+		var stmnGAP2 = 182; 				
+		var stmnBASE = 925; 				
+		var stmnActivateSpeed = 5; 
+		var stmnScrollSpeed = 10; 	
+		var stmnTimer; 
+
+			
+		function RefreshStaticMenu() { 
+		//	alert("hi");
+			var stmnStartPoint, stmnEndPoint; 
+			
+			stmnStartPoint = parseInt(document.getElementById('sidebar').style.top, 10); 
+			stmnEndPoint = Math.max(document.documentElement.scrollTop, document.body.scrollTop) + stmnGAP2; 
+			if (stmnEndPoint < stmnGAP1) stmnEndPoint = stmnGAP1; 
+			
+			if (stmnStartPoint != stmnEndPoint) { 
+				stmnScrollAmount = Math.ceil( Math.abs( stmnEndPoint - stmnStartPoint ) / 15 ); 
+				document.getElementById('sidebar').style.top = parseInt(document.getElementById('sidebar').style.top, 10) + ( ( stmnEndPoint<stmnStartPoint ) ? -stmnScrollAmount : stmnScrollAmount ) + 'px'; 
+				stmnRefreshTimer = stmnScrollSpeed; 
+			}
+			
+			stmnTimer = setTimeout("RefreshStaticMenu();", stmnActivateSpeed); 
+		} 
+		
+		function InitializeStaticMenu() {
+			document.getElementById('sidebar').style.left = stmnLEFT + 'px'; 
+			document.getElementById('sidebar').style.top = document.body.scrollTop + stmnBASE + 'px'; 
+			//RefreshStaticMenu();
+		}
+	
+	
+</script>-->
+
+<!-- ################### SHARE CODES ###########################-->
+<!--<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" 
+        type="text/javascript">
+</script>
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>-->
+<!-- ################### END OF SHARE CODES ###########################-->
+<!-- GOOGLE ANALYTICS CODE START-->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7749707-2");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<!-- GOOGLE ANALYTICS CODE END -->
+
+
 </head>
 
-<body leftmargin="9" topmargin="0">
-<a name=top></a> 
-<table width="920" border="0" cellspacing="0" cellpadding="0">
-  <script language="javascript">
-	function goSearch() 	
-	{
-		if (document.searchNews.keyword.value == "") {
-			alert('Please enter search words');
-		}
-		else {
-			document.searchNews.submit();
-		}
+
+
+
+
+
+<body onLoad="letMeOnLoad()" id="topBody">
+
+ 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7749707-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  
+</script> 
+
+
+	
+<link type="text/css" rel="stylesheet" media="all" href="/www/js/cssV2/css-jquery-ui/jquery-ui-1.7.2.custom.css" />
+<script type="text/javascript" src="/www/js/jquery.tools.min.js"></script>
+<script type="text/javascript" src="/www/js/jquery-ui-1.7.2.custom.min.js"></script>
+<script type="text/javascript" src="/www/js/changeBanner.js"></script>
+<script type="text/javascript" src="/www/js/containers.js"></script>
+
+
+<script language="JavaScript" type="text/JavaScript">
+function clickError()
+{
+	alert("You must log in to use this service.");
+}
+
+function focusin_email()
+{
+	var logId = document.getElementById("log_id");
+	if (logId.value=="Email or ID")
+	logId.value = "";
+}
+
+function focusout_email()
+{
+	var logId = document.getElementById("log_id");
+	if (logId.value=="")
+	logId.value = "Email or ID";
+}
+
+function focusin_pw()
+{
+	
+	document.getElementById("log_password2").style.display = "none";
+	document.getElementById("log_password").style.display = "";
+	document.getElementById("log_password").focus();
+}
+
+function focusout_pw()
+{
+	var doc = document.getElementById("log_password");
+	
+	if (doc.value == "")
+	{		
+		document.getElementById("log_password").style.display = "none";
+		document.getElementById("log_password2").style.display = "";
+		document.getElementById("log_password").focus();
 	}
+}
+
+
+function findIDPWs()
+{
+	var s = 'refCategoryCode=600'; 
+	PopUpFindIDPWs(s);
+	//PopUpFindIDPWsThankyou();
+	//PopUpRestPassword(s);
+	//PopUpRestThankyou(s);
+	//PopUpSuspended(s);
+	//PopUpCancel(s);
+	//PopUpRejoinInfo(s);
+	//PopUpRejoinFillup(s);
+	//trythispopup("xxx");
+}
+
+
+function generateSubMenuAjax(val1, val2, noDisplayNumber)
+{
+	try{
+	
+	for (i=0; i<12; i++){
+		$(".div_lupad2x_menu_"+i).hide();
+	}
+	
+	var xmlhttp;
+	//document.getElementById("lupad1").setAttribute("class", "div_lupad2x_menu_11");
+	document.getElementById(val1).innerHTML="<li style='background:#FFF'>Loading...</li><br />";
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			n = xmlhttp.responseText;
+
+			if (n.search("noneCategory") > -1 )
+			{
+				for (i=0; i<12; i++){
+					$(".div_lupad2x_menu_"+i).hide();
+				}
+				
+				document.getElementById("lupad"+noDisplayNumber).style.display = "none"
+				document.getElementById("imglupad"+noDisplayNumber).setAttribute("src", "http://www2.koreatimes.co.kr/www/images/transparent.png");
+			}
+			else{
+			
+				for (i=0; i<12; i++){
+					$(".div_lupad2x_menu_"+i).hide();
+				}
+				$(".div_lupad2x_menu_"+noDisplayNumber).show();
+				document.getElementById(val1).innerHTML=xmlhttp.responseText;
+			}
+			
+		}
+	  }
+	xmlhttp.open("POST","/www/JEDFunctions/AJAXsubMenu.asp?code="+val2,true);
+	xmlhttp.send();
+	
+	
+	
+	document.getElementById("lupad"+noDisplayNumber).setAttribute("class", "div_lupad2x_menu_"+noDisplayNumber);
+	//document.getElementById(val1).innerHTML="";
+	document.getElementById("imglupad"+noDisplayNumber).setAttribute("src", "http://www2.koreatimes.co.kr/www/images/hover_img_"+noDisplayNumber+".png");
+	}catch(err){}
+}
+
 </script>
 
-<tr>
-	<td width="920"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
-		<tr>
-		  <td width="141" rowspan="2"><a href="/www/index.asp"><img src="/www/news/images/logo.gif" width="180" height="74"></a></td>
-		  <td width="16" rowspan="2">&nbsp;</td>
-		  <td width="304" rowspan="2">
-		  <!--<span class="style18">Sports</span>-->
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$(".list_1, .list_1_active, .div_lupad2x_menu_1").hover(function(){		
+			$(".div_lupad2x_menu_1").show();
+		},function(){
+			$(".div_lupad2x_menu_1").hide();
+		});
+		
+		
+		//$(".list_2_active").mouseleave(function(){			
+		//	$(".div_lupad2x_menu_2").hide();
+		//});
+		
+		
+		$(".list_2, .list_2_active, .div_lupad2x_menu_2").hover(function(){
+		
+			$(".div_lupad2x_menu_2").show();
+		},function(){
+			$(".div_lupad2x_menu_2").hide();
+		});		
+		
+		
+		
+		
+		
+		
+		$(".list_3, .list_3_active, .div_lupad2x_menu_3").hover(function(){
+			$(".div_lupad2x_menu_3").show();
+		},function(){
+			$(".div_lupad2x_menu_3").hide();
+		});
+		
+		
+		$(".list_4, .list_4_active, .div_lupad2x_menu_4").hover(function(){		
+			$(".div_lupad2x_menu_4").show();
+		},function(){
+			$(".div_lupad2x_menu_4").hide();
+		});
+		
+		$(".list_5, .list_5_active, .div_lupad2x_menu_5").hover(function(){		
+			$(".div_lupad2x_menu_5").show();
+		},function(){
+			$(".div_lupad2x_menu_5").hide();
+		});
+		
+		$(".list_6, .list_6_active, .div_lupad2x_menu_6").hover(function(){		
+			$(".div_lupad2x_menu_6").show();
+		},function(){
+			$(".div_lupad2x_menu_6").hide();
+		});
+		
+		$(".list_7, .list_7_active, .div_lupad2x_menu_7").hover(function(){		
+			$(".div_lupad2x_menu_7").show();
+		},function(){
+			$(".div_lupad2x_menu_7").hide();
+		});
+		
+		$(".list_8, .list_8_active, .div_lupad2x_menu_8").hover(function(){		
+			$(".div_lupad2x_menu_8").show();
+		},function(){
+			$(".div_lupad2x_menu_8").hide();
+		});
+		
+		
+		$(".list_9, .list_9_active, .div_lupad2x_menu_9").hover(function(){		
+			$(".div_lupad2x_menu_9").show();
+		},function(){
+			$(".div_lupad2x_menu_9").hide();
+		});
+		
+		$(".list_10, .list_10_active, .div_lupad2x_menu_10").hover(function(){		
+			$(".div_lupad2x_menu_10").show();
+		},function(){
+			$(".div_lupad2x_menu_10").hide();
+		});
+		
+	});
+
+</script>
+
+
+	
+<table class="di_madala_ug_div">
+	<tr>
+		<td class="table_header_left_6">&nbsp;</td>
+		<td class="table_header_mid">
+			<div class="div_header_mid_6">
+				<!-- GO SA LUPAD LUPAD DIV -->
+				
+				
+				 			<!-- GO SA LUPAD LUPAD DIV --> 			<!--National--> 			<div id='lupad1' class='div_lupad2x_menu_1 shadow'> 				<img id='imglupad1' src='http://www2.koreatimes.co.kr/www/images/hover_img_2.png'/> 				<ul id='sub_1'>					<script> 		$(document).ready(function() {   		$('#lupad1').remove(); 		});</script> 				</ul> 			</div> 			<!--Biz/Finance--> 			<div id='lupad2' class='div_lupad2x_menu_2 shadow'> 				<img id='imglupad2' src='http://www2.koreatimes.co.kr/www/images/hover_img_1.png'/> 				<ul id='sub_2'> 					<li class='rounded'><a href='/www/category/subsection_116.html'>Briefs</a></li><li class='rounded'><a href='/www/category/subsection_608.html'>People's Choice 2012</a></li><li class='rounded'><a href='/www/category/subsection_205.html'>Defense Affairs</a></li><li class='rounded'><a href='/www/category/subsection_120.html'>Foreign Affairs</a></li><li class='rounded'><a href='/www/category/subsection_485.html'>N. Korea</a></li><li class='rounded'><a href='/www/category/subsection_119.html'>Airlines</a></li><li class='rounded'><a href='/www/category/subsection_180.html'>Issue Today</a></li><li class='rounded'><a href='/www/category/subsection_177.html'>Foreign Community</a></li><li class='rounded'><a href='/www/category/subsection_356.html'>History</a></li><li class='rounded'><a href='/www/category/subsection_251.html'>Dokdo / Ieodo</a></li><li class='rounded'><a href='/www/category/subsection_181.html'>Education</a></li><li class='rounded'><a href='/www/category/subsection_176.html'>Embassy</a></li> 				</ul> 			</div> 			<!--Business Focus--> 			<div id='lupad3' class='div_lupad2x_menu_3 shadow'> 				<img id='imglupad3' src='http://www2.koreatimes.co.kr/www/images/hover_img_3.png'/> 				<ul id='sub_3'> 					<li class='rounded'><a href='/www/common/businessFocus.asp?categoryCode=326'>BusinessFocus</a></li><li class='rounded'><a href='/www/category/subsection_123.html'>Business</a></li><li class='rounded'><a href='/www/category/subsection_488.html'>Finance</a></li><li class='rounded'><a href='/www/category/subsection_126.html'>Stock</a></li><li class='rounded'><a href='/www/category/subsection_127.html'>Industry</a></li><li class='rounded'><a href='/www/category/subsection_258.html'>Meet The CEO</a></li><li class='rounded'><a href='/www/category/subsection_388.html'>Automotive</a></li> 				</ul> 			</div> 			<!--Technology--> 			<div id='lupad4' class='div_lupad2x_menu_4 shadow'> 				<img id='imglupad4' src='http://www2.koreatimes.co.kr/www/images/hover_img_4.png'/> 				<ul  id='sub_4'> 					<li class='rounded'><a href='/www/category/subsection_133.html'>Briefs</a></li><li class='rounded'><a href='/www/category/subsection_419.html'>Mobile</a></li><li class='rounded'><a href='/www/category/subsection_325.html'>Science</a></li><li class='rounded'><a href='/www/category/subsection_134.html'>Game</a></li> 				</ul> 			</div> 			<!--Arts and Living--> 			<div id='lupad5'class='div_lupad2x_menu_5 shadow'> 				<img id='imglupad5' src='http://www2.koreatimes.co.kr/www/images/hover_img_5.png'/> 				<ul id='sub_5'> 					<li class='rounded'><a href='/www/category/subsection_316.html'>Life</a></li><li class='rounded'><a href='/www/category/subsection_148.html'>Arts & Museums</a></li><li class='rounded'><a href='/www/category/subsection_386.html'>Hallyu</a></li><li class='rounded'><a href='/www/category/subsection_199.html'>Fashion</a></li><li class='rounded'><a href='/www/category/subsection_142.html'>Book</a></li><li class='rounded'><a href='/www/category/subsection_201.html'>Entertainment</a></li><li class='rounded'><a href='/www/category/subsection_317.html'>Traditional</a></li><li class='rounded'><a href='/www/category/subsection_141.html'>Movie</a></li><li class='rounded'><a href='/www/category/subsection_143.html'>Music</a></li><li class='rounded'><a href='/www/category/subsection_145.html'>Performance</a></li><li class='rounded'><a href='/www/category/subsection_293.html'>Religion</a></li><li class='rounded'><a href='/www/category/subsection_203.html'>Weekender</a></li><li class='rounded'><a href='/www/category/subsection_151.html'>Around Town</a></li> 				</ul> 			</div> 			<!--Sports--> 			<div id='lupad6' class='div_lupad2x_menu_6 shadow'> 				<img id='imglupad6' src='http://www2.koreatimes.co.kr/www/images/hover_img_6.png'/> 				<ul id='sub_6'> 					<li class='rounded'><a href='/www/category/subsection_136.html'>Briefs</a></li><li class='rounded'><a href='/www/category/subsection_159.html'>Golf Tips</a></li><li class='rounded'><a href='/www/category/subsection_207.html'>2014 Incheon Asian Games</a></li> 				</ul> 			</div> 			<!--Opinion--> 			<div id='lupad7' class='div_lupad2x_menu_7 shadow'> 				<img id='imglupad7' src='http://www2.koreatimes.co.kr/www/images/hover_img_7.png'/> 				<ul id='sub_7'> 					<li class='rounded'><a href='/www/category/subsection_202.html'>Editorial</a></li><li class='rounded'><a href='/www/category/subsection_164.html'>Times Column</a></li><li class='rounded'><a href='/www/category/subsection_264.html'>Reporter's Notebook</a></li><li class='rounded'><a href='/www/category/subsection_197.html'>Guest Column</a></li><li class='rounded'><a href='/www/category/subsection_162.html'>Thoughts of the Times</a></li><li class='rounded'><a href='/www/category/subsection_161.html'>Letter to the Editor</a></li><li class='rounded'><a href='/www/category/subsection_195.html'>Cartoon</a></li><li class='rounded'><a href='/www/category/subsection_224.html'>Today in History</a></li><li class='rounded'><a href='/www/category/subsection_404.html'>koreaBANG</a></li> 				</ul> 			</div> 			<!--Community--> 			<div id='lupad8' class='div_lupad2x_menu_8 shadow'> 				<img id='imglupad8' src='http://www2.koreatimes.co.kr/www/images/hover_img_9.png'/> 				<ul id='sub_8'> 					<script> 		$(document).ready(function() {   		$('#lupad8').remove(); 		});</script> 					<!-- 					<li class='rounded'><a href='/www/common/aboutus.asp?wpage=aboutus&hm=4'>Media Kit</a></li> 					<li class='rounded'><a href='/www/common/aboutus.asp?wpage=aboutus&hm=1'>About Koreatimes</a></li> 					<li class='rounded'><a href='/www/common/aboutus.asp?wpage=aboutus&hm=5'>Privacy Policy</a></li> 					<li class='rounded'><a href='/www/common/aboutus.asp?wpage=aboutus&hm=2'>Koreatimes History</a></li> 					--> 				</ul> 			</div> 			<!--Science--> 			<div id='lupad9' class='div_lupad2x_menu_9 shadow'> 				<img id='imglupad9' src='http://www2.koreatimes.co.kr/www/images/hover_img_10.png'/> 				<ul id='sub_9'> 					<li class='rounded'><a href='/www/category/subsection_211.html'>Country Report</a></li><li class='rounded'><a href='/www/category/subsection_363.html'>Icons & influencers</a></li> 				</ul> 			</div> 			<!--Special--> 			<div id='lupad10' class='div_lupad2x_menu_10 shadow' > 				<img id='imglupad10' src='http://www2.koreatimes.co.kr/www/images/hover_img_8.png'/> 				<ul id='sub_10'> 					<li class='rounded'><a href='/www/news/community/community_184_1_1_1.html'>Time Forum</a></li><li class='rounded'><a href='/www/news/community/community_185_1_1_1.html'>Market Place</a></li><li class='rounded'><a href='/www/news/community/community_186_1_1_1.html'>Talk Box</a></li><li class='rounded'><a href='/www/news/community/community_187_1_1_1.html'>Study Plaza</a></li>  					<!--<li class='rounded'><a href='/www/news/community/community_184_1_1_1.html'>Time Forum</a></li> 					<li class='rounded'><a href='/www/news/community/community_186_1_1_1.html'>Talk Box</a></li> 					<li class='rounded'><a href='/www/news/community/community_185_1_1_1.html'>Market Place</a></li> 					<li class='rounded'><a href='/www/news/community/community_187_1_1_1.html'>Study Plaza</a></li> 					--> 				</ul> 			</div> 
+				
+				<!-- END SA NOTCH NA LUPAD LUPAD -->
+				<a href="/www/index.asp"><div class="link_krTimes_6"></div></a>
+				<div class="fly_date_weeeehhh" style="border:0px solid #000;">
+					
+					<div style="padding-top:5px; float: right">Tue, February 5, 2013 | 22:55</div>
+					<div style="float:right;margin-right:10px;"><img style="cursor:pointer;" src="http://www2.koreatimes.co.kr/www/images/iReporter_new_ico.png" width="87" height="22" onclick="writeKtimes();"/></div>
+				</div>
+
+				 	<div class='login_div'>		<a href='https://www.koreatimes.co.kr/www/common/forgotPass.asp?menu=6'>&nbsp;&nbsp;&nbsp;Forgot password?</a>|<a href=https://www.koreatimes.co.kr/www/registration/regProcess_1.asp?menu=1>Register</a>| <a href='/www/common/subscriptionHome.asp?wpage=subscription' style='font-weight:bold;'>Subscription <span style='font-size: 10px;'>구독신청</span></a> | <a href='#' onclick='clickError(); return false;' style='font-weight:bold;'>PDF</a> |<a href='/www/common/sitemap.asp?wpage=sitemap' style='font-weight:bold;'>Site map</a>	</div>	<div class='login_div_pasid'>		<form method='post' name='login' action='/www/JEDFunctions/koreaLogin.asp'>			<span class='input_holder'><input name='id' value='Email or ID' onfocusout='focusout_email();' onfocusin='focusin_email();' type='text' id='log_id' style='text-align: center; color:#666'/>&nbsp; 			<input onfocusout='focusout_pw();' type='password' value='' name='pwd' id='log_password' style='text-align: center; color: #666; display: none' />			<input onfocus='focusin_pw();' type='text' value='Password' id='log_password2' style='text-align: center; color: #666'/>&nbsp;&nbsp;<input id='log_btn' type='submit' value='' style='cursor: pointer'/></span>		</form>	</div>
+				<div class="header_img_wrapper">
+					<a href='/www/category/section_600.html'>	
+						<div class="div_text_header_6"></div>
+					</a>
+					<!-- Section page -->
+					<div class="div_toefl">
+						<!-- 297 * 70 or 64-->
+<div align="center">	
+
+		<!--<a href="http://www.koreatimes.co.kr/www/category/subsection_609.html"><img src="/www/images/bn/bn_VanGogh_20121120.jpg" /></a>-->
+
+
 			
-		  <span class="style18">
-		  	  <a href=/www/news/sports/sports_main.asp?categoryCode=136>Sports</a>
-		  </span>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="470" height="50" title="MO1">
+  <param name="movie" value="http://121.78.129.102/www/AD/NETS/KT470x50_MO1.swf" />
+  <param name="quality" value="high" />
+  <embed src="http://121.78.129.102/www/AD/NETS/KT470x50_MO1.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="470" height="50"></embed>
+</object>
 			
-		  </td>
-		  <td width="332" height="45">&nbsp;</td>
-		  <td width="156" height="45">&nbsp;</td>
-		</tr>
-
-		<form method="post" name="searchNews" action="/www/search/search_list.asp">
-			<tr>
-			  <td width="302" height="29" align="right"><span class="style3">Wednesday, January 16, 2008 | 8:54 a.m. ET</span></td>
-			  <td width="145" height="29" align="right">
-				<input name="keyword" type="text" class="form" size=15>              </td>
-			  <td width="22" align="right"><a href="javascript:goSearch();"><img src="/www/news/images/go.gif" width="23" height="20"></a></td>
-			</tr>
-		</form>
-
-	</table>
-	</td>
-</tr>
+			
+					
 
 
-  <tr>
-    <td height="35" background="/www/news/images/top_nation_bg.gif"><table width="920" height="35" border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <td width="21"><img src="/www/news/images/top_nation_bar_1.gif" width="21" height="35"></td>
-        <td class="style3">
-            <span class="style20">+<a href="/www/member/login-1.asp"><font color="#FFFFFF">Login</font></a>&nbsp;&nbsp;&nbsp;&nbsp;+<a href="/www/member/register.htm"><font color="#FFFFFF">Register</font></a>&nbsp;&nbsp;&nbsp;&nbsp;+<a href="/www/member/find_id.asp"><font color="#FFFFFF">Find Id / Pw</font></a></span></td>
-        <td align="right" class="style3">
-            <span class="style20"><a href="/www/index.asp"><font color="#FFFFFF">Home</font></a>&nbsp; l &nbsp;<a href="/www/search/search_main.asp"><font color="#FFFFFF">Archives</font></a>&nbsp; l &nbsp;<a href="/www/LT/editorial/learningtimes.asp"><font color="#FFFFFF">Learning Times</font></a>&nbsp; | &nbsp;<a href="/www/news/community/sitemap.asp"><font color="#FFFFFF">Sitemap</font></a>&nbsp; | &nbsp;<a href="/www/news/community/subscription.asp"><font color="#FFFFFF">Subscription</font></a>&nbsp; l &nbsp;<a href="/www/news/community/media.asp?categoryCode=189"><font color="#FFFFFF">Media Kit</font></a>&nbsp; l &nbsp;<a href="/www/news/eyescrap/pdf.asp"><font color="#FFFFFF">PDF</font></a></span></td>
-        <td width="21"><img src="/www/news/images/top_nation_bar_3.gif" width="21" height="35"></td>
-      </tr>
-    </table></td>
-  </tr>
-  <tr>
-    <td height="20">&nbsp;&nbsp;&nbsp;<a href="/www/index.asp">Home</a> > Newszone > <a href='/www/news/sports/sports_main.asp?categoryCode=136'>Sports</a> >  </td>
-  </tr>
-  <tr>
-    <td height="5" valign="top"><img src="/www/news/images/main_nation_top.gif" width="657" height="5"><img src="/www/news/images/right_nation_top.gif" width="263" height="5"></td>
-  </tr>
-  <tr>
-    <td valign="top"><table width="920" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td width="180" valign="top"><table width="180" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td background="/www/news/images/bar-180.gif">
-                	  
+</div>				
+
+						<!--<img src="/www/images/advertising_egs.jpg" width="475" height="50" />-->
+					</div>
+				</div>
+				<div class="header_menu_wrapper">
+					<div class="header_menu">
+						<ul>
+							<a href='/www/category/subsection_178.html'><li class='list_1' ></li></a><a href='/www/category/section_113.html'><li class='list_2' ></li></a><a href='/www/category/section_602.html'><li class='list_3' ></li></a><a href='/www/category/section_129.html'><li class='list_4' ></li></a><a href='/www/category/section_135.html'><li class='list_5' ></li></a><a href='/www/category/section_600.html'><li class='list_6_active' ></li></a><a href='/www/common/opinion.asp?categoryCode=137'><li class='list_7' ></li></a><a href='/www/category/subsection_501.html'><li class='list_8' ></li></a><a href='/www/category/section_139.html'><li class='list_9' ></li></a><a href='/www/category/section_138.html'><li class='list_10' ></li></a><a href='/www/LTNIE/learningtimes.asp'><li class='list_11'></li></a>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</td>
+		<td class="table_header_right_6">&nbsp;</td>
+	</tr>
+</table>
 
 
 
-	  <table width="180" border="0" cellspacing="0" cellpadding="0">
-		<tr>
-		  <td height="8" colspan="3"></td>
-		</tr>
-		<tr>
-		  <td colspan="3"><img src="/www/news/images/new_title.gif" width="180" height="17" border="0"></td>
-		</tr>
-		<tr>
-		  <td width="16" height="4"></td>
-		  <td width="154" height="4"></td>
-		  <td width="10" height="4"></td>
-		</tr>
+
+<script>
+function goSearchEGS()
+{
+	kword = document.getElementById("theKword").value
+	//document.location.href='/www/archive/search_page.asp?kword='+kword;
+	var doc = document.search_form;
+	doc.submit
+}
+
+</script>
+
+
+<script type="text/javascript">
+	var refreshCtr
+		refreshCtr = 1
+      function AutoRefresh()
+	  {	
 		
-		<tr onmouseover="this.bgColor='#E9E9E9'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#ffffff'" bgColor=#ffffff>
-   <td width="16"><img src="/www/news/images/dot_15.gif" width="16" height="15"></td>
-   <td width="154"><a href="/www/news/nation/nation_main.asp?categoryCode=113"><span class="style15"><b>&nbsp;&nbsp;Nation</b></span></a></td>
-   <td width="10"><span class="style15"><img src="/www/news/images/dot_10.gif" width="10" height="15"></span></td>
- </tr>
- <tr>
-   <td width="16" height="4"></td>
-   <td width="154" height="4"></td>
-   <td width="10" height="4"></td>
- </tr>
-<tr onmouseover="this.bgColor='#E9E9E9'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#ffffff'" bgColor=#ffffff>
-   <td width="16"><img src="/www/news/images/dot_15.gif" width="16" height="15"></td>
-   <td width="154"><a href="/www/news/biz/biz_main.asp?categoryCode=123"><span class="style15"><b>&nbsp;&nbsp;Biz/Finance</b></span></a></td>
-   <td width="10"><span class="style15"><img src="/www/news/images/dot_10.gif" width="10" height="15"></span></td>
- </tr>
- <tr>
-   <td width="16" height="4"></td>
-   <td width="154" height="4"></td>
-   <td width="10" height="4"></td>
- </tr>
-<tr onmouseover="this.bgColor='#E9E9E9'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#ffffff'" bgColor=#ffffff>
-   <td width="16"><img src="/www/news/images/dot_15.gif" width="16" height="15"></td>
-   <td width="154"><a href="/www/news/tech/tech_main.asp?categoryCode=129"><span class="style15"><b>&nbsp;&nbsp;Technology</b></span></a></td>
-   <td width="10"><span class="style15"><img src="/www/news/images/dot_10.gif" width="10" height="15"></span></td>
- </tr>
- <tr>
-   <td width="16" height="4"></td>
-   <td width="154" height="4"></td>
-   <td width="10" height="4"></td>
- </tr>
-<tr onmouseover="this.bgColor='#E9E9E9'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#ffffff'" bgColor=#ffffff>
-   <td width="16"><img src="/www/news/images/dot_15.gif" width="16" height="15"></td>
-   <td width="154"><a href="/www/news/art/art_main.asp?categoryCode=135"><span class="style15"><b>&nbsp;&nbsp;Arts & Living</b></span></a></td>
-   <td width="10"><span class="style15"><img src="/www/news/images/dot_10.gif" width="10" height="15"></span></td>
- </tr>
- <tr>
-   <td width="16" height="4"></td>
-   <td width="154" height="4"></td>
-   <td width="10" height="4"></td>
- </tr>
-<tr onmouseover="this.bgColor='#E9E9E9'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#ffffff'" bgColor=#ffffff>
-   <td width="16"><img src="/www/news/images/dot_15.gif" width="16" height="15"></td>
-   <td width="154"><a href="/www/news/sports/sports_main.asp?categoryCode=136"><span class="style15"><b>&nbsp;&nbsp;Sports</b></span></a></td>
-   <td width="10"><span class="style15"><img src="/www/news/images/dot_10.gif" width="10" height="15"></span></td>
- </tr>
- <tr>
-   <td width="16" height="4"></td>
-   <td width="154" height="4"></td>
-   <td width="10" height="4"></td>
- </tr>
-<tr onmouseover="this.bgColor='#B5B5B5'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#E9E9E9'" bgColor=#E9E9E9>
-   <td background="/www/news/images/dot_15_1.gif" bgcolor="#ffffff">&nbsp;</td>
-   <td><a href="/www/news/photo/photo_list.asp?categoryCode=157"><span class="style17">&nbsp;&nbsp;<strong>Photo News</strong></span></a></td>
-   <td background="/www/news/images/dot_10.gif" bgcolor="#ffffff" class="style15">&nbsp;</td>
- </tr>
- <tr>
-   <td height="4"></td>
-   <td height="4"></td>
-   <td height="4"></td>
- </tr>
-<tr onmouseover="this.bgColor='#B5B5B5'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#E9E9E9'" bgColor=#E9E9E9>
-   <td background="/www/news/images/dot_15_1.gif" bgcolor="#ffffff">&nbsp;</td>
-   <td><a href="/www/news/sports/sports_list.asp?categoryCode=207"><span class="style17">&nbsp;&nbsp;<strong>2014 Incheon Asian Games</strong></span></a></td>
-   <td background="/www/news/images/dot_10.gif" bgcolor="#ffffff" class="style15">&nbsp;</td>
- </tr>
- <tr>
-   <td height="4"></td>
-   <td height="4"></td>
-   <td height="4"></td>
- </tr>
-<tr onmouseover="this.bgColor='#B5B5B5'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#E9E9E9'" bgColor=#E9E9E9>
-   <td background="/www/news/images/dot_15_1.gif" bgcolor="#ffffff">&nbsp;</td>
-   <td><a href="/www/news/sports/sports_list.asp?categoryCode=159"><span class="style17">&nbsp;&nbsp;<strong>Golf Tips Promenade</strong></span></a></td>
-   <td background="/www/news/images/dot_10.gif" bgcolor="#ffffff" class="style15">&nbsp;</td>
- </tr>
- <tr>
-   <td height="4"></td>
-   <td height="4"></td>
-   <td height="4"></td>
- </tr>
-<tr onmouseover="this.bgColor='#B5B5B5'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#E9E9E9'" bgColor=#E9E9E9>
-   <td background="/www/news/images/dot_15_1.gif" bgcolor="#ffffff">&nbsp;</td>
-   <td><a href="/www/news/sports/sports_list.asp?categoryCode=222"><span class="style17">&nbsp;&nbsp;<strong>Turf Tips</strong></span></a></td>
-   <td background="/www/news/images/dot_10.gif" bgcolor="#ffffff" class="style15">&nbsp;</td>
- </tr>
- <tr>
-   <td height="4"></td>
-   <td height="4"></td>
-   <td height="4"></td>
- </tr>
-<tr onmouseover="this.bgColor='#E9E9E9'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#ffffff'" bgColor=#ffffff>
-   <td width="16"><img src="/www/news/images/dot_15.gif" width="16" height="15"></td>
-   <td width="154"><a href="/www/news/opinon/opi_main.asp?categoryCode=137"><span class="style15"><b>&nbsp;&nbsp;Opinion</b></span></a></td>
-   <td width="10"><span class="style15"><img src="/www/news/images/dot_10.gif" width="10" height="15"></span></td>
- </tr>
- <tr>
-   <td width="16" height="4"></td>
-   <td width="154" height="4"></td>
-   <td width="10" height="4"></td>
- </tr>
-<tr onmouseover="this.bgColor='#E9E9E9'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#ffffff'" bgColor=#ffffff>
-   <td width="16"><img src="/www/news/images/dot_15.gif" width="16" height="15"></td>
-   <td width="154"><a href="/www/news/community/community_main.asp?categoryCode=138"><span class="style15"><b>&nbsp;&nbsp;Community</b></span></a></td>
-   <td width="10"><span class="style15"><img src="/www/news/images/dot_10.gif" width="10" height="15"></span></td>
- </tr>
- <tr>
-   <td width="16" height="4"></td>
-   <td width="154" height="4"></td>
-   <td width="10" height="4"></td>
- </tr>
-<tr onmouseover="this.bgColor='#E9E9E9'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#ffffff'" bgColor=#ffffff>
-   <td width="16"><img src="/www/news/images/dot_15.gif" width="16" height="15"></td>
-   <td width="154"><a href="/www/news/special/special_main.asp?categoryCode=139"><span class="style15"><b>&nbsp;&nbsp;Special</b></span></a></td>
-   <td width="10"><span class="style15"><img src="/www/news/images/dot_10.gif" width="10" height="15"></span></td>
- </tr>
- <tr>
-   <td width="16" height="4"></td>
-   <td width="154" height="4"></td>
-   <td width="10" height="4"></td>
- </tr>
-<tr onmouseover="this.bgColor='#E9E9E9'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#ffffff'" bgColor=#ffffff>
-   <td width="16"><img src="/www/news/images/dot_15.gif" width="16" height="15"></td>
-   <td width="154"><a href="/www/LT/editorial/learningtimes.asp?categoryCode=213"><span class="style15"><b>&nbsp;&nbsp;Learning Times</b></span></a></td>
-   <td width="10"><span class="style15"><img src="/www/news/images/dot_10.gif" width="10" height="15"></span></td>
- </tr>
- <tr>
-   <td width="16" height="4"></td>
-   <td width="154" height="4"></td>
-   <td width="10" height="4"></td>
- </tr>
+        var xmlHttpRequest;
+        try{
+			//alert("IE");
+          xmlHttpRequest=new XMLHttpRequest();// Firefox, Opera 8.0+, Safari
+        }
+        catch (e){
+          try{	
+			//alert("IE");
+            xmlHttpRequest=new ActiveXObject("Msxml2.XMLHTTP"); // Internet Explorer
+          }
+          catch (e){
+            try{
+              xmlHttpRequest=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            catch (e){
+              alert("No AJAX");
+              return false;
+            }
+          }
+        }
+		
+		
+        xmlHttpRequest.onreadystatechange=function(){
+          if(xmlHttpRequest.readyState==4){
+			refreshCtr++;
+			document.getElementById("changeIt").innerHTML = xmlHttpRequest.responseText
+            setTimeout('AutoRefresh()',3000); // JavaScript function calls AutoRefresh() every 3 seconds
+          }
+        }
+		
+        xmlHttpRequest.open("GET","/www/common/changeNews.asp?pass="+refreshCtr,true);
+        xmlHttpRequest.send(null);
+      }
 
+ function writeKtimes()
+{
+	window.open('/www/common/writeKtimes.asp','IReport','width=615, height=550','resizable=yes','scrollbars=auto')
+} 
+</script>
+
+
+<div id="dialogFindIDPWs"></div>
+<div id="dialogFindIDPWsThankyou"></div>
+<!-- <div class="search_bar" style="background:search_bar_bg6_10.jpg"> -->
+<div class="search_bar" style="background: url(http://www2.koreatimes.co.kr/www/images/search_bar_bg6_10.jpg) repeat-x;">
+	<div class="search_latest">		
 		
-		<tr>
-		  <td>&nbsp;</td>
-		  <td>&nbsp;</td>
-		  <td>&nbsp;</td>
-		</tr>
-		<tr onmouseover="this.bgColor='#E9E9E9'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#ffffff'" bgColor=#ffffff>
-		  <td width="16"><img src="/www/news/images/dot_15.gif" width="16" height="15"></td>
-		  <td width="154" class="style14">
-		  	&nbsp; <a href="/www/LT/editorial/learningtimes.asp?categoryCode=213"><b><span class="style14">The Learning Times</span></b></a></td>
-		</tr>
+			<div style="float: left; margin-top: 5px;"><img src='/www/images/navigationArrow.png' />&nbsp;&nbsp;<a class=noClass style="color:#FFF" href='/www/category/section_600.html'>Sports</a> >  <a class=noClass style="color:#FFF;" href='/www/category/subsection_136.html'>Briefs</a> >  </div>
 		
-		<tr>
-		  <td>&nbsp;</td>
-		  <td colspan="2">&nbsp;&nbsp;&nbsp;<a href="/www/LT/editorial/sample.asp"><span class="style2">Editorial Listening</span></a></td>
-		</tr>
-		<tr>
-		  <td>&nbsp;</td>
-		  <td colspan="2">&nbsp;&nbsp;&nbsp;<a href="/koreatime_admin/LT/common/ltcontents.asp?categoryCode=149"><span class="style2">Easy Korean Series</span></a></td>
-		</tr>				
-		<tr>
-		  <td>&nbsp;</td>
-		  <td colspan="2">&nbsp;&nbsp;&nbsp;<a href="/koreatime_admin/LT/common/inside_list.asp?nmode=3"><span class="style2">Dear Abby</span></a></td>
-		</tr>
-		<tr>
-		  <td>&nbsp;</td>
-		  <td colspan="2">&nbsp;&nbsp;&nbsp;<a href="/koreatime_admin/LT/common/inside_list.asp?nmode=2"><span class="style2">Domestic News</span></a></td>
-		</tr>
-		<tr>
-		  <td>&nbsp;</td>
-		  <td colspan="2">&nbsp;&nbsp;&nbsp;<a href="/koreatime_admin/LT/common/inside_list.asp?nmode=1"><span class="style2">Foreign News</span></a></td>
-		</tr>
-		<tr>
-		  <td>&nbsp;</td>
-		  <td colspan="2">&nbsp;&nbsp;&nbsp;<a href="/koreatime_admin/LT/common/inside_list.asp?nmode=8"><span class="style2">Screen English</span></a></td>
-		</tr>								
-		<tr>
-		  <td>&nbsp;</td>
-		  <td colspan="2">&nbsp;&nbsp;&nbsp;<a href="/koreatime_admin/LT/common/inside_list.asp?nmode=26"><span class="style2">TOEIC</span></a></td>
-		</tr>						
-		<tr>
-		  <td>&nbsp;</td>
-		  <td colspan="2">&nbsp;&nbsp;&nbsp;<a href="/koreatime_admin/LT/common/inside_list.asp?nmode=27"><span class="style2">Grasping Vocab </span></a></td>
-		</tr>						
-		<tr>
-		  <td>&nbsp;</td>
-		  <td>&nbsp;</td>
-		  <td>&nbsp;</td>
-		</tr>
-		<tr onmouseover="this.bgColor='#E9E9E9'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#ffffff'" bgColor=#ffffff>
-		  <td width="16"><img src="/www/news/images/dot_15.gif" width="16" height="15"></td>
-		  <td width="154" class="style14">&nbsp; <a href="/www/news/community/kjobs.asp?categorycode=189"><b>Jobs for Koreans</b></a></td>
-		  <td width="10" class="style15"><img src="/www/news/images/dot_10.gif" width="10" height="15"></td>
-		</tr>
-		<tr>
-		  <td width="16" height="4"></td>
-		  <td width="154" height="4" class="style14"></td>
-		  <td width="10" height="4"></td>
-		</tr>
-		<tr onmouseover="this.bgColor='#E9E9E9'" style="PADDING-TOP: 0px" onmouseout="this.bgColor='#ffffff'" bgColor=#ffffff>
-		  <td width="16"><img src="/www/news/images/dot_15.gif" width="16" height="15"></td>
-		  <td width="154" class="style14"><b>&nbsp; <a href="http://www.koreajoblink.com/korea/jobs_foreigners.asp" target="_blank" id="foreigners_job">Jobs for Foreigners</a></b></td>
-		  <td width="10" class="style15"><img src="/www/news/images/dot_10.gif" width="10" height="15"></td>
-		</tr>
-		<tr>
-		  <td width="16" height="4"></td>
-		  <td width="154" height="4" class="style14"></td>
-		  <td width="10" height="4"></td>
-		</tr>
-		<tr>
-		  <td width="16">&nbsp;</td>
-		  <td width="154">&nbsp;</td>
-		  <td width="10">&nbsp;</td>
-		</tr>
-	  </table>
-	  
-	  
-	  
-	  
-	  
-              </td>
-            </tr>
-            <tr>
-              <td height="1" bgcolor="#CCCCCC"></td>
-            </tr>
-          </table></td>
-        <td width="4" valign="top">&nbsp;</td>
-          <td width="468" valign="top">            
-            <table width="468" border="0" cellspacing="0" cellpadding="0">
-			<tr>
-			  <td height="2" align="left">
-				<table width="468" border="0" cellspacing="0" cellpcadding="0">
-                <tr>
-                  <td><img src="/www/news/images/view_top.gif" width="468" height="10"></td>
-                </tr>
-                <tr>
-                  <td background="/www/news/images/view_mid.gif"><table width="468" border="0" cellspacing="6" cellpadding="0">
-                    <tr>
-                      <td background="/www/news/images/view_title.gif">
-						<table width="100%" height="20" border="0" cellpadding="0" cellspacing="0">
-                        <tr>
-                          <td height="30" align="left"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tr>
-                              <td width="70%">&nbsp;&nbsp;&nbsp;01-14-2008&nbsp;15:45</td>
-                              <td width="30%" align="right"><a href="nation_list.asp?categoryCode=136"><img src="/www/news/images/list_bu.gif" width="16" height="16"></a> <a href="javascript:fontPlus()"><img src="/www/news/images/plus.gif" width="16" height="16"></a>
-									<a href="javascript:fontMinus()"><img src="/www/news/images/minus.gif" width="16" height="16"></a>
-									<a href="javascript:goPrint()"><img src="/www/news/images/print.gif" width="58" height="16"></a></td>
-                            </tr>
-                          </table></td>
-                        </tr>
-                        <tr>
-						
-                          
-							  
-                                <td height="70" align="center" class="style7"><u>Korean Golfer Choi Kyung-ju Wins 7th US PGA Title</u></td>
-								
-						  
-						  
-                        </tr>
-                      </table></td>
-                    </tr>
-                    <tr>
-                      <td valign="top"><p align="left" style="line-height:120%; margin-top:1; margin-bottom:0;"><font id=font>HONOLULU _ South Korean golfer Choi Kyung-ju Sunday won the PGA Tour Sony Open, beating South African Rory Sabbatini by three shots and clinching his seventh career U.S. PGA title.<br>
+		
+		<div style="float: right; height: 25px">
+			<div style="background: url(http://www2.koreatimes.co.kr/www/images/search_bar_new_17.png) no-repeat; width: 220px; height: 20px; margin-top: 3px">
+			
+			<!-- ####### KONAN SEARCH ###### -->
+				
+				<form name="search_form" method=post action="/www/archive/ksearch.asp" >
+				<input name="kwd" id="theKword" type="text" style="float: left; width: 148px; border: 0px; font-size: 11px!important; height: 17px!important; background-color: transparent; margin: 0px 0 0 3px; color: #FFF"/>
+
+				
+				
+			<!-- ##### END OF KONAN SEARCH ##### -->
+			
+			
+			<!-- #### OLD SEARCH #### -->
+				<!--		
+				<form name="search_form" method=post action="/www/archive/search_page.asp" >				
+				<input name="theKword" id="theKword" type="text" style="float: left; width: 148px; border: 0px; font-size: 11px!important; height: 17px!important; background-color: transparent; margin: 0px 0 0 3px; color: #FFF"/>
+				-->
+
+				<!-- ##### END OF OLD SEARCH ##### -->
+				
+
+				<input type="submit" value="go" id="searchBtn_egs" class="search_button" style="cursor: pointer; display: none" onclick="goSearchEGS();"/>
+				<a href="" onclick="document.getElementById('searchBtn_egs').click(); return false;"  style="float: left; width: 65px; height: 19px; border: 0px solid red" ></a> 
+				</form>
+			</div>
+		</div>
+		<div style="clear: both;"></div>
+		
+	</div>
+</div>
+
+
+
+
+<a name="top" />
+<div class="content_wrapper">
+
+<!-- <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-url="http://koreatimes.co.kr/www/news/sports/2013/02/136_17238.html">Tweet</a> -->
+<table border="0" width="100%">
+	<tr>
+		<td width="450" valign="top">
+<div class="left_paneX"> 
+		<div id="view_page_left_first_column">
+			
+			<div class="ad_20">
+				<!--<img class="view_page_left_ads_img" src="/www/images/view-page-ads-left_1.png"/>-->
+				<!-- 470 * 70 or 64-->
+<div align="center">	
+<!--
+<A Href="http://www.myanycar.com/CR_MyAnycarWeb/overture_index.jsp?OTK=A1206OB0086" target="_blank"><img src="http://img.koreatimes.co.kr/ad/samsung/SN475x50.jpg"></a>
+-->
+</div>				
+			</div>
+
+			<div class="view_page_news">
+				<!--
+				<div class="view_page_news_updated_date">
+					<span>2008-01-14&nbsp;15:45</span>
+				</div>
+				-->
+
+				<div class="view_page_comments_tools_wrapper">
+
+				<!-- Share Buttons BEGIN -->
+					<a style="border:0px solid #000;float:left" href="javascript:window.location=%22http://www.facebook.com/sharer.php?u=%22+encodeURIComponent(document.location)+%22&#38;t=%22+encodeURIComponent(document.title)" title="Share on Facebook..." target="_blank"><img src="http://www2.koreatimes.co.kr/www/images/view-page-fb.jpg" width="25" height="24" alt="alt" /></a>
+					<a href="https://twitter.com/share" title="Share on Twitter..." target="_blank"><img class="view_page_twitter" src="http://www2.koreatimes.co.kr/www/images/view-page-twitter.jpg"/></a>										
+					<a href="http://me2day.net/koreatimes3" target="_blank" ><img class="view_page_twitter" src="http://www2.koreatimes.co.kr/www/images/me2day.jpg"/></a>
+					<a href="http://yozm.daum.net/koreatimes62" target="_blank"><img class="view_page_fb" src="http://www2.koreatimes.co.kr/www/images/zom.jpg"/></a>
+					<a href="http://c.cyworld.com/67435160" target="_blank"><img class="view_page_twitter" src="http://www2.koreatimes.co.kr/www/images/cyworld.jpg"/></a>
+<!--					<a href="mailto:"><img class="view_page_twitter" src="http://www2.koreatimes.co.kr/www/images/email.jpg" /></a>-->
+					<img style="cursor:pointer;" class="view_page_twitterXXXX" src="http://www2.koreatimes.co.kr/www/images/email.jpg" onClick="emailFriend()"/>
+					<a href='' onclick='loginPlease(); return false;'><img class="view_page_cut" src="http://www2.koreatimes.co.kr/www/images/view-page-cut.png"/></a>
+					<img class="view_page_print" src="http://www2.koreatimes.co.kr/www/images/view-page-print.png" onClick="printpreview();" />
+					<img class="view_page_normal" src="http://www2.koreatimes.co.kr/www/images/view-page-normal.png" onClick="javascript:decreaseFontSize();"/>
+					<img class="view_page_bold" src="http://www2.koreatimes.co.kr/www/images/view-page-bold.png" onClick="javascript:increaseFontSize();"/>
+					<img class="view_page_list" src="http://www2.koreatimes.co.kr/www/images/view-page-list.png" onClick="window.location.href='/www/category/subsection_136_1.html'"/>
+				<!-- Share Buttons END -->
+
+					<div style="clear: both;"> </div>
+				</div>
+
+				
+				
+				<div class="view_page_news_header_wrapper">
+				<div style="clear: both; height: 5px"></div>
+					<span>2008-01-14&nbsp;15:45</span>
+					<div style="clear: both"></div>
+					<h1>Korean Golfer Choi Kyung-ju Wins 7th US PGA Title
+						<!--
+						<span>		
+							
+						</span>
+						-->
+					</h1>
+				</div>
+				<!--
+				<div class="view_page_news_img_wrapper">
+					<img src="../images/view-page-news-img-1.png">
+				</div>
+				<div class="view_page_news_caption">
+					<p>Russia’s then President-elect Vladimir Putin chairs a meeting of the supervisory  board of Agency for Strategic Initiatives in Moscow, Russia, May 3. ITAR-TASS-Yonhap</p>
+				</div>			
+				
+				-->
+				
+				
+				
+				
+				<div id="p"  class="view_page_news_article_wrapper">
+				
+					HONOLULU _ South Korean golfer Choi Kyung-ju Sunday won the PGA Tour Sony Open, beating South African Rory Sabbatini by three shots and clinching his seventh career U.S. PGA title.<br>
 <br>
 The 38-year-old finished at a four-round total of 14-under 266 at Waialea Country Club in Honolulu while Sabbatini posted an 11-under 269. <br>
 <br>
@@ -389,243 +815,528 @@ Choi received $954,000 for his victory at the first full-field PGA event of the 
 Sabbatini is trailed by Jerry Kelly, who finished third at 10-under 270. Steve Stricker tied for fourth at 8-under 272.    <br>
 
 
-                        </font></p>                        </td>
-                    </tr>
-                    <tr>
-                      <td height="50" align="right" valign="bottom"><!--<a href='mailto:mook@koreatimes.co.kr'>mook@koreatimes.co.kr</a>--></td>
-                    </tr>
-                    <tr>
-                      <td height="5" bgcolor="#F0F0F0"></td>
-                    </tr>
-                  </table></td>
-                </tr>
-                <tr>
-                  <td><img src="/www/news/images/view_bottom.gif" width="468" height="20"></td>
-                </tr>
-              </table></td>
-			  </tr>
-			<tr>
-			  <td height="1">&nbsp;</td>
-			  </tr>
-			<tr>
-			  <td height="1">
-				<table width="468" border="0" cellspacing="5" cellpadding="0">
-                <tr>
-                  <td width="278" height="20" valign="bottom" class="style3">Reader's Comments</td>
-                  <td width="175" height="20" valign="bottom" class="style3" align="right"><a href="/www/news/comment/comment_list.asp?categoryCode=136&newsIdx=17238">? Other View</a></td>
-                </tr>
-                <tr>
-                  <td height="2" colspan="2" bgcolor="#CED8DF" ></td>
-                </tr>
-                
-				  <form method="post" name="form1" action="/www/news/comment/comment_write.asp">
-				  <input type="hidden" name="categoryCode" value="136">
-				  <input type="hidden" name="newsIdx" value="17238">
-                <tr>
-                  <td width="278" height="20" valign="bottom" class="style3"></td>
-                  <td width="175" height="20" valign="bottom" class="style3"><div align="right"> <span class="style21">? Managerial regulations</div></td>
-                </tr>
-                <tr bgcolor="#EDF1F2">
-                  <td height="69" colspan="2"><table width="440" border="0" align="center" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td width="379" height="40">
-                        <textarea name="comment" cols="50" rows="3" scroll=no readonly>You must log in to use this service.</textarea></td>
-                      <td width="61"><img src="/www/news/images/ok_btn.gif" width="61" height="59"></a></td>
-                    </tr>
-                  </table></td>
-                </tr>
-                <tr>
-                  <td height="1" colspan="2" bgcolor="#CED8DF" ></td>
-                </tr>
-                  <tr>
-                    <td height="30" colspan="2" align="right" valign="bottom"><a href="javascript:history.back();"><b>? Back</b></a>&nbsp;<a href=#top><b>? Top</b></a></td>
-                  </tr>
-			</table></td>
-			  </tr>
-			<tr>
-			  <td height="1">&nbsp;</td>
-			  </tr>
-          </table>
-          <div align="center">
-          </div></td>
-          <td width="5" valign="top">&nbsp;</td>
-          <td width="263" valign="top">
-		  
-		  
-		  <div id="Layer20" style="position: absolute; left: 666px; top: 134px; z-index:2000">		  
-		  <table width="263" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td><img src="/www/news/images/right_nation_title.gif" width="263" height="27"></td>
-              </tr>
-              <tr>
-                <td height="10" background="/www/news/images/right_nation_bg.gif">
-                  
-
-<table width="263" border="0" cellspacing="6" cellpadding="0">
-  <tr>
-   <td width="5" height="20">&#8226;</td>
-   <td width="229"><a href="/www/news/special/2008/01/177_17342.html"><span class="style3"><u> Some Foreigners Bash Korea Unjustly, Unfairly</u></span></a></td>
- </tr>
-<tr>
-   <td width="5" height="20">&#8226;</td>
-   <td width="229"><a href="/www/news/nation/2008/01/116_17362.html"><span class="style3"><u> Intelligence Chief Faces Probe</u></span></a></td>
- </tr>
-<tr>
-   <td width="5" height="20">&#8226;</td>
-   <td width="229"><a href="/www/news/biz/2008/01/123_17360.html"><span class="style3"><u> Does Performance-Based Salary System Suit Korea?</u></span></a></td>
- </tr>
-<tr>
-   <td width="5" height="20">&#8226;</td>
-   <td width="229"><a href="/www/news/art/2008/01/141_17316.html"><span class="style3"><u> Actors Kim, Yoon Gossip About Love</u></span></a></td>
- </tr>
-<tr>
-   <td width="5" height="20">&#8226;</td>
-   <td width="229"><a href="/www/news/nation/2008/01/205_17351.html"><span class="style3"><u> Lee Lauds US Servicemen in Korea</u></span></a></td>
- </tr>
-<tr>
-   <td width="5" height="20">&#8226;</td>
-   <td width="229"><a href="/www/news/biz/2008/01/123_17363.html"><span class="style3"><u> Samsung Electronics Sales Top $100 Billion</u></span></a></td>
- </tr>
-<tr>
-   <td width="5" height="20">&#8226;</td>
-   <td width="229"><a href="/www/news/nation/2008/01/117_17350.html"><span class="style3"><u> Samsung Chairman's Home Raided</u></span></a></td>
- </tr>
-<tr>
-   <td width="5" height="20">&#8226;</td>
-   <td width="229"><a href="/www/news/nation/2008/01/236_17303.html"><span class="style3"><u> 7 TECHNOLOGY TRENDS IN 2008</u></span></a></td>
- </tr>
-<tr>
-   <td width="5" height="20">&#8226;</td>
-   <td width="229"><a href="/www/news/art/2008/01/141_17200.html"><span class="style3"><u> Must-See Films in 2008</u></span></a></td>
- </tr>
-<tr>
-   <td width="5" height="20">&#8226;</td>
-   <td width="229"><a href="/www/news/nation/2008/01/117_17364.html"><span class="style3"><u> Coffee Keeps People Going</u></span></a></td>
- </tr>
-
-</table>
-</td>
-              </tr>
-              <tr>
-                <td height="9"><img src="/www/news/images/right_nation_bottom.gif" width="263" height="9"></td>
-              </tr>
-              <tr>
-                <!--<td></td>-->
-				<td>
+				</div>
 				
 				
+				
+				
+				<div class="view_page_news_related_news_wrapper">
+					<div class="view_page_translation_email" style="float: right">
+						<p style="margin: 3px 0 3px 0"></p>
+						<p style="margin: 3px 0 3px 0"></p>
+						<p style="margin: 3px 0 3px 0"></p>
+					</div>
+					<div style="clear: both"></div>
+					<ul>
+						
+					</ul>
+				</div>
+			</div>
+			
+			<!--  bottom AD
+			<div class="view_page_ads_wrapper">
+				<img class="view_page_left_ads_img" src="/www/images/view-page-ads-left_1.png"/>
+			</div>
+			-->
 
+			
+						
+			
+			<div class="view_page_translation_wrapper">
 
-<table width="263" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-	<td><img src="/www/news/images/right_photo_title.gif" width="263" height="27"></td>
-  </tr>
-  <tr>
-	<td height="10" align="center" background="/www/news/images/right_sport_bg.gif">
-		<table width="249" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-          <td height="20" align="left" valign="top"><a href="/www/news/nation/2008/01/115_17366.html"><img src="/upload/news/080115_p1_npn1.jpg" width="100" height="80"></a></td><td height="20" align="left" valign="top"><a href="/www/news/nation/2008/01/115_17366.html"><span class="style3">Korean and other Asian American civic group members... </span></a></td>
-        </tr>
-<tr>
-          <td height="20" align="left" valign="top"><a href="/www/news/nation/2008/01/115_17365.html"><img src="/upload/news/080115_p1_top.jpg" width="100" height="80"></a></td><td height="20" align="left" valign="top"><a href="/www/news/nation/2008/01/115_17365.html"><span class="style3">Huge icicles hang from the roof of a ferry dock on the... </span></a></td>
-        </tr>
-<tr>
-          <td height="20" align="left" valign="top"><a href="/www/news/nation/2008/01/195_17311.html"><img src="/upload/news/080115_p9_cartoon(1).jpg" width="100" height="80"></a></td><td height="20" align="left" valign="top"><a href="/www/news/nation/2008/01/195_17311.html"><span class="style3">US election in uncertainty </span></a></td>
-        </tr>
-<tr>
-          <td height="20" align="left" valign="top"><a href="/www/news/nation/2008/01/157_17337.html"><img src="/upload/news/080115_p20_spn2.jpg" width="100" height="80"></a></td><td height="20" align="left" valign="top"><a href="/www/news/nation/2008/01/157_17337.html"><span class="style3">South Korea’s Lee Hyung-taik waits to receive a serve... </span></a></td>
-        </tr>
-<tr>
-          <td height="20" align="left" valign="top"><a href="/www/news/nation/2008/01/157_17338.html"><img src="/upload/news/080115_p20_spn1.jpg" width="100" height="80"></a></td><td height="20" align="left" valign="top"><a href="/www/news/nation/2008/01/157_17338.html"><span class="style3">San Diego Chargers quarterback Philip Rivers is treated... </span></a></td>
-        </tr>
+				<!--
+				<table class="view_page_translation_view_count_wrapper" border="0">
+					<tr>
+						<td width=40></td>
+						<td>
+							
+							
+						</td>
+					</tr>
+				</table>
+				-->
+				
+				
+				
+			<div style="clear: both;"></div>
+			
 
-		</table>
-	</td>	
-  </tr>
-  <tr>
-	<td height="9"><img src="/www/news/images/right-sport_bottom.gif" width="263" height="9"></td>
-  </tr>
-  <tr>
-	<td height="9"></td>
-  </tr>
-</table>				
+			
+					
 
+<!--
+<div style="border:0px solid #000">
+						<table bgcolor=green width="450" height="300" border="0" style="background: url('/www/images/hotnews.png') no-repeat;">
+						<tr>
+							<td valign="top" style="border: 0px solid #000">
+								<div style="margin-top:38px;border: 0px solid #000;">
+								<ul class="hotnewsbest" style="border: 0px solid #000;margin:0px; padding:0px">
+									<li style='list-style:none;padding:4px'><img src='/www/images/hotarrow.png'>&nbsp;<a href='/www/news/nation/2013/02/511_129976.html' >사기성관계 후 도주 여성 친구들이 덫 놓아 잡아</a></li>
+<li style='list-style:none;border-bottom:1px solid #f1f1f1'></li><li style='list-style:none;padding:4px'><img src='/www/images/hotarrow.png'>&nbsp;<a href='/www/news/culture/2013/02/316_129901.html' >'데이트 금지' 규칙어긴 걸그룹.. 삭발까지</a></li>
+<li style='list-style:none;border-bottom:1px solid #f1f1f1'></li><li style='list-style:none;padding:4px'><img src='/www/images/hotarrow.png'>&nbsp;<a href='/www/news/culture/2013/02/517_130083.html' >여자가 바람 피는 이유</a></li>
+<li style='list-style:none;border-bottom:1px solid #f1f1f1'></li><li style='list-style:none;padding:4px'><img src='/www/images/hotarrow.png'>&nbsp;<a href='/www/news/culture/2013/02/517_130044.html' >같이 바람피워도 남자가 더 잘들켜</a></li>
+<li style='list-style:none;border-bottom:1px solid #f1f1f1'></li><li style='list-style:none;padding:4px'><img src='/www/images/hotarrow.png'>&nbsp;<a href='/www/news/world/2013/02/182_129902.html' >한국 여대생, 인도 재벌에 끔찍한 일 당해</a></li>
+<li style='list-style:none;border-bottom:1px solid #f1f1f1'></li><li style='list-style:none;padding:4px'><img src='/www/images/hotarrow.png'>&nbsp;<a href='/www/news/tech/2013/02/325_129977.html' >4천년전 미이라 비밀 곧 드러난다</a></li>
+<li style='list-style:none;border-bottom:1px solid #f1f1f1'></li><li style='list-style:none;padding:4px'><img src='/www/images/hotarrow.png'>&nbsp;<a href='/www/news/world/2013/02/182_129904.html' >日여성들 성적매력 위해 이런 짓까지</a></li>
+<li style='list-style:none;border-bottom:1px solid #f1f1f1'></li><li style='list-style:none;padding:4px'><img src='/www/images/hotarrow.png'>&nbsp;<a href='/www/news/culture/2013/02/517_130038.html' >양부, 입양아들 농락에 성폭행 주선까지..</a></li>
+<li style='list-style:none;border-bottom:1px solid #f1f1f1'></li><li style='list-style:none;padding:4px'><img src='/www/images/hotarrow.png'>&nbsp;<a href='/www/news/nation/2013/02/116_129897.html' >만취해 차 역주행 조수석 약혼녀 숨져</a></li>
+<li style='list-style:none;border-bottom:1px solid #f1f1f1'></li><li style='list-style:none;padding:4px'><img src='/www/images/hotarrow.png'>&nbsp;<a href='/www/news/world/2013/02/182_130011.html' >세상에서 가장 멍청한 청부살해 의뢰자</a></li>
+<li style='display: none;border-bottom:1px solid #f1f1f1'></li>
+								</ul>
+								</div>
+							</td>
+						</tr>
+						</table>	
+</div>		
+-->
 
+				
+					<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+					
+					
+			<!--ZOOMSTOP -->
+			
+			<div class="view_page_comments_wrapper">
 
+				
+				<div id=ttalk_layer style="margin-left: -15px"></div>
 
-
-
-
-
-
-
-
- 
-				 
-				</td>
-              </tr>
-          </table>
-		  </div>
-		  
-		  </td>
-        </tr>
-    </table></td>
-  </tr>
-        <tr>
-        <td height="10" valign="top"></td>
-      </tr>
-	  <tr>
-	  <td height="1" align="center" background="/www/news/images/dot-1.gif"></td>
-	  </tr>
-      <tr>
-        <td height="43" align="center">
-		<table width="782" border="0" cellspacing="0" cellpadding="0">
-		<tr>
-		<td width="87"><a href="http://news.hankooki.com/" target="self"><img src="/www/news/images/bottom_ci_1.gif" width="87" height="22" border="0"></a></td>
-		<td width="52"></td>
-		<td width="87"><a href="http://sports.hankooki.com/" target="self"><img src="/www/news/images/bottom_ci_2.gif" width="87" height="22" border="0"></a></td>
-		<td width="52"></td>
-		<td width="87"><a href="http://economy.hankooki.com/" target="self"><img src="/www/news/images/bottom_ci_3.gif" width="87" height="22" border="0"></a></td>
-		<td width="52"></td>
-		<td width="87"><a href="http://kids.hankooki.com/" target="self"><img src="/www/news/images/bottom_ci_4.gif" width="87" height="22" border="0"></a></td>
-		<td width="52"></td>
-		<td width="87"><a href="http://weekly.hankooki.com/" target="self"><img src="/www/news/images/bottom_ci_5.gif" width="87" height="22" border="0"></a></td>
-		<td width="52"></td>
-		<td width="87"><a href="http://www.koreatimes.com/" target="self"><img src="/www/images/bottom_ci_6.gif" width="87" height="22" border="0"></a></td>
-		</tr>
-		</table>
+				<script type="text/javascript" charset="utf-8" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+				<script type="text/javascript" charset="utf-8" src="http://ttalk.pickple.com/js/ttalk.js"></script>
+				<script type="text/javascript">
+				<!--
+				try{
+				var param=new Array();
+				param['site_key']='43b31586919d5ae72f82e3f792ab9c2295893557';
+				param['article_uid']='17238';
+				//<- 뉴스번호
+				param['article_title']=escape('Korean Golfer Choi Kyung-ju Wins 7th US PGA Title');
+				//<- 제목
+				param['object_layer']='ttalk_layer';
+				var _ttalkservice = new ttalk_Request(param,'_ttalkservice');
+				_ttalkservice.init();
+				}
+				catch(e) {
+				}
+				-->
+				</script>
+			</div>
+			
+			
+		</div>		
 		</td>
-      </tr>
-	  <tr>
-	  <td height="1" align="center" background="../images/dot-1.gif"></td>
-	  </tr>
-	  <tr>
-        <td height="10" valign="top"></td></tr>
-        <tr>
-        <td height="26"><table width="481" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td><a href="/www/news/community/about.asp?categoryCode=190"><img src="/www/images/bottom_bu1.gif" border="0"></a></td>
-			<td ><a href="/www/news/nation/nation_view.asp?newsIdx=12833&categoryCode=230"><img src="/www/inc/images/bottom_bu8.jpg" border="0"></a></td>
-            <td width="91"><a href="/www/news/community/privacy.asp?categoryCode=191"><img src="/www/images/bottom_bu2.gif" width="91" height="18" border="0"></a></td>
-            <td width="63"><a href="/www/news/community/media.asp?categoryCode=189"><img src="/www/images/bottom_bu4.gif" width="63" height="18" border="0"></a></td>
-            <td width="72"><a href="/www/news/community/contact.asp"><img src="/www/images/bottom_bu5.gif" width="72" height="18" border="0"></a></td>
-            <td width="81"><a href="/www/news/community/subscription.asp"><img src="/www/images/bottom_bu6.gif" width="81" height="18" border="0"></a></td>
-            <td width="67"><a href="/www/news/community/location.asp"><img src="/www/inc/images/bottom_bu7.jpg" width="67" height="18" border="0"></a></td>
-        </tr>
-        </table></td>
-      </tr>
-  <tr>
-    <td height="84"><img src="/www/images/bottom.gif" width="921" height="84"></td>
-  </tr>
-  <tr>
-   <td>
-<!-- LOGGER TRACKING SCRIPT V.30 FOR koreatimes.co.kr / 1 : FAIL-SAFE TYPE / DO NOT ALTER THIS SCRIPT. -->
-<!-- COPYRIGHT (C) 2002-2007 BIZSPRING INC. LOGGER(TM) ALL RIGHTS RESERVED. -->
-<script language="JavaScript">/* TRACKING SCRIPT V.j0a : 1 *//*X*//* DO NOT MODIFY THIS SCRIPT. *//*X*/var _TRK_DOMAIN="211.234.100.229";var _trk_bMSIE=(document.all)?true:false;var _trk_bJS12=(window.screen)?true:false;function _trk_escape4j(_str) { var str, ch; var bEncURI = "N"; eval("try{bEncURI=encodeURI('Y');}catch(_e){ }" ); if( bEncURI == "Y" ) str=encodeURI(_str); else str = escape(_str); while((ch=str.indexOf("+"))>0) str=str.substr(0,ch)+"%2B"+str.substr(ch+1,str.length); while((ch=str.indexOf("/"))>0) str=str.substr(0,ch)+"%2F"+str.substr(ch+1,str.length); while((ch=str.indexOf("&"))>0) str=str.substr(0,ch)+"%26"+str.substr(ch+1,str.length); while((ch=str.indexOf("?"))>0) str=str.substr(0,ch)+"%3F"+str.substr(ch+1,str.length); while((ch=str.indexOf(":"))>0) str=str.substr(0,ch)+"%3A"+str.substr(ch+1,str.length); while((ch=str.indexOf("#"))>0) str=str.substr(0,ch)+"%23"+str.substr(ch+1,str.length); return str;}function _trk_setCookie4j(name,value,expire) { var today=new Date(); today.setTime(today.getTime()+ expire ); document.cookie=name+"="+value+"; path=/; expires="+today.toGMTString()+";";}function _trk_getCookie4j(name) { var cookieName=name+"="; var x=0; while(x<=document.cookie.length) { var y=(x+cookieName.length); if(document.cookie.substring(x,y)==cookieName) {  if((endOfCookie=document.cookie.indexOf(";",y))==-1) endOfCookie=document.cookie.length;  return unescape(document.cookie.substring(y,endOfCookie)); } x=document.cookie.indexOf(" ",x)+1; if(x == 0) break; } return "";}function _trk_getParameter4j(name) { var paraName=name+"="; var URL=""+self.document.location.search; var tURL=""; eval("try{ tURL=top.document.location.search; }catch(_e){}"); URL=URL+"&"+tURL; if(URL.indexOf(paraName)!=-1) { var x=URL.indexOf(paraName)+paraName.length; var y=URL.substr(x).indexOf("&"); if(y!=-1) return URL.substring(x,x+y); else return URL.substr(x); } return "";}function _trk_make_code4j(_TRK_SERVER,_TRK_U) { var dt=document.title.toString(); dt=dt.substr(0,128); var dr=self.document.referrer; var tdr=""; eval("try{ tdr=top.document.referrer; }catch(_e){}"); var tdu=""; eval("try{ tdu=top.document.location.href; }catch(_e){}"); if(dr==tdu) dr=tdr; if(dr=="undefined") dr=""; var du=self.document.location.href; if(du.substr(0,4)=="file") return ""; var adKeyVal = ""; adKeyVal=_trk_getParameter4j("OVKEY"); if(adKeyVal!="" && du.indexOf("OVKEY=")<0) if(du.indexOf("?")!=-1) du=du+"&OVKEY="+adKeyVal; else du=du+"?OVKEY="+adKeyVal; adKeyVal=_trk_getParameter4j("OVRAW"); if(adKeyVal!="" && du.indexOf("OVRAW=")<0) if(du.indexOf("?")!=-1) du=du+"&OVRAW="+adKeyVal; else du=du+"?OVRAW="+adKeyVal; adKeyVal=_trk_getParameter4j("netpia"); if(adKeyVal!="" && du.indexOf("netpia=")<0) if(du.indexOf("?")!=-1) du=du+"&netpia="+adKeyVal; else du=du+"?netpia="+adKeyVal; adKeyVal=_trk_getParameter4j("logger_kw"); if(adKeyVal!="" && du.indexOf("logger_kw=")<0) if(du.indexOf("?")!=-1) du=du+"&logger_kw="+adKeyVal; else du=du+"?logger_kw="+adKeyVal; adKeyVal=_trk_getParameter4j("source"); if(adKeyVal!="" && du.indexOf("source=")<0) if(du.indexOf("?")!=-1) du=du+"&source="+adKeyVal; else du=du+"?source="+adKeyVal; var ce=navigator.cookieEnabled?"Y":"N"; var je=navigator.javaEnabled()?"Y":"N"; var ss=""; var cd = ""; if(_trk_bJS12) { ss=screen.width+"x"+screen.height; cd=screen.colorDepth; } if(!dt) dt=""; if(!dr) dr=""; if(!du) du=""; if(!ce) ce=""; if(!je) je=""; var t = new Date; var tye=(_trk_bMSIE)?(t.getYear()):(t.getFullYear()); var tmo=t.getMonth()+1; var tda=t.getDate(); var tho=t.getHours(); var tmi=t.getMinutes(); var tse=t.getSeconds(); var tzo=t.getTimezoneOffset(); var tc = ""; var prtcl=document.location.protocol.indexOf("https")!=-1?"https://":"http://"; /* if(prtcl=="https://") _TRK_SERVER="ssl."+_TRK_DOMAIN; */ tc=tc+prtcl+_TRK_SERVER; var bPNF=((typeof _TRK_PI)!="undefined" && _TRK_PI=="PNF")?true:false; if(bPNF) tc=tc+"/tracker_click.jsp"; else tc=tc+"/tracker.jsp"; tc=tc+"?u="+_TRK_U+"&XU=&EXEN4J="+_EXEN4J; if(bPNF) { tc=tc+"&rnd="+Math.random()+"&CKFL="+_TRK_PI+"&CKDATA="+_trk_escape4j(du); } else { tc=tc+"&dr="+_trk_escape4j(dr)+"&XDR="+"&dt="+_trk_escape4j(dt)+"&du="+_trk_escape4j(du); if((typeof _TRK_CP)!="undefined" && _TRK_CP!="") tc=tc+"&CP="+_trk_escape4j(_TRK_CP)+"&XCP="; if((typeof _TRK_PI)!="undefined" && _TRK_PI!="") tc=tc+"&PI="+_TRK_PI; if((typeof _TRK_PN)!="undefined" && _TRK_PN!="") tc=tc+"&PN="+_trk_escape4j(_TRK_PN); if((typeof _TRK_MF)!="undefined" && _TRK_MF!="") tc=tc+"&MF="+_trk_escape4j(_TRK_MF); if((typeof _TRK_OA)!="undefined" && _TRK_OA!="") tc=tc+"&OA="+_TRK_OA; if((typeof _TRK_OP)!="undefined" && _TRK_OP!="") tc=tc+"&OP="+_trk_escape4j(_TRK_OP); if((typeof _TRK_OE)!="undefined" && _TRK_OE!="") tc=tc+"&OE="+_TRK_OE; if((typeof _TRK_CC)!="undefined" && _TRK_CC!="") tc=tc+"&CC="+_TRK_CC; if((typeof _TRK_RK)!="undefined" && _TRK_RK!="") tc=tc+"&RK="+_trk_escape4j(_TRK_RK); if((typeof _TRK_SX)!="undefined" && _TRK_SX!="") tc=tc+"&SX="+_TRK_SX; if((typeof _TRK_AG)!="undefined" && _TRK_AG!="") tc=tc+"&AG="+_TRK_AG; if((typeof _TRK_IK)!="undefined" && _TRK_IK!="") tc=tc+"&IK="+_trk_escape4j(_TRK_IK); if((typeof _ION_CP)!="undefined" && _ION_CP!="") tc=tc+"&IONCP="+_trk_escape4j(_ION_CP); if((typeof _TRK_UDC1)!="undefined" && _TRK_UDC1!="") tc=tc+"&UDC1="+_TRK_UDC1; if((typeof _TRK_UDC2)!="undefined" && _TRK_UDC2!="") tc=tc+"&UDC2="+_TRK_UDC2; if((typeof _TRK_UDC3)!="undefined" && _TRK_UDC3!="") tc=tc+"&UDC3="+_TRK_UDC3; if((typeof _TRK_UDC4)!="undefined" && _TRK_UDC4!="") tc=tc+"&UDC4="+_TRK_UDC4; if((typeof _TRK_UDC5)!="undefined" && _TRK_UDC5!="") tc=tc+"&UDC5="+_TRK_UDC5; tc=tc+"&js=Y"+"&ss="+escape(ss)+"&cd="+cd+"&ce="+ce+"&je="+je+"&tzo="+tzo+"&tye="+tye+"&tmo="+tmo+"&tda="+tda+"&tho="+tho+"&tmi="+tmi+"&tse="+tse; } return tc;}var _TRK_LIFE=_trk_getParameter4j("_L_");if(_TRK_LIFE=="") _TRK_LIFE=14;_TRK_LIFE = parseInt(_TRK_LIFE)*24*60*60*1000;var _TRK_U="";var _TRK_U_P=_trk_getParameter4j("_U_");var _TRK_U_C= _trk_getCookie4j("_TRK_U");if(_TRK_U_C!="") _TRK_U=_TRK_U_C;if(_TRK_U_P!="") _TRK_U=_TRK_U_P;if(_TRK_U!="" && _TRK_U_P!="") _trk_setCookie4j("_TRK_U",_TRK_U,_TRK_LIFE);var _TRK_CC_C=_trk_getCookie4j("_TRK_CC");var _TRK_CC_P=_trk_getParameter4j("_C_");if((typeof _TRK_CC)!="undefined" && _TRK_CC!="") _TRK_CC_P=_TRK_CC;if(_TRK_CC_C!="") _TRK_CC=_TRK_CC_C;if(_TRK_CC_P!="") _TRK_CC=_TRK_CC_P;if((typeof _TRK_CC)!="undefined" && _TRK_CC!="" && _TRK_CC_P!="") _trk_setCookie4j("_TRK_CC",_TRK_CC,_TRK_LIFE);var _TRK_RK_C=_trk_getCookie4j("_TRK_RK");var _TRK_RK_P=_trk_getParameter4j("_R_");if((typeof _TRK_RK)!="undefined" && _TRK_RK!="") _TRK_RK_P=_TRK_RK;if(_TRK_RK_C!="") _TRK_RK=_TRK_RK_C;if(_TRK_RK_P!="") _TRK_RK=_TRK_RK_P;if((typeof _TRK_RK)!="undefined" && _TRK_RK!="" && _TRK_RK_P!="") _trk_setCookie4j("_TRK_RK",_TRK_RK,_TRK_LIFE);var _SS_LIFE = 30*60*1000;var _EXEN4J = _trk_getCookie4j("_EXEN4J");if( _EXEN4J == "" ) _EXEN4J = 0; _EXEN4J ++;_trk_setCookie4j("_EXEN4J",_EXEN4J,_SS_LIFE);var _trk_code_base=_trk_make_code4j("211.234.100.229:8081","1");var _trk_code_chan="";if(_TRK_U!="") _trk_code_chan=_trk_code_base.replace(/\?u=1&XU=/g,"?u="+_TRK_U+"&XU=");var _trk_img_base=new Image();var _trk_img_chan=new Image();var _trk_img_base_click=new Image();var _trk_img_chan_click=new Image();if(_trk_bJS12==true) { if(_trk_bMSIE) { _trk_img_base.src=_trk_code_base; if(_TRK_U!="") _trk_img_chan.src=_trk_code_chan; } else { setTimeout("_trk_img_base.src=_trk_code_base;",1); if(_TRK_U!="") setTimeout("_trk_img_chan.src=_trk_code_chan;",1); }} else { if(_trk_bMSIE) document.write('<div style=\"display: none\">'); document.write('<img src=\"'+_trk_code_base+'\" height=\"0\" width=\"0\">'); if(_TRK_U!="") document.write('<img src=\"'+_trk_code_chan+'\" height=\"0\" width=\"0\">'); if(_trk_bMSIE) document.write('</div>');}function _trk_flashContentsView4j(_TRK_CP) { var _trk_code_flash=_trk_code_base; _trk_code_flash=_trk_code_flash.replace(/&CP=.*&XCP=/g,"&XCP="); _trk_code_flash=_trk_code_flash.replace(/&dr=.*&XDR=/g,"&XDR="); _trk_img_base_click.src=_trk_code_flash+"&dr=&CP="+_trk_escape4j(_TRK_CP)+"&rnd="+Math.random(); if(_TRK_U!="") { _trk_code_flash=_trk_code_flash.replace(/\?u=1&XU=/g,"?u="+_TRK_U+"&XU="); _trk_img_chan_click.src=_trk_code_flash+"&dr=&CP="+_trk_escape4j(_TRK_CP)+"&rnd="+Math.random(); }}function _trk_clickTrace4j(_TRK_CKFL,_TRK_CKDATA) { var _trk_code_click=_trk_code_base.substr(0,_trk_code_base.indexOf("tracker.jsp")); _trk_code_click=_trk_code_click+"tracker_click.jsp?rnd="+Math.random()+"&CKFL="+_TRK_CKFL+"&CKDATA="+_trk_escape4j(_TRK_CKDATA); _trk_img_base_click.src=_trk_code_click+"&u=1"; if(_TRK_U!="") _trk_img_chan_click.src=_trk_code_click+"&u="+_TRK_U;}function _trk_adClick4j( adSvr, svcCode, adCode ) { var ac = ""; var prtcl=document.location.protocol.indexOf("https")!=-1?"https://":"http://"; /* Solution Setting - if(prtcl=="https://") adSvr="ssl."+_TRK_DOMAIN; */ ac=ac+prtcl+adSvr; _trk_img_base_click.src=ac+"/tracker_ad.jsp?u="+svcCode+"&mode=C&adCode="+adCode;}</script>
-<noscript><img src="http://211.234.100.229:8081/tracker.jsp?u=1&js=N" width=0 height=0></noscript>
-<!-- END OF LOGGER TRACKING SCRIPT -->   
-   </td>
-  </tr>
+
+		<td valign="top" width="280" style="padding-left:0px;">
+		<div id="view_page_left_second_column">
+			<div class="ad_20">
+				<!--<img class="view_page_right_ads_img" src="/www/images/view-page-ads-right_1.png"/>-->
+				<!-- 297 * 70 or 64-->
+<div align="center">	
+
+</div>				 	
+			</div>
+			<!--
+			<div class="view_page_news_lists_wrapper">
+				<div class="view_page_news_lists_header">
+					<h1><span class="view_page_green">NAVER</span> on News</h1>
+				</div>
+				<div class="view_page_news_lists_ul_wrapper">
+					<table>
+						
+					</table>
+				</div>
+			</div>
+			-->
+
+				
+			
+				
+
+						
+			<!--NAVER ON NEWS-->
+			<!--ZOOMSTOP-->
+			<table width="293" height="293" border="0" style="background: url('http://www2.koreatimes.co.kr/www/images/naveronnews.jpg') no-repeat; margin-bottom: 5px">
+			
+			<tr>
+				<td valign="top" style="border: 0px solid #000">
+					<!--<table border="1" width="100%" height="408" style="margin-top:40px">-->
+					<div style="margin-top:30px;border: 0px solid #000;">
+					<ul style="border: 0px solid #000;margin:0px; padding:0px">
+						<li style='list-style:none;padding:4px; '><a href='/www/news/world/2013/02/182_129772.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px;  ">1. NYPD cop kills himself after being blackmailed into bed by female boss </div></a></li><li style='list-style:none;height:1px;border-bottom:1px solid #FFFFFF'></li><li style='list-style:none;padding:4px; '><a href='/www/news/nation/2013/02/511_129976.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px;  ">2. Man gets stung after luring woman into sex </div></a></li><li style='list-style:none;height:1px;border-bottom:1px solid #FFFFFF'></li><li style='list-style:none;padding:4px; '><a href='/www/news/nation/2013/02/116_129674.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px;  ">3. After the confession, Ali comes out of the dark </div></a></li><li style='list-style:none;height:1px;border-bottom:1px solid #FFFFFF'></li><li style='list-style:none;padding:4px; '><a href='/www/news/culture/2013/02/316_129901.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px;  ">4. Japan pop idol shaves head in regret of dating </div></a></li><li style='list-style:none;height:1px;border-bottom:1px solid #FFFFFF'></li><li style='list-style:none;padding:4px; '><a href='/www/news/world/2013/02/182_129835.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px;  ">5. Kim Jung-un carries little weight in N. Korea </div></a></li><li style='list-style:none;height:1px;border-bottom:1px solid #FFFFFF'></li><li style='list-style:none;padding:4px; '><a href='/www/news/tech/2013/02/325_129731.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px;  ">6. Why men should stay clear of pacus </div></a></li><li style='list-style:none;height:1px;border-bottom:1px solid #FFFFFF'></li><li style='list-style:none;padding:4px; '><a href='/www/news/world/2013/02/182_129616.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px;  ">7. Cannibalism in North Korea </div></a></li><li style='list-style:none;height:1px;border-bottom:1px solid #FFFFFF'></li><li style='list-style:none;padding:4px; '><a href='/www/news/tech/2013/02/325_129887.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px;  ">8. Footage of an alien being captured? </div></a></li><li style='list-style:none;height:1px;border-bottom:1px solid #FFFFFF'></li><li style='list-style:none;padding:4px; '><a href='/www/news/tech/2013/02/325_129643.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px;  ">9. Fossil that inspired Aliens </div></a></li><li style='list-style:none;height:1px;border-bottom:1px solid #FFFFFF'></li><li style='list-style:none;padding:4px; '><a href='/www/news/culture/2013/02/517_130083.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px;  ">10. Why women cheat </div></a></li><li style='display: none;border-bottom:1px solid #f1f1f1'></li>
+					</ul>	
+					</div>
+					<!--</table>-->
+				</td>
+			</tr>
+			</table>	
+		
+		
+			
+			<div class="view_page_pictorial_wrapper">
+				<div class="view_page_headerX" style="margin-bottom: 5px">
+<!--					<span style="width:288px;font-family: VIPRomanRegular;background: url('/www/images/pictorialvideo_noBG.jpg') no-repeat;background-size:288px;">Pictorial & Video</span>-->
+					<table border="0" style="padding:5px;background: url('http://www2.koreatimes.co.kr/www/images/pictorialvideo_noBG.jpg') no-repeat;" width="293">
+						<tr>
+							<td style="padding-left:70px;font-size:15px;font-family: Times New Roman;">
+								<!--Pictorial & Video -->&nbsp;
+							</td>
+						</tr>
+					</table>
+					<!--<img  width="288" src="/www/images/pictorialvideo.jpg"/>-->
+				</div>
+				 	<div id='viewPagePic_1' class='view_page_pictorial_left_wrapper view_page_pictorial_wrap'> 		<a href='/www/news/sports/2013/02/136_130079.html'><img onerror="document.getElementById('viewPagePic_1').style.display='none';"  width=143 height=90 src='http://img.koreatimes.co.kr/upload/thumbnailV2/20-11.jpg'/></a>		<a href='/www/news/sports/2013/02/136_130079.html'><div style='margin:3px 0 6px 0; width: 100%; height: 30px; text-overflow: ellipsis; white-space: wrap; overflow: hidden;'>Special Olympics leaves mixed legacy</div></a>	</div>	<div id='viewPagePic_2' class='view_page_pictorial_right_wrapper view_page_pictorial_wrap'>		<a href='/www/news/culture/2013/02/399_130067.html'><img onerror="document.getElementById('viewPagePic_2').style.display='none';"  width=143 height=90 src='http://img.koreatimes.co.kr/upload/thumbnailV2/16-01(54).jpg'/></a>		<a href='/www/news/culture/2013/02/399_130067.html'><div style='margin:3px 0 6px 0; width: 100%; height: 30px; text-overflow: ellipsis; white-space: wrap; overflow: hidden;'>Does online dating work?</div></a>	</div>	<div style='clear: both;'></div>	<div id='viewPagePic_3' class='view_page_pictorial_left_wrapper view_page_pictorial_wrap'>		<a href='/www/news/culture/2013/02/135_130072.html'><img onerror="document.getElementById('viewPagePic_3').style.display='none';"  width=143 height=90 src='http://img.koreatimes.co.kr/upload/thumbnailV2/14-01(36).jpg'/></a>		<a href='/www/news/culture/2013/02/135_130072.html'><div style='margin:3px 0 6px 0; width: 100%; height: 30px; text-overflow: ellipsis; white-space: wrap; overflow: hidden;'>American art: 300 years young</div></a>	</div>			<div id='viewPagePic_4' class='view_page_pictorial_right_wrapper view_page_pictorial_wrap'>		<a href='/www/news/culture/2013/02/135_130071.html'><img onerror="document.getElementById('viewPagePic_4').style.display='none';"  width=143 height=90 src='http://img.koreatimes.co.kr/upload/thumbnailV2/14-05(1).jpg'/></a>		<a href='/www/news/culture/2013/02/135_130071.html'><div style='margin:3px 0 6px 0; width: 100%; height: 30px; text-overflow: ellipsis; white-space: wrap; overflow: hidden;'>Future of K-pop is an illusion</div></a>	</div>	<div style='clear: both;'></div>	<div id='viewPagePic_5' class='view_page_pictorial_left_wrapper view_page_pictorial_wrap'>		<a href='/www/news/people/2013/02/178_130074.html'><img onerror="document.getElementById('viewPagePic_5').style.display='none';"  width=143 height=90 src='http://img.koreatimes.co.kr/upload/thumbnailV2/17-03(5).jpg'/></a>		<a href='/www/news/people/2013/02/178_130074.html'><div style='margin:3px 0 6px 0; width: 100%; height: 30px; text-overflow: ellipsis; white-space: wrap; overflow: hidden;'>Hong shares painful experience as firs...</div></a>	</div>	<div id='viewPagePic_6' class='view_page_pictorial_right_wrapper view_page_pictorial_wrap'>		<a href='/www/news/people/2013/02/178_130077.html'><img onerror="document.getElementById('viewPagePic_6').style.display='none';"  width=143 height=90 src='http://img.koreatimes.co.kr/upload/thumbnailV2/17-02(10).jpg'/></a>		<a href='/www/news/people/2013/02/178_130077.html'><div style='margin:3px 0 6px 0; width: 100%; height: 30px; text-overflow: ellipsis; white-space: wrap; overflow: hidden;'>'Defense companies need to boost trans...</div></a>	</div>				
+				<div style="clear: both;"></div>
+			</div>
+			
+
+
+			
+			<!--LATEST NEWS TOP 10-->		
+			
+			<table width="293" height="250" border="0" style="background: url('http://www2.koreatimes.co.kr/www/images/latestNews.jpg') no-repeat;">
+			<tr>
+				<td  valign="top" style="border: 0px solid #000">
+					<div style="margin-top:30px;border: 0px solid #000;">
+					<ul style="border: 0px solid #000;margin:0px; padding:0px">
+						<li style='list-style:none;padding:4px; '><a href='/www/news/world/2013/02/182_130035.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px; ">1. S. Korea's foreign reserves hit new high in Jan. </div></a></li><li style='list-style:none;height:1px;border-bottom:1px solid #FFFFFF'></li><li style='list-style:none;padding:4px; '><a href='/www/news/world/2013/02/501_130033.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px; ">2. U.N. to take resolute action against N. Korea for any nuke test </div></a></li><li style='list-style:none;height:1px;border-bottom:1px solid #FFFFFF'></li><li style='list-style:none;padding:4px; '><a href='/www/news/world/2013/02/182_130036.html'><div style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 280px; ">3. Foreigners' net selling of local equities hits 8-month high </div></a></li><li style='list-style:none;height:1px;border-bottom:1px solid #FFFFFF'></li>
+					</ul>	
+					</div><br />
+
+				</td>
+			</tr>
+			</table>				
+			
+			
+			
+			<div style="clear: both;"></div>
+			<script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+			<script>
+			new TWTR.Widget({
+			  version: 2,
+			  type: 'profile',
+			  rpp: 4,
+			  interval: 30000,
+			  width: 290,
+			  height: 235,
+			  theme: {
+				shell: {
+				  background: '#C1C1C1',
+				  color: '#ffffff'
+				},
+				tweets: {
+				  background: '#ffffff',
+				  color: '#000000',
+				  links: '#5ca6cb'
+				}
+			  },
+			  features: {
+				scrollbar: true,
+				loop: false,
+				live: false,
+				behavior: 'all'
+			  }
+			}).render().setUser('koreatimes1').start();
+			</script>
+			
+			
+			
+			
+			<!--
+			<div class="view_page_korea_times_wrapper">
+				<div class="view_page_korea_time_header_wrapper">
+					<div class="view_page_korea_time_title"><p>The Korea Times</p></div>
+				</div>
+				<div class="view_page_korea_times_entry">
+					<div class="view_page_korea_times_entry_icon">
+						<img src="/www/images/view-page-korea-times-entry-icon-1.png"/>
+					</div>	
+					<div class="view_page_korea_times_entry_contents">
+						<p><a class="view_page sns_link" href="#">SocialCaster</a> 최근 3시간동안  RT를 많이 해드렸던분들: <a class="view_page sns_link" href="#">@wksfl</a>, <a class="view_page sns_link" href="#">@xlsdit</a>, <a class="view_page sns_link" href="#">@lssss</a> - 좋은말씀 감사합니다</p>
+						<div class="sns_time_elapse"><small>20 hours ago ’ reply ’ retweet ’ favorite</small></div>
+					</div>	
+					<div style="clear: both;"></div>
+				</div>
+				
+				<div class="view_page_korea_times_entry">
+					<div class="view_page_korea_times_entry_icon">
+						<img src="/www/images/view-page-korea-times-entry-icon-2.png"/>
+					</div>	
+					<div class="view_page_korea_times_entry_contents">
+						<p><a class="view_page sns_link" href="#">SocialCaster</a> 최근 3시간동안  RT를 많이 해드렸던분들: <a class="view_page sns_link" href="#">@wksfl</a>, <a class="view_page sns_link" href="#">@xlsdit</a>, <a class="view_page  sns_link" href="#">@lssss</a> - 좋은말씀 감사합니다</p>
+					</div>	
+					<div style="clear: both;"></div>
+				</div>
+				<div class="view_page_korea_time_footer_wrapper">
+					<div class="view_page_sns_footer_1"><img src="/www/images/view-page-sns-twitter.png"/></div>
+					<div class="view_page_sns_footer_2"><img src="/www/images/view-page-sns-twitter-follow.png"/></div>
+					<div style="clear: both;"></div>
+				</div>
+			</div>
+			-->
+			<div class="view_page_learning_times_wrapper" style="display:none">
+				<div class="view_page_learning_times_header"><h1>Learning <span class="view_page_blue">Times</span></h1></div>
+				<table>
+					<tr>
+						<td>
+							<img src="http://www2.koreatimes.co.kr/www/images/view-page-learning-1.png"/>
+							<div class="learning_times_item_desc"><p><span class="view_page_blue">동영상</span>강의</p></div>
+						</td>
+						<td>
+							<img src="http://www2.koreatimes.co.kr/www/images/view-page-learning-2.png"/>
+							<div class="learning_times_item_desc"><p><span class="view_page_blue">전화</span>영어</p></div>
+						</td>
+						<td>
+							<img src="http://www2.koreatimes.co.kr/www/images/view-page-learning-3.png"/>
+							<div class="learning_times_item_desc"><p><span class="view_page_blue">모바일</span>학습</p></div>
+						</td>
+						<td>
+							<img src="http://www2.koreatimes.co.kr/www/images/view-page-learning-4.png"/>
+							<div class="learning_times_item_desc"><p><span class="view_page_blue">PC</span>학습</p></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>		
+		
+		</td>
+		<td valign="top" align="left" >
+			<!--ZOOMSTOP-->
+<script type="text/javascript">
+	var viewPagePhoto;
+	viewPagePhoto=1;
+	
+	function nextPhotoView(val)
+	{
+		viewPagePhoto+=val;
+		for (var i =1; i<=viewPageTotal; i++)
+		{
+			try
+			{
+				doc = document.getElementById("mv_img_holder"+i).style.display = "none";
+			}
+			catch(err){}
+		}
+		if (viewPagePhoto>viewPageTotal )
+		viewPagePhoto=viewPageTotal;
+		
+		if (viewPagePhoto==0)
+		viewPagePhoto=1;
+		
+		//alert(viewPagePhoto);
+		doc = document.getElementById("mv_img_holder"+(viewPagePhoto)).style.display="";
+	}
+</script>
+
+
+
+
+
+
+<div class="right_pane" style="border:0px solid #000; position: relative">
+
+		<div style="margin-bottom: 5px; float: right;">		
+			<A Href="http://www.khap.org" target="_blank"><img src="http://www2.koreatimes.co.kr/www/Events/AD/khap_bnr2.gif" width="250"> </a>
+		</div>	
+
+		
+
+		
+		<div style="float: left; margin-left:7px; width: 248px">
+
+			<!--<div class="top_10_contentX">
+			<table width="252" height="170" border="0" style="margin-top:0px;background: url('/www/images/topstories.png') no-repeat;">
+			<tr>
+				<td valign="top" style="border: 0px solid #000">
+					<div style="height: 30px;">
+						<img src="/www/images/right_top_strories.png" width=117 height=17 style="float: left; margin: 8px 0 0 10px" />
+					</div>
+					
+					<div style="margin-top:0px;border: 0px solid #000;">					
+						<ul style="margin:0px;padding:0px;">
+							<li id='top10_news_1'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/world/2013/02/182_129902.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>1. Korean student drugged, sexually assaulted in India</div></li><li id='top10_border_1' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_2'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/biz/2013/02/388_130005.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>2. Automakers rush to launch small cars</div></li><li id='top10_border_2' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_3'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/tech/2013/02/133_129982.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>3. Samsung trails Google in M&As</div></li><li id='top10_border_3' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_4'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/nation/2013/02/116_130000.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>4. North Korea may  detonate H-bomb</div></li><li id='top10_border_4' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_5'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/tech/2013/02/133_129984.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>5. Samsung, LG to end  display patent battle</div></li><li id='top10_border_5' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_6'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/nation/2013/02/116_129966.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>6. Success comes only after failure</div></li><li id='top10_border_6' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_7'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/nation/2013/02/116_130050.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>7. Asia's largest Uniqlo outlet faces eviction</div></li><li id='top10_border_7' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_8'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/tech/2013/02/133_130046.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>8. LG Chem normalizes  US battery plant</div></li><li id='top10_border_8' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_9'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/biz/2013/02/123_130031.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>9. Park upsets future pension recipients</div></li><li id='top10_border_9' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_10'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/nation/2013/02/116_129955.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>10. 'It's not designer bag'</div></li><li id='top10_border_10' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+			</table>							
+			</div>-->
+			
+			<!-- Right TOP AD -->
+			
+			
+			
+			<div class="top_10_contentX" style="width: 248px; margin-left:0px!important; margin-top:0px; margin-bottom: 5px; border-left: 1px solid #d9d9d9; border-right: 1px solid #d9d9d9; border-bottom: 1px solid #9db17e;">
+				<div valign="top" style="height: 35px; width:252px; margin-left:-1px; background: url('http://www2.koreatimes.co.kr/www/images/topstories1.jpg') no-repeat;">
+					<!-- <img src="/www/images/right_top_strories.png" width=122 height=17 style="float: left; margin: 10px 0 0 10px" /> -->
+				</div>
+					
+				<div style="margin-top:0px; border: 0px solid #000;">			
+					<ul style="margin:0px;padding:0px;">
+							<li id='top10_news_1'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/world/2013/02/182_129902.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>1. Korean student drugged, sexually assaulted in India</div></li><li id='top10_border_1' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_2'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/biz/2013/02/388_130005.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>2. Automakers rush to launch small cars</div></li><li id='top10_border_2' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_3'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/tech/2013/02/133_129982.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>3. Samsung trails Google in M&As</div></li><li id='top10_border_3' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_4'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/nation/2013/02/116_130000.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>4. North Korea may  detonate H-bomb</div></li><li id='top10_border_4' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_5'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/tech/2013/02/133_129984.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>5. Samsung, LG to end  display patent battle</div></li><li id='top10_border_5' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_6'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/nation/2013/02/116_129966.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>6. Success comes only after failure</div></li><li id='top10_border_6' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_7'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/nation/2013/02/116_130050.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>7. Asia's largest Uniqlo outlet faces eviction</div></li><li id='top10_border_7' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_8'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/tech/2013/02/133_130046.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>8. LG Chem normalizes  US battery plant</div></li><li id='top10_border_8' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_9'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/biz/2013/02/123_130031.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>9. Park upsets future pension recipients</div></li><li id='top10_border_9' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li><li id='top10_news_10'  style='list-style:none;padding:4px;font-family: Arial, Helvetica;  '><div onclick='document.location.href="/www/news/nation/2013/02/116_129955.html"'  style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 235px; cursor: pointer;'>10. 'It's not designer bag'</div></li><li id='top10_border_10' style='list-style:none;border-bottom:1px solid #FFFFFF;  '></li>
+					</ul>
+				</div>
+			</div>
+			
+	
+			
+			
+	
+			<div class='div_most_viewed'>
+			<div class='most_viewed'>
+				<!-- <img src="/www/images/right_most_viewed.png" width=153 height=13 style="margin: 4px 0 3px 0" /> -->
+				<span class='prev_next_header2'>
+				<a href='' onclick="nextPhotoView(-1); return false;"><img src='http://www2.koreatimes.co.kr/www/images/icon_arrow_prev.png'/></a> | 
+				<a href='' onclick="nextPhotoView(1); return false;"><img src='http://www2.koreatimes.co.kr/www/images/icon_arrow_next.png'/></a>
+				</span>
+				</div>
+					<div class='mv_img_holder' id='mv_img_holder1' style='display: '>		<a href='/www/news/nation/2013/02/115_129968.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-04-03-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_129968.html'>People shop at a Hanaro Mart outlet in southern Seoul, Sunday, to bu...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder2' style='display: none'>		<a href='/www/news/nation/2013/02/115_129956.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-04-11-03.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_129956.html'>Rwanda Ambassador to Korea Eugene S. Kayihura, left, shakes hands&nb...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder3' style='display: none'>		<a href='/www/news/nation/2013/02/115_129967.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-04-02-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_129967.html'>Rep. Kwon Seong-dong of the ruling Saenuri Party, left, plays hockey...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder4' style='display: none'>		<a href='/www/news/biz/2013/02/124_130022.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-05-10-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/biz/2013/02/124_130022.html'>Models pose with Paris Baguette’s new chocolate products designed sp...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder5' style='display: none'>		<a href='/www/news/biz/2013/02/124_130023.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-05-10-02.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/biz/2013/02/124_130023.html'>Kia Motors announced Monday that it will hold various&nbsp;events af...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder6' style='display: none'>		<a href='/www/news/nation/2013/02/115_130019.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-05-02-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_130019.html'>President-elect Park Geun-hye, right, shakes hands&nbsp;with William...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder7' style='display: none'>		<a href='/www/news/nation/2013/02/115_130021.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-05-04-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_130021.html'>Reporters work at the press room for&nbsp;President-elect Park Geun-...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder8' style='display: none'>		<a href='/www/news/sports/2013/02/157_130014.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/thumbnailV2/19-02.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/sports/2013/02/157_130014.html'>Baltimore Ravens quarterback Joe Flacco celebrates with linebacker R...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder9' style='display: none'>		<a href='/www/news/nation/2013/02/115_130096.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-06-03-02.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_130096.html'>Members of the emergency committee for Ssangyong Motor’s fired emplo...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder10' style='display: none'>		<a href='/www/news/nation/2013/02/115_130085.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-06-04-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_130085.html'>Senior officials from education offices in cities and provinces&nbsp...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder11' style='display: none'>		<a href='/www/news/nation/2013/02/115_130086.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-06-04-02.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_130086.html'>Lim Sung-nam, Seoul’s special representative for Korean Peninsula Pe...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder12' style='display: none'>		<a href='/www/news/nation/2013/02/115_130084.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-06-03-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_130084.html'>Kim Young-jong, third from left, the head of the Jongno&nbsp;Distric...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder13' style='display: none'>		<a href='/www/news/biz/2013/02/124_130087.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-06-11-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/biz/2013/02/124_130087.html'>Hana Bank President and CEO Kim Jong-jun, center,&nbsp;shakes hands ...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder14' style='display: none'>		<a href='/www/news/issues/2013/02/173_130073.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/thumbnailV2/17-01(21).jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/issues/2013/02/173_130073.html'>Huh Jung-seok, right, 10th president of Ulsan College,&nbsp;poses wi...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder15' style='display: none'>		<a href='/www/news/biz/2013/02/124_130088.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-06-11-02.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/biz/2013/02/124_130088.html'>Bundles of money are carried at the Bank of Korea’s Daejeon branch o...</a></div>	</div><script>var viewPageTotal=15</script>
+			</div>			
+			<div style="clear: both; height: 10px"></div>
+			
+			<!--
+			<div class="ads_1">
+				<div id="banner_1">
+						 	<div style='position: absolute; width: 248px; height: 20px; border: 0px solid #000;'> 		<div style='float: right; margin: 5px 5px'> 						</div> 	</div> 	 								
+					</div>
+					<div banner_2>
+						 	<div style='position: absolute; width: 248px; height: 20px; border: 0px solid #000;'> 		<div style='float: right; margin: 5px 5px'> 						</div> 	</div> 	 		
+					</div>
+			</div>
+			-->
+			
+			<div class='notice_header'><a href='/www/common/noticeList.asp?wpage=notice' style='float: right; width: 15px; height: 14px'></a></div>
+<table class='table_notice'>
+<tr><td><div style='text-overflow: ellipsis; overflow: hidden; white-space:nowrap; width: 230px; float: left; cursor: pointer;' onclick='document.location.href="/www/common/noticeView.asp?idx=100"' ><span><img src='/www//images/dotNotice.jpg'/></span> Koreatimes.co.kr puts on a new dress </div></td>
 </table>
+
+			
+			
+			<!--<div style="clear: both;"></div>-->
+			<div class="kt_digital">
+				<table>
+					<tr>
+						<td class="td1" colspan="2">
+							<img src="http://www2.koreatimes.co.kr/www/images/right_koreatimes_ds.png" width=210 height=16 style="margin-top: 3px" />
+						</td>
+					</tr>
+					<tr>
+						<td class="td2"><a href="/www/common/pdf_Home.asp"><img src="http://www2.koreatimes.co.kr/www/images/btn_pdf.png" border="0"/></a></td>
+						<td class="td3"><a href="/www//common/mobile.asp?wpage=mobile"><img src="http://www2.koreatimes.co.kr/www/images/btn_app.png" border="0"/></a></td>
+					</tr>
+					<tr>
+						<td class="td4"><a href="http://www.facebook.com/#!/pages/The-Korea-Times/227456724028836"><img src="http://www2.koreatimes.co.kr/www/images/btn_facebook.png" border="0"/></a></td>
+						<td><a href="https://twitter.com/#!/search/realtime/koreatimes1"><img src="http://www2.koreatimes.co.kr/www/images/btn_twitter.png" border="0"/></a></td>
+					</tr>
+				</table>
+			</div>
+			
+			<!--
+			<div class='div_most_viewed'>
+			<div class='most_viewed'>		
+				-- <img src="/www/images/right_most_viewed.png" width=153 height=13 style="margin: 4px 0 3px 0" /> --
+				<span class='prev_next_header2'>
+				<a href='' onclick="nextPhotoView(-1); return false;"><img src='/www/images/icon_arrow_prev.png'/></a> | 
+				<a href='' onclick="nextPhotoView(1); return false;"><img src='/www/images/icon_arrow_next.png'/></a>
+				</span>
+				</div>
+					<div class='mv_img_holder' id='mv_img_holder1' style='display: '>		<a href='/www/news/nation/2013/02/115_129968.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-04-03-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_129968.html'>People shop at a Hanaro Mart outlet in southern Seoul, Sunday, to bu...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder2' style='display: none'>		<a href='/www/news/nation/2013/02/115_129956.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-04-11-03.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_129956.html'>Rwanda Ambassador to Korea Eugene S. Kayihura, left, shakes hands&nb...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder3' style='display: none'>		<a href='/www/news/nation/2013/02/115_129967.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-04-02-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_129967.html'>Rep. Kwon Seong-dong of the ruling Saenuri Party, left, plays hockey...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder4' style='display: none'>		<a href='/www/news/biz/2013/02/124_130022.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-05-10-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/biz/2013/02/124_130022.html'>Models pose with Paris Baguette’s new chocolate products designed sp...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder5' style='display: none'>		<a href='/www/news/biz/2013/02/124_130023.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-05-10-02.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/biz/2013/02/124_130023.html'>Kia Motors announced Monday that it will hold various&nbsp;events af...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder6' style='display: none'>		<a href='/www/news/nation/2013/02/115_130019.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-05-02-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_130019.html'>President-elect Park Geun-hye, right, shakes hands&nbsp;with William...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder7' style='display: none'>		<a href='/www/news/nation/2013/02/115_130021.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-05-04-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_130021.html'>Reporters work at the press room for&nbsp;President-elect Park Geun-...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder8' style='display: none'>		<a href='/www/news/sports/2013/02/157_130014.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/thumbnailV2/19-02.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/sports/2013/02/157_130014.html'>Baltimore Ravens quarterback Joe Flacco celebrates with linebacker R...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder9' style='display: none'>		<a href='/www/news/nation/2013/02/115_130096.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-06-03-02.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_130096.html'>Members of the emergency committee for Ssangyong Motor’s fired emplo...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder10' style='display: none'>		<a href='/www/news/nation/2013/02/115_130085.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-06-04-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_130085.html'>Senior officials from education offices in cities and provinces&nbsp...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder11' style='display: none'>		<a href='/www/news/nation/2013/02/115_130086.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-06-04-02.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_130086.html'>Lim Sung-nam, Seoul’s special representative for Korean Peninsula Pe...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder12' style='display: none'>		<a href='/www/news/nation/2013/02/115_130084.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-06-03-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/nation/2013/02/115_130084.html'>Kim Young-jong, third from left, the head of the Jongno&nbsp;Distric...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder13' style='display: none'>		<a href='/www/news/biz/2013/02/124_130087.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-06-11-01.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/biz/2013/02/124_130087.html'>Hana Bank President and CEO Kim Jong-jun, center,&nbsp;shakes hands ...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder14' style='display: none'>		<a href='/www/news/issues/2013/02/173_130073.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/thumbnailV2/17-01(21).jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/issues/2013/02/173_130073.html'>Huh Jung-seok, right, 10th president of Ulsan College,&nbsp;poses wi...</a></div>	</div>	<div class='mv_img_holder' id='mv_img_holder15' style='display: none'>		<a href='/www/news/biz/2013/02/124_130088.html'><img onerror="this.src='/www/images/NIA.jpg'"  src='http://img.koreatimes.co.kr/upload/newsV2/images/02-06-11-02.jpg'></a>		<div align='left' style='margin-top:10px; text-overflow: ellipsis; overflow: hidden; margin: 5px 0 5px 0; white-space:wrap; color:#333;'><a href='/www/news/biz/2013/02/124_130088.html'>Bundles of money are carried at the Bank of Korea’s Daejeon branch o...</a></div>	</div><script>var viewPageTotal=15</script>
+			</div>
+			<div style="clear: both; height: 5px"></div>
+			-->
+			
+			<div class="ads_20">
+			
+				<!-- 256 ~ 258 * 70 or 64-->
+<div align="center">	
+
+
+	<!-- 코리아타임스 - 우측하단포토배너(4slot) --> 
+	<iframe id="nad_0Ezo8FHUhXvzfYGpjL9R"  width="250" height="300" frameborder="0" scrolling="no"></iframe> 
+	<script type="text/javascript"> 
+	var randomVal_vzfYGpjL9R   =       Math.floor(Math.random() *5 ) + 1; 
+	var ad_url="http://adv.mediaharbor.co.kr/nad/media/0Ezo8FHUhX/vzfYGpjL9R_"+randomVal_vzfYGpjL9R+".html"; 
+	var ad_obj=document.getElementById("nad_0Ezo8FHUhXvzfYGpjL9R"); 
+	ad_obj.src=ad_url; 
+	</script> 
+	
+	<!--
+	<iframe src='http://shoppingbox.joinsmsn.com/sbox/box/Koreatimes/SBox' scrolling="no" frameborder='0' width='260' height='320'></iframe> 
+	-->
+	<iframe name="OpapSbox18" width="260" height="320" id="OpapSbox18" src="http://sgate.opap.co.kr/view/?mseq=18" frameBorder="0" marginWidth="0" marginHeight="0" scrolling="no"> 
+	</iframe>
+
+</div>							
+				<!--
+				<img src="/www/images/ads_1.jpg"/>
+				<img src="/www/images/ads_2.jpg"/>
+				-->
+			</div>
+		</div>
+	</div>			
+		</td>
+	</tr>
+</table>
+	 <!--Start of left_first_column-->
+	 <!--End of left_first_column-->
+		
+<!--End of left_second_column-->
+</div> <!-- End of left_pane -->
+	
+	
+	
+	
+	<!-- DIRI RAMO TAMAN -->
+	
+</div>
+
+
+<div style="clear: both; padding-top: 100px;"></div>
+<div style="width: 1014px; margin: 0 auto 0; height: 50px;">
+
+	<div style='background: url(http://www2.koreatimes.co.kr/www/images/viewpage_footer_bt_img_20120822.jpg) no-repeat; width: 160px; height: 22px!important; float: right;'> <div onclick='document.location.href="/www/"'  style='float: left; border: 0px solid #000; width: 40px; height: 22px; margin-left: 10px; cursor: pointer '></div> <div onclick='document.location.href="/www/category/subsection_136_1.html"' style='float: left; border: 0px solid #000; width: 40px; height: 22px; margin-left: 10px; cursor: pointer '></div> <div onclick='document.location.href="#topBody"' style='float: right; border: 0px solid #000; width: 40px; height: 22px; cursor: pointer'></div> </div>
+</div>
+<div style="width: 100%; height: 1px; background: #6C9D30; clear: both"></div>
+<div style="border:0px solid #000" class="footer_wrapper">
+	<table id="footerTableEGS" border="0" style="margin: 0 auto 0;width:95%; border-top: 0px solid #6c9d30; border-bottom: 0px solid #6c9d30; height: 0px">
+		<tr>
+		<td><a href="/www/common/aboutus.asp?wpage=aboutus&hm=1&bmx=1">About Times</a></td>
+		<td>|</td>
+		<td><a href="/www/common/aboutus.asp?wpage=aboutus&hm=2&bmx=1">Times History</a></td>
+		 <td>|</td>
+		 <td><a href="/www/common/aboutus.asp?wpage=aboutus&hm=5&bmx=1" style="color:red;">Privacy Statement  (개인정보 취급방침)  </a></td>
+		<td>|</td>
+		<td><a href="/www/common/aboutus.asp?wpage=aboutus&hm=3&bmx=1">Contents Distribution</a></td>
+		<td>|</td>
+		<td><a href="/www/common/aboutus.asp?wpage=aboutus&hm=4&bmx=1">Media Kit</a></td>
+		<td>|</td>
+		<td><a href="/www/common/aboutus.asp?wpage=aboutus&hm=6&bmx=3">Contact Us</a></td>
+		<td>|</td>
+		<td><a href="/www/common/aboutus.asp?wpage=aboutus&hm=1&bmx=4">Location</a></td>
+		<td>|</td>
+		<td><a href="/www/common/aboutus.asp?wpage=aboutus&hm=7&bmx=1">Ombudsman</a></td>
+		<td>|</td>
+		<!-- <td><a href="/www/NIE/index.asp" >NIETimes</a></td> -->
+		<td><a href="/www/LTNIE/learningtimes.asp" >NIETimes</a></td>
+		</tr>
+	</table>	
+</div>
+<div style="width: 100%; height: 1px; background: #6C9D30; clear: both"></div>
+<div style="border:0px solid #000" class="footer_img">
+	<div><a href="/index.htm"><img src="http://www2.koreatimes.co.kr/www/images/footer_img2.jpg" /></a></div>
+	<span class="link_img_footer">Visit our Partners:&nbsp;
+	<a href="http://news.hankooki.com/"><img src="http://www2.koreatimes.co.kr/www/images/link1.png"/></a>
+	<a href="http://sports.hankooki.com/"><img src="http://www2.koreatimes.co.kr/www/images/link2.png"/></a>
+	<a href="http://economy.hankooki.com/"><img src="http://www2.koreatimes.co.kr/www/images/link3.png"/></a>
+	<a href="http://kids.hankooki.com/"><img src="http://www2.koreatimes.co.kr/www/images/link4.png"/></a>
+	<a href="http://weekly.hankooki.com/"><img src="http://www2.koreatimes.co.kr/www/images/link5.png"/></a>
+	<a href="http://www.koreatimes.com/"><img src="http://www2.koreatimes.co.kr/www/images/link6.png"/></a>
+	</span>
+</div>
+<br/><br/>
+	
 </body>
+<!--ZOOMRESTART-->
 </html>

@@ -77,40 +77,6 @@ function WM_killCookie(name, path, domain) {
 //END WEBMONKEY***********************************************************************************
 // -->
 </script>
-<script language="JavaScript">
-if (WM_acceptsCookies){
-    var theArgument = '5739';
-    var theCookie = new String();
-    theCookie = WM_readCookie('COREG');
-    if (theCookie == ''){
-        var encodedReturn = new String();
-        var returnURL = new String();
-        encodedReturn = '' + escape("news/story?id=497114") + '';
-        returnURL = "/origin?cameFrom=" + encodedReturn;
-        if (document.layers) {
-			window.location.href = returnURL;
-		} else {
-        	self.location.replace(returnURL);
-		}
-    } else if (theCookie == theArgument){
-        document.write('');
-    } else if (theCookie != theArgument){
-        var tempString = new String();
-        tempString = '/news/story?id=497114&cc=' + theCookie;
-        if (document.layers) {
-			window.location.href = tempString;
-		} else {
-        	self.location.replace(tempString);
-		}
-    }
-} else if ('5739' != '5901'){
-	if (document.layers) {
-		window.location.href = '/news/story?id=497114&' + 'cc=5901';
-	} else {
-    	self.location.replace('/news/story?id=497114&' + 'cc=5901');
-	}
-}
-</script>
 <meta name="description" content="Newcastle were today closing in on their man as they stepped up efforts to lure Harry Redknapp to St James' Park.">
 <meta name="keywords" content="English Premier League, Newcastle, Portsmouth, Soccer, Football">
 
