@@ -130,13 +130,13 @@ def checkfile(fname, f):
     lost_len += res[1]
     excess_words -= res[2]
     excess_len -= res[3]
-    res = createstats(html, root, "//*[@class='x-nc-sel3']", None, fname)
+    res = createstats(html, root, "//*[@class='x-nc-sel1']", None, fname)
     html = res[4]
     excess_words -= res[2]
     excess_len -= res[3]
     suppl_words += res[2]
     suppl_len +=res[3]
-    res = createstats(html, root, "//*[@class='x-nc-sel1']", None, fname)
+    res = createstats(html, root, "//*[@class='x-nc-sel3']", None, fname)
     html = res[4]
     excess_words -= res[2]
     excess_len -= res[3]
