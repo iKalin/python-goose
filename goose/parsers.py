@@ -103,6 +103,7 @@ class Parser(object):
             # create a text node for tail
             if n.tail:
                 t = self.createElement(tag='text', text=n.tail, tail=None)
+                n.tail = None
                 root.insert(idx + 1, t)
         return list(root)
 
