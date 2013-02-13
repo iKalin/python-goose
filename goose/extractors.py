@@ -268,7 +268,7 @@ class ContentExtractor(object):
         startingBoost = float(1.0)
         cnt = 0
         i = 0
-        parentNodes = set()
+        parentNodes = []
         nodesWithText = []
 
         for node in nodesToCheck:
@@ -308,7 +308,7 @@ class ContentExtractor(object):
             self.updateNodeCount(node.getparent(), 1)
 
             if node.getparent() not in parentNodes:
-                parentNodes.add(node.getparent())
+                parentNodes.append(node.getparent())
 
             # parentparent node
             parentParentNode = Parser.getParent(parentNode)
@@ -316,7 +316,7 @@ class ContentExtractor(object):
                 self.updateNodeCount(parentParentNode, 1)
                 self.updateScore(parentParentNode, upscore / 2)
                 if parentParentNode not in parentNodes:
-                    parentNodes.add(parentParentNode)
+                    parentNodes.append(parentParentNode)
             cnt += 1
             i += 1
 
