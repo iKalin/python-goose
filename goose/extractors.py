@@ -365,8 +365,7 @@ class ContentExtractor(object):
         b = []
         while currentSibling is not None:
             b.append(currentSibling)
-            previousSibling = Parser.previousSibling(currentSibling)
-            currentSibling = None if previousSibling is None else previousSibling
+            currentSibling = Parser.previousSibling(currentSibling)
         return b
 
     def addSiblings(self, topNode):
