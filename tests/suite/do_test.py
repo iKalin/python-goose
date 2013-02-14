@@ -49,7 +49,7 @@ def ext_readability(html):
 def getfilteredhtml(fname):
     parser = etree.HTMLParser()
     test = etree.parse(folder + "/original/" + fname, parser)
-    html = etree.tostring(test,method='text',encoding='unicode')
+    html = etree.tostring(test,method='text',encoding=unicode)
     html = re.sub(u'[\u2028]',u'',html)
     html = html.encode('ascii', 'replace')
     html = re.sub('[.?,\'\t\r\n]',' ',html)
