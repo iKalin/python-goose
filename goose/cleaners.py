@@ -255,11 +255,12 @@ class DocumentCleaner(object):
                 badDivs += 1
             elif div is not None:
                 replaceNodes = self.getReplacementNodes(doc, div)
+		text = div.tail
                 div.clear()
 
                 for c, n in enumerate(replaceNodes):
                     div.insert(c, n)
-
+                div.tail = text
                 elseDivs += 1
 
         return doc
