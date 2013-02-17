@@ -104,10 +104,56 @@ class DocumentCleaner(object):
                     if Parser.getElementsByTag(li, tag='a'):
                         fa += 1
                         if fa > 2:
+                            parent = item.getparent()
                             Parser.remove(item)
+                            if parent is not None:
+                                if len(parent) == 0 or len(Parser.getText(parent).split()) < 4:
+                                    Parser.remove(parent)
                             break
                     else:
                        fa = 0
+
+        items=Parser.getElementsByTag(doc, tag='a')
+        for a in items:
+                e = a.getparent()
+		if e is None: continue
+	        text = Parser.getText(e)
+		ldels = []
+                textcount = 0
+		for link in e:
+	            ltext = Parser.getText(link)
+                    if link.tag != 'a' and len(ltext) <= 2: continue
+		    if link.tag != 'a' and len(ltext) > 2:
+                        ldels = []
+                        break
+                    if ltext == '': continue
+	            ldel = text.split(ltext,1)
+	            ld = ldel[0].strip()
+	            ldels.append(ld)
+                    if len(ldel) == 1: break
+	            text = ldel[1]
+	        if len(ldels) == 0 or ldels[0] == ',': continue
+	        else:
+                    del ldels[0]
+                    flag = 0; flag1 = 0; flag2 = 0; flag3 = 0
+	            for ldel in ldels:
+			if ldel == ldels[0]: flag += 1
+                        if len(ldel) > 3 or ldel.find(',') >= 0: flag1 = 1
+			if ldel != '': flag2 = 1
+                        if len(ldel) > 1: flag3 = 1
+                    if flag2 == 0 and len(ldels) > 1: 
+			Parser.remove(e)
+			continue
+                    if  len(ldels) == 2 and ldels[0] == '|' and ldels[1] == '|': 
+			Parser.remove(e)
+			continue
+                    if  len(ldels) > 3 and flag3 == 0: 
+			Parser.remove(e)
+			continue
+                    if flag <= 2 and (len(ldels) <= 2 or flag1 != 0): 
+			continue
+		         
+	        Parser.remove(e)
         return doc
 
     def dropTags(self, doc, tags):
