@@ -34,7 +34,7 @@ class DocumentCleaner(object):
         "|cnn_strycaptiontxt|links|meta$|scroll|shoutbox|sponsor"
         "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
         "|cnn_stryspcvbx|^inset$|pagetools|post-attributes"
-        "|welcome_form|contentTools2|the_answers"
+        "|welcome_form|contentTools2|the_answers|rating"
         "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings"
         "|date|^print$|popup|author-dropdown|tools|socialtools|byline"
         "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
