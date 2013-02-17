@@ -164,6 +164,13 @@ class Parser(object):
         return innerTrim(u' '.join(txts).strip())
 
     @classmethod
+    def getFormattedText(self, node):
+	pars = node.cssselect('p')
+        for p in pars:
+            if p.text is not None: p.text = u'\ufffc ' + p.text
+        return Parser.getText(node)
+
+    @classmethod
     def previousSiblings(self, node):
         nodes = []
         for c, n in enumerate(node.itersiblings(preceding=True)):

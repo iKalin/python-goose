@@ -64,7 +64,7 @@ class OutputFormatter(object):
             txt = HTMLParser().unescape(txt)
             txts.append(innerTrim(txt))
         for node in list(self.getTopNode()):
-            txt = Parser.getText(node)
+            txt = Parser.getFormattedText(node)
             if txt:
                 txt = HTMLParser().unescape(txt)
                 txts.append(innerTrim(txt))
