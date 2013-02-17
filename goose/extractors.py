@@ -528,7 +528,9 @@ class ContentExtractor(object):
         currentNodeScore = self.getScore(e)
         thresholdScore = float(topNodeScore * .08)
 
-        if topNodeScore < 0 and currentNodeScore < 0: return True
+        if topNodeScore < 0 and currentNodeScore < 0:
+            self.updateScore(e, -currentNodeScore + 11)
+            return True
 
         if not Parser.getElementsByTag(e, tag='a') and not Parser.getElementsByTag(e, tag='img'):
             self.updateScore(e, 11)

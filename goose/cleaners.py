@@ -43,12 +43,6 @@ class DocumentCleaner(object):
         )
         self.regExNotRemoveNodes = ("and|no|article|body|column|main|shadow")
         self.regexpNS = "http://exslt.org/regular-expressions"
-        self.queryNaughtyIDs = "//*[re:test(@id, '%s', 'i')]" % self.regExRemoveNodes
-        self.queryNaughtyClasses = "//*[re:test(@class, '%s', 'i')]" % self.regExRemoveNodes
-        self.queryNaughtyNames = "//*[re:test(@name, '%s', 'i')]" % self.regExRemoveNodes
-        self.queryNaughtyIDs1 = "//*[re:test(@id, '%s', 'i')]" % self.regExNotRemoveNodes
-        self.queryNaughtyClasses1 = "//*[re:test(@class, '%s', 'i')]" % self.regExNotRemoveNodes
-        self.queryNaughtyNames1 = "//*[re:test(@name, '%s', 'i')]" % self.regExNotRemoveNodes
         self.divToPElementsPattern = r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)"
         self.captionPattern = "^caption$"
         self.googlePattern = " google "
