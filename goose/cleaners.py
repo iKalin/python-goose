@@ -22,6 +22,7 @@ limitations under the License.
 """
 from goose.parsers import Parser
 from goose.utils import ReplaceSequence
+import lxml.html
 
 
 class DocumentCleaner(object):
@@ -59,15 +60,19 @@ class DocumentCleaner(object):
                                             .create("\n", "\n\n")\
                                             .append("\t")\
                                             .append("^\\s+$")
+        self.todel = self.regExRemoveNodes.lower().split('|')
+        self.notdel = self.regExNotRemoveNodes.lower().split('|')
+        
+
 
     def clean(self, article):
 
         docToClean = article.doc
+        nodelist = self.getNodesToDelete(docToClean)
+        for node in nodelist: Parser.remove(node)  
         docToClean = self.removeListsWithLinks(docToClean)
-        docToClean = self.cleanBadTags(docToClean)
         docToClean = self.dropTags(docToClean,['em','strong'])
         docToClean = self.removeDropCaps(docToClean)
-        docToClean = self.removeScriptsAndStyles(docToClean)
         docToClean = self.removeNodesViaRegEx(docToClean, self.captionPattern)
         docToClean = self.removeNodesViaRegEx(docToClean, self.googlePattern)
         docToClean = self.removeNodesViaRegEx(docToClean, self.entriesPattern)
@@ -79,6 +84,36 @@ class DocumentCleaner(object):
         docToClean = self.convertDivsToParagraphs(docToClean, 'div')
         docToClean = self.convertDivsToParagraphs(docToClean, 'span')
         return docToClean
+
+    def getNodesToDelete(self, doc):
+        nodelist = []
+        for node in doc:
+            if node.tag in ['script','noscript','style','option'] or isinstance(node,lxml.html.HtmlComment):
+		nodelist.append(node)
+		continue
+            ids = ''
+            if node.attrib.has_key('class'):
+               ids += ' ' + node.attrib['class'].lower()
+            if node.attrib.has_key('id'):
+               ids += ' ' + node.attrib['id'].lower()
+            if node.attrib.has_key('name'):
+               ids += ' ' + node.attrib['name'].lower()
+            good_node = 0
+            for word in self.notdel:
+		if ids.find(word) >= 0: 
+                    good_node = 1
+                    continue
+            if good_node == 0:
+                good_node = 1
+                for word in self.todel:
+		    if ids.find(word) >= 0: 
+                        good_node = 0
+                        break
+            if good_node == 0:
+                nodelist.append(node)
+                continue 
+            nodelist += self.getNodesToDelete(node)
+        return nodelist
 
     def keepLineBreaks(self, doc):
         items=Parser.getElementsByTag(doc, tag='br')
@@ -169,57 +204,6 @@ class DocumentCleaner(object):
         items = doc.cssselect("span[class~=dropcap], span[class~=drop_cap]")
         for item in items:
             item.drop_tag()
-
-        return doc
-
-    def removeScriptsAndStyles(self, doc):
-        # remove scripts
-        scripts = Parser.getElementsByTag(doc, tag='script')
-        for item in scripts:
-            Parser.remove(item)
-
-        # remove noscripts
-        noscripts = Parser.getElementsByTag(doc, tag='noscript')
-        for item in noscripts:
-            Parser.remove(item)
-
-        # remove styles
-        styles = Parser.getElementsByTag(doc, tag='style')
-        for item in styles:
-            Parser.remove(item)
-
-        # remove comments
-        comments = Parser.getComments(doc)
-        for item in comments:
-            Parser.remove(item)
-
-        return doc
-
-    def cleanBadTags(self, doc):
-
-        # ids
-        naughtyList = doc.xpath(self.queryNaughtyIDs,
-                                        namespaces={'re': self.regexpNS})
-        naughtyList1 = doc.xpath(self.queryNaughtyIDs1,
-                                        namespaces={'re': self.regexpNS})
-        for node in naughtyList:
-            if node not in naughtyList1: Parser.remove(node)
-
-        # class
-        naughtyClasses = doc.xpath(self.queryNaughtyClasses,
-                                        namespaces={'re': self.regexpNS})
-        naughtyClasses1 = doc.xpath(self.queryNaughtyClasses1,
-                                        namespaces={'re': self.regexpNS})
-        for node in naughtyClasses:
-            if node not in naughtyClasses1: Parser.remove(node)
-
-        # name
-        naughtyNames = doc.xpath(self.queryNaughtyNames,
-                                        namespaces={'re': self.regexpNS})
-        naughtyNames1 = doc.xpath(self.queryNaughtyNames1,
-                                        namespaces={'re': self.regexpNS})
-        for node in naughtyNames:
-            if node not in naughtyNames1: Parser.remove(node)
 
         return doc
 
