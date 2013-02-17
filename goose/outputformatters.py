@@ -68,8 +68,12 @@ class OutputFormatter(object):
             if txt:
                 txt = HTMLParser().unescape(txt)
                 txts.append(innerTrim(txt))
-        text = '\n\n'.join(txts)
-	text = re.sub(u'[\ufffc]','\n\n',text)
+        text = '\n'.join(txts)
+	text = re.sub(u'[\ufffc]','\n',text)
+        lines = text.split('\n')
+        text = ''
+        for line in lines:
+            if re.search('[^ \t\r]',line): text += line + '\n'
         return text
 
     def convertLinksToText(self):
