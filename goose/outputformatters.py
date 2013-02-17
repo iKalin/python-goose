@@ -68,7 +68,9 @@ class OutputFormatter(object):
             if txt:
                 txt = HTMLParser().unescape(txt)
                 txts.append(innerTrim(txt))
-        return '\n\n'.join(txts)
+        text = '\n\n'.join(txts)
+	text = re.sub(u'[\ufffc]','\n\n',text)
+        return text
 
     def convertLinksToText(self):
         """\

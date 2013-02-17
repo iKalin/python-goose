@@ -75,9 +75,25 @@ class DocumentCleaner(object):
         docToClean = self.removeNodesViaRegEx(docToClean, self.facebookBroadcastingPattern)
         docToClean = self.removeNodesViaRegEx(docToClean, self.twitterPattern)
         docToClean = self.cleanUpSpanTagsInParagraphs(docToClean)
+	docToClean = self.keepLineBreaks(docToClean)
         docToClean = self.convertDivsToParagraphs(docToClean, 'div')
         docToClean = self.convertDivsToParagraphs(docToClean, 'span')
         return docToClean
+
+    def keepLineBreaks(self, doc):
+        items=Parser.getElementsByTag(doc, tag='br')
+	for n in items:
+	    if n.tail is not None: n.tail = u'\ufffc ' + n.tail
+            else: n.tail = u'\ufffc'
+            n.drop_tag()
+
+        items=Parser.getElementsByTag(doc, tag='p')
+	for n in items:
+	    if n.tail is not None: n.tail = u'\ufffc ' + n.tail
+            else: 
+                n.tail = u'\ufffc'
+#                if n.text is None: n.drop_tag()  # drop empty p
+	return doc
 
     def removeListsWithLinks(self, doc):
         for tag in ['ol','ul']:
