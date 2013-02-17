@@ -38,7 +38,7 @@ class DocumentCleaner(object):
         "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings"
         "|date|^print$|popup|author-dropdown|tools|socialtools|byline"
         "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
-        "|source|legende|ajoutVideo|timestamp"
+        "|source|legende|ajoutVideo|timestamp|menu"
         )
         self.regExNotRemoveNodes = ("and|no|article|body|column|main|shadow")
         self.regexpNS = "http://exslt.org/regular-expressions"
