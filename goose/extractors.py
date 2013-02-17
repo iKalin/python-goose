@@ -472,21 +472,20 @@ class ContentExtractor(object):
 
         text = Parser.getText(e)
         words = text.split(' ')
-        numberOfWords = float(len(words))
+        
         sb = []
         for link in links:
             sb.append(Parser.getText(link))
 
         linkText = ''.join(sb)
         linkWords = linkText.split(' ')
-        numberOfLinkWords = float(len(linkWords))
+        numberOfWords = float(len(words))
         numberOfLinks = float(len(links))
-        linkDivisor = float(numberOfLinkWords / numberOfWords)
-        score = float(linkDivisor * numberOfLinks)
-        if score >= 1.0:
+        numberOfLinkWords = float(len(linkWords))
+        score=float((numberOfLinks**2)*numberOfLinkWords/numberOfWords)
+        if score >= 5:
             return True
         return False
-        # return True if score > 1.0 else False
 
     def getScore(self, node):
         """\
