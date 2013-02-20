@@ -85,6 +85,7 @@ class DocumentCleaner(object):
             if node.tag in ['script','noscript','style','option'] or isinstance(node,lxml.html.HtmlComment):
 		nodelist.append(node)
 		continue
+            if node.tag in ['p','span','b'] and len(node) == 0: continue;
             ids = ''
             if node.attrib.has_key('class'):
                ids += ' ' + node.attrib['class'].lower()
