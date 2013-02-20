@@ -168,7 +168,10 @@ class Parser(object):
 	pars = node.cssselect('h1,h2,h3,h4,h5,p')
         for p in pars:
             if p.text is not None: p.text = u'\ufffc ' + p.text
-        return Parser.getText(node)
+        text = Parser.getText(node)
+        if node.tail is not None:
+            text += node.tail
+        return text
 
     @classmethod
     def previousSiblings(self, node):
