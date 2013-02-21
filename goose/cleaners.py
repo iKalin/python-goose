@@ -267,6 +267,10 @@ class DocumentCleaner(object):
 
             # otherwise
             else:
+                if(len(replacementText) > 0):
+                    newNode = self.getFlushedBuffer(''.join(replacementText), doc)
+                    nodesToReturn.append(newNode)
+                    replacementText = []
                 nodesToReturn.append(kid)
 
         # flush out anything still remaining
