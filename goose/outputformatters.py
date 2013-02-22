@@ -72,6 +72,12 @@ class OutputFormatter(object):
 	text = re.sub(u'[\ufffc]','\n',text)
         lines = text.split('\n')
         text = ''
+        # cutting title from article text if found in first 4 rows
+        if len(lines) > 4:
+            for i in range(0,4):
+                if lines[i] == article.h1 or lines[i] == article.title:
+                    del lines[i]
+                    break
         for line in lines:
             if re.search('[^ \t\r]',line): text += line + '\n'
         return text
