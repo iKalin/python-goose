@@ -125,6 +125,16 @@ class DocumentCleaner(object):
 #                if n.text is None: n.drop_tag()  # drop empty p
 	return doc
 
+    def removeWrapedLinks(self, e):
+        if e is None or len(e) != 1 or e[0].tag != 'a': return []
+        text = ''
+        if e.text is not None: text += e.text
+        if e[0].tail is not None: text += e[0].tail
+        if e.tail is not None: text += e.tail
+        if re.search('[^ \t\r\n]',text): return []
+        toRemove = [e] + self.removeWrapedLinks(Parser.nextSibling(e))
+        return toRemove
+
     def removeListsWithLinks(self, doc):
         for tag in ['ol','ul']:
             items=Parser.getElementsByTag(doc, tag=tag)
@@ -184,6 +194,17 @@ class DocumentCleaner(object):
 			continue
 		         
 	        Parser.remove(e)
+
+        items=Parser.getElementsByTag(doc, tag='a')
+        for a in items:
+                e = a.getparent()
+		if e is None: continue
+		if len(e) == 1: 
+		    toRemove = self.removeWrapedLinks(e)
+		    if len(toRemove) > 2:
+		        for bn in toRemove:
+		            Parser.remove(bn)
+
         return doc
 
     def dropTags(self, doc, tags):
