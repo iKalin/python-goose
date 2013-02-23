@@ -93,18 +93,17 @@ class DocumentCleaner(object):
                ids += ' ' + node.attrib['id'].lower()
             if node.attrib.has_key('name'):
                ids += ' ' + node.attrib['name'].lower()
-            good_node = 0
+            good_word = ''
             for word in self.notdel:
 		if ids.find(word) >= 0: 
-                    good_node = 1
+                    good_word = word
                     continue
-            if good_node == 0:
-                good_node = 1
-                for word in self.todel:
-		    if ids.find(word) >= 0: 
-                        good_node = 0
-                        break
-            if good_node == 0:
+            bad_word = ''
+            for word in self.todel:
+	        if ids.find(word) >= 0: 
+                    bad_word = word
+                    break
+            if (bad_word != '' and good_word == '') or (bad_word != '' and bad_word.find(good_word) >= 0):
                 nodelist.append(node)
                 continue 
             nodelist += self.getNodesToDelete(node)
