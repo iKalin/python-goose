@@ -23,6 +23,7 @@ limitations under the License.
 from goose.parsers import Parser
 from goose.utils import ReplaceSequence
 import lxml.html
+import re
 
 
 class DocumentCleaner(object):
