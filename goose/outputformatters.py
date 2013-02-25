@@ -56,7 +56,7 @@ class OutputFormatter(object):
         self.removeParagraphsWithFewWords(article)
         return self.convertToText(article)
 
-    def convertToText(self, article):
+    def convertToText(self,article):
         txts = []
         node = self.getTopNode()
         txt = node.text

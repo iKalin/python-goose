@@ -371,13 +371,18 @@ class ContentExtractor(object):
     def addSiblings(self, topNode):
         baselineScoreForSiblingParagraphs = self.getBaselineScoreForSiblings(topNode)
         results = self.walkSiblings(topNode)
+
+        good_ps = Parser.getElementsByTag(topNode, tag='p')
+        good_path = []
+        if len(good_ps) > 0: good_path = Parser.getPath(good_ps[0])
+
         for currentNode in results:
-            ps = self.getSiblingContent(currentNode, baselineScoreForSiblingParagraphs)
+            ps = self.getSiblingContent(currentNode, baselineScoreForSiblingParagraphs, good_path)
             for p in ps:
                 topNode.insert(0, p)
         return topNode
 
-    def getSiblingContent(self, currentSibling, baselineScoreForSiblingParagraphs):
+    def getSiblingContent(self, currentSibling, baselineScoreForSiblingParagraphs, good_path):
         """\
         adds any siblings that may have a decent score to this node
         """
@@ -394,7 +399,12 @@ class ContentExtractor(object):
             else:
                 ps = []
                 for firstParagraph in potentialParagraphs:
+                    path = Parser.getPath(firstParagraph)
                     text = Parser.getText(firstParagraph)
+                    if path == good_path and len(Parser.getElementsByTag(firstParagraph, tag='a')) == 0:
+                        p = Parser.createElement(tag='p', text=text, tail=None)
+                        ps.append(p)
+                        continue
                     if len(text) > 0:
                         wordStats = self.stopwordsCls(language=self.language).getStopWordCount(text)
                         paragraphScore = wordStats.getStopWordCount()

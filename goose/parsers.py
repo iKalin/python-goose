@@ -220,3 +220,10 @@ class Parser(object):
             e0 = deepcopy(e0)
             e0.tail = None
         return self.nodeToString(e0)
+
+    @classmethod
+    def getPath(self, node):
+        path = []
+        if node.getparent() is not None:
+            path = Parser.getPath(node.getparent())
+        return [node.tag] + path
