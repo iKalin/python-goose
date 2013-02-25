@@ -54,9 +54,9 @@ class OutputFormatter(object):
         self.convertLinksToText()
         self.replaceTagsWithText()
         self.removeParagraphsWithFewWords(article)
-        return self.convertToText()
+        return self.convertToText(article)
 
-    def convertToText(self):
+    def convertToText(self, article):
         txts = []
         node = self.getTopNode()
         txt = node.text
