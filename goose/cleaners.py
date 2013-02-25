@@ -259,7 +259,7 @@ class DocumentCleaner(object):
                 kidTextNode = kid
                 kidText = Parser.getText(kid)
                 replaceText = self.tabsAndNewLinesReplcesments.replaceAll(kidText)
-                if(len(replaceText)) > 1:
+                if(len(replaceText)) > 0:
                     prevSibNode = Parser.previousSibling(kidTextNode)
                     while prevSibNode is not None \
                         and Parser.getTag(prevSibNode) == "a" \
@@ -269,8 +269,7 @@ class DocumentCleaner(object):
                         nodesToRemove.append(prevSibNode)
                         Parser.setAttribute(prevSibNode,
                                     attr='grv-usedalready', value='yes')
-                        prev = Parser.previousSibling(prevSibNode)
-                        prevSibNode = prev if prev is not None else None
+                        prevSibNode = Parser.previousSibling(prevSibNode)
                     # append replaceText
                     replacementText.append(replaceText)
                     #
@@ -283,11 +282,12 @@ class DocumentCleaner(object):
                         nodesToRemove.append(nextSibNode)
                         Parser.setAttribute(nextSibNode,
                                     attr='grv-usedalready', value='yes')
-                        next = Parser.nextSibling(nextSibNode)
-                        prevSibNode = next if next is not None else None
+                        prevSibNode = Parser.nextSibling(nextSibNode)
 
             # otherwise
             else:
+                if Parser.getTag(kid) == "a" and Parser.getAttribute(kid, 'grv-usedalready') == 'yes':
+                    continue
                 if(len(replacementText) > 0):
                     newNode = self.getFlushedBuffer(''.join(replacementText), doc)
                     nodesToReturn.append(newNode)
