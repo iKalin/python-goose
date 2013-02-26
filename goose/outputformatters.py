@@ -99,7 +99,7 @@ class OutputFormatter(object):
         for item in gravityItems:
             score = int(item.attrib.get('gravityScore'), 0)
             if score < 1:
-                item.getparent().remove(item)
+                Parser.remove(item)
 
     def replaceTagsWithText(self):
         """\
