@@ -195,6 +195,8 @@ class DocumentCleaner(object):
 		         
 	        Parser.remove(e)
 
+        return doc
+
         items=Parser.getElementsByTag(doc, tag='a')
         for a in items:
                 e = a.getparent()
