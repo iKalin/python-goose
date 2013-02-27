@@ -285,10 +285,11 @@ class ContentExtractor(object):
         for node in nodesWithText:
             boostScore = float(0)
             # boost
-            if(self.isOkToBoost(node)):
-                if cnt >= 0:
-                    boostScore = float((1.0 / startingBoost) * 50)
-                    startingBoost += 1
+            oks = self.isOkToBoost(node)
+            while oks > 0:
+                boostScore += float((1.0 / startingBoost) * 50)
+                startingBoost += 1
+                oks -= 1
             # numberOfNodes
             if numberOfNodes > 15:
                 if (numberOfNodes - i) <= bottomNodesForNegativeScore:
@@ -347,18 +348,35 @@ class ContentExtractor(object):
         minimumStopWordCount = 5
         maxStepsAwayFromNode = 3
 
+        paraText = ''
+        if node.text is not None: paraText += node.text
+        for b in node:
+            if b.tail is not None: paraText += b.tail
+        paraList = paraText.split(u'\ufffc')
+        i = len(paraList)
+        while i > 0:
+            i -= 1
+            if not re.search('[^ \t\r\n]', paraList[i]): del paraList[i] # removing empty paragraphs
+        lout = 0; oks = 0
+        for p in paraList:
+            if lout > 0: oks += 1
+            lout -= 1
+            wordStats = self.stopwordsCls(language=self.language).getStopWordCount(p)
+            if wordStats.getStopWordCount() > minimumStopWordCount: lout = 3
+        if oks > 0: return oks
+
         nodes = self.walkSiblings(node)
         for currentNode in nodes:
             # p
             if currentNode.tag == para:
                 if stepsAway >= maxStepsAwayFromNode:
-                    return False
+                    return 0
                 paraText = Parser.getText(currentNode)
                 wordStats = self.stopwordsCls(language=self.language).getStopWordCount(paraText)
                 if wordStats.getStopWordCount > minimumStopWordCount:
-                    return True
+                    return 1
                 stepsAway += 1
-        return False
+        return 0
 
     def walkSiblings(self, node):
         currentSibling = Parser.previousSibling(node)
