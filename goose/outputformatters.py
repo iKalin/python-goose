@@ -95,6 +95,7 @@ class OutputFormatter(object):
         that have a negative gravity score,
         let's give em the boot
         """
+        return
         gravityItems = self.topNode.cssselect("*[gravityScore]")
         for item in gravityItems:
             score = int(item.attrib.get('gravityScore'), 0)
