@@ -165,9 +165,10 @@ class Parser(object):
 
     @classmethod
     def getFormattedText(self, node):
-	pars = node.cssselect('h1,h2,h3,h4,h5,p')
+	pars = node.cssselect('h1,h2,h3,h4,h5,p,tr')
         for p in pars:
-            if p.text is not None: p.text = u'\ufffc ' + p.text
+            if p.text is not None: p.text = u'\ufffc' + p.text
+	    else: p.text = u'\ufffc'
         text = Parser.getText(node)
         if node.tail is not None:
             text += node.tail
