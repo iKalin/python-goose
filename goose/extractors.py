@@ -573,6 +573,11 @@ class ContentExtractor(object):
         remove any divs that looks like non-content,
         clusters of links, or paras with no gusto
         """
+        if targetNode.text is not None:
+           e = Parser.createElement(text=targetNode.text)
+           targetNode.text = None
+           targetNode.insert(0, e)
+
         node = self.addSiblings(targetNode)
         for e in node:
             if e.tag in ['h2','h3','h4']: continue
