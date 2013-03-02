@@ -58,11 +58,6 @@ class OutputFormatter(object):
 
     def convertToText(self,article):
         txts = []
-        node = self.getTopNode()
-        txt = node.text
-        if txt and re.search('[^ \t\r\n]',txt):
-            txt = HTMLParser().unescape(txt)
-            txts.append(innerTrim(txt))
         for node in list(self.getTopNode()):
             txt = Parser.getFormattedText(node)
             if txt:
