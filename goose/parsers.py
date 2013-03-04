@@ -169,6 +169,7 @@ class Parser(object):
         for p in pars:
             if p.text is not None: p.text = u'\ufffc' + p.text
 	    else: p.text = u'\ufffc'
+            if p.tail is not None and not p.tail.startswith(u'\ufffc'): p.tail = u'\ufffc' + p.tail
         text = Parser.getText(node)
         if node.tail is not None:
             text += node.tail
