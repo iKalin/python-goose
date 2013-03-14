@@ -190,7 +190,7 @@ class DocumentCleaner(object):
                     if  len(ldels) > 3 and flag3 == 0: 
 			Parser.remove(e)
 			continue
-                    if flag <= 2 and (len(ldels) <= 2 or flag1 != 0): 
+                    if (flag <= 2 and len(ldels) <= 2) or flag1 != 0: 
 			continue
 		         
 	        Parser.remove(e)
