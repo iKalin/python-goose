@@ -66,7 +66,7 @@ class DocumentCleaner(object):
         nodelist = self.getNodesToDelete(docToClean)
         for node in nodelist: Parser.remove(node)  
         docToClean = self.removeListsWithLinks(docToClean)
-        docToClean = self.dropTags(docToClean,['em','strong'])
+        docToClean = self.dropTags(docToClean,['em','strong','i'])
         docToClean = self.removeDropCaps(docToClean)
         docToClean = self.removeNodesViaRegEx(docToClean, self.captionPattern)
         docToClean = self.removeNodesViaRegEx(docToClean, self.googlePattern)
