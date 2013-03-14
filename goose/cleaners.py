@@ -240,7 +240,7 @@ class DocumentCleaner(object):
         return doc
 
     def getFlushedBuffer(self, replacementText, doc):
-        return Parser.textToPara(replacementText)
+        return Parser.textToPara('<p>' + replacementText + '</p>')
 
     def getReplacementNodes(self, doc, div):
         replacementText = []
