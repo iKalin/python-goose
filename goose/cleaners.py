@@ -37,7 +37,7 @@ class DocumentCleaner(object):
         "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
         "|cnn_stryspcvbx|^inset$|pagetools|post-attributes"
         "|welcome_form|contentTools2|the_answers|rating"
-        "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings|articlead"
+        "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings|articlead|article-side-rail"
         "|date|^print$|popup|author-dropdown|tools|socialtools"
         "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
         "|source|legende|ajoutVideo|timestamp|menu"

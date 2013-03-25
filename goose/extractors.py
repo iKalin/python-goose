@@ -268,6 +268,8 @@ class ContentExtractor(object):
         startingBoost = float(1.0)
         cnt = 0
         i = 0
+        j = 0
+        prevNode = None
         parentNodes = []
         nodesWithText = []
 
@@ -319,7 +321,11 @@ class ContentExtractor(object):
                 if parentParentNode not in parentNodes:
                     parentNodes.append(parentParentNode)
             cnt += 1
-            i += 1
+            if prevNode is None or prevNode.tag != 'p' or node.tag != 'p' or parentNode != Parser.getParent(prevNode):
+                i += 1 + j
+                j = 0
+            else: j += 1
+            prevNode = node
 
         topNodeScore = -100000
         for e in parentNodes:
@@ -388,7 +394,11 @@ class ContentExtractor(object):
 
     def addSiblings(self, topNode):
         baselineScoreForSiblingParagraphs = self.getBaselineScoreForSiblings(topNode)
-        results = self.walkSiblings(topNode)
+        parent = topNode.getparent()
+        if len(parent) == 1 and topNode.tail is None:
+            results = self.walkSiblings(parent)
+        else:
+            results = self.walkSiblings(topNode)
 
         good_ps = Parser.getElementsByTag(topNode, tag='p')
         good_path = []
