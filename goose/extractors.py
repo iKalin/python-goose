@@ -266,7 +266,6 @@ class ContentExtractor(object):
         nodesToCheck = self.getNodesToCheck(doc)
 
         startingBoost = float(1.0)
-        cnt = 0
         i = 0
         j = 0
         prevNode = None
@@ -285,6 +284,10 @@ class ContentExtractor(object):
         bottomNodesForNegativeScore = float(numberOfNodes) * 0.25
 
         for node in nodesWithText:
+            if prevNode is None or prevNode.tag != 'p' or node.tag != 'p' or Parser.getParent(node) != Parser.getParent(prevNode):
+                i += j
+                j = 0
+            else: j += 1
             boostScore = float(0)
             # boost
             oks = self.isOkToBoost(node)
@@ -320,11 +323,8 @@ class ContentExtractor(object):
                 self.updateScore(parentParentNode, upscore / 2)
                 if parentParentNode not in parentNodes:
                     parentNodes.append(parentParentNode)
-            cnt += 1
             if prevNode is None or prevNode.tag != 'p' or node.tag != 'p' or parentNode != Parser.getParent(prevNode):
-                i += 1 + j
-                j = 0
-            else: j += 1
+                i += 1
             prevNode = node
 
         topNodeScore = -100000

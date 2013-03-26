@@ -83,7 +83,7 @@ class DocumentCleaner(object):
     def getNodesToDelete(self, doc):
         nodelist = []
         for node in doc:
-            if node.tag in ['script','noscript','style','option'] or isinstance(node,lxml.html.HtmlComment):
+            if node.tag in ['script','noscript','style','option','iframe','noframe'] or isinstance(node,lxml.html.HtmlComment):
 		nodelist.append(node)
 		continue
             if node.tag in ['p','span','b','h1','h2','h3','h4','h5'] and len(node) == 0: continue;
