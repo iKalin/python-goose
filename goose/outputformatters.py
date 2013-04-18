@@ -24,7 +24,11 @@ from HTMLParser import HTMLParser
 from goose.text import innerTrim
 from goose.parsers import Parser
 import re
+import lxml.html
 
+goodBlockTags = ['p','h1','h2','h3','h4','h5']
+goodInlineTags = ['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var']
+badInlineTags = ['abbr','acronym','basefont','bdo','dfn','font','input','kbd','label','samp','select','span','textarea','sup']
 
 class OutputFormatter(object):
 
@@ -64,7 +68,7 @@ class OutputFormatter(object):
                 txt = HTMLParser().unescape(txt)
                 txts.append(innerTrim(txt))
         text = '\n'.join(txts)
-	text = re.sub(u'[\ufffc]','\n',text)
+        text = re.sub(u'[\ufffc]','\n',text)
         lines = text.split('\n')
         text = ''
         # cutting title from article text if found in first 4 rows
@@ -75,7 +79,95 @@ class OutputFormatter(object):
                     break
         for line in lines:
             if re.search('[^ \t\r]',line): text += line + '\n'
+
         return text
+
+    def getFormattedText1(self, article):
+        self.topNode = article.topNode
+
+        self.replaceTagsWithText()
+        e = lxml.html.HtmlElement(); e.tag = 'div';
+        article.topNode.getparent().remove(article.topNode);
+        e.append(article.topNode)
+        self.convertToText(article.topNode, True)
+        for p in article.topNode:
+            if p.tag == 'div' or p.tag == 'p':
+                p.tag = 'p'
+                if (p.text is None or p.text == '') and (p.tail is None or p.tail == ''): Parser.remove(p)
+        txt = Parser.nodeToString(e)
+        return txt
+
+    def moveAllChilds(self,s,d):
+        lst = list(s)
+        for el in lst:
+            s.remove(el)
+            d.append(el)
+
+    def moveNextChilds(self,s):
+        p = s.getparent()
+        n = s.getnext()
+        while n is not None:
+            p.remove(n)
+            s.append(n)
+            n = s.getnext()
+
+    def convertToText1(self, p, mc):
+        if p.text is not None: 
+            p.text = re.sub('[\t\r\n]','',p.text)
+            pars = p.text.split(u'\ufffc')
+            if len(pars) > 1:
+                p.text = pars[0]
+                lst = pars[1:]
+                ee = p
+                for i in lst:
+                    e = lxml.html.HtmlElement(); e.tag = 'div'; e.text = i
+                    ee.addnext(e)
+                    ee = e
+                if e.tail is None: 
+                    e.tail = p.tail
+                    p.tail = None
+                self.moveAllChilds(p,e)
+        if p.tail is not None: 
+            p.tail = re.sub('[\t\r\n]','',p.tail)
+            pars = p.tail.split(u'\ufffc')
+            if len(pars) > 1:
+                p.tail = pars[0]
+                lst = pars[1:]
+                ee = p
+                for i in lst:
+                    e = lxml.html.HtmlElement(); e.tag = 'div'; e.text = i
+                    ee.addnext(e)
+                    ee = e
+                if e.tail is not None: 
+                    p.tail = e.tail
+                    e.tail = None
+                self.moveNextChilds(e)
+        if len(p) == 0: return
+        n = list(p)[0]
+        while n is not None:
+            if not mc and n.tag not in goodInlineTags: # block in text block, fix needed
+                ni = p.index(n)
+                t = p.tail; p.tail = None
+                p.remove(n)
+                p.addnext(n)
+                n.tag = 'div'
+                e = lxml.html.HtmlElement(); e.tag = 'div'; e.tail = t
+                n.addnext(e)
+                if n.tail is not None:
+                    t = lxml.html.HtmlElement(); t.tag = 'div'; t.text = n.tail; n.tail = None
+                    n.addnext(t)
+                lst = list(p)[ni:]
+                for el in lst:
+                    p.remove(el)
+                    e.append(el)
+                return
+            self.convertToText(n, False)
+            if n.tag in goodInlineTags and n.text is None and len(n) == 0:
+                np = n; n = n.getnext()
+                Parser.remove(np)
+            else:
+                n = n.getnext()
+        return
 
     def convertLinksToText(self):
         """\
@@ -105,7 +197,8 @@ class OutputFormatter(object):
         with whatever text is inside them
         code : http://lxml.de/api/lxml.etree-module.html#strip_tags
         """
-        Parser.stripTags(self.getTopNode(), 'b', 'strong', 'i', 'br', 'sup')
+#        Parser.stripTags(self.getTopNode(), *badInlineTags)
+        Parser.stripTags(self.getTopNode(), 'b', 'strong', 'i', 'br', 'sup', 'em')
 
     def removeParagraphsWithFewWords(self, article):
         """\

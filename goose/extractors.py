@@ -271,7 +271,7 @@ class ContentExtractor(object):
         prevNode = None
         parentNodes = []
         nodesWithText = []
-
+        
         for node in nodesToCheck:
             nodeText = Parser.getText(node)
             wordStats = self.stopwordsCls(language=self.language).getStopWordCount(nodeText)
@@ -329,6 +329,7 @@ class ContentExtractor(object):
 
         topNodeScore = -100000
         for e in parentNodes:
+        
             score = self.getScore(e)
 
             if score > topNodeScore:
@@ -408,6 +409,7 @@ class ContentExtractor(object):
             ps = self.getSiblingContent(currentNode, baselineScoreForSiblingParagraphs, good_path)
             for p in ps:
                 topNode.insert(0, p)
+
         return topNode
 
     def getSiblingContent(self, currentSibling, baselineScoreForSiblingParagraphs, good_path):
@@ -430,8 +432,8 @@ class ContentExtractor(object):
                     path = Parser.getPath(firstParagraph)
                     text = Parser.getText(firstParagraph)
                     if path == good_path and len(Parser.getElementsByTag(firstParagraph, tag='a')) == 0:
-                        p = Parser.createElement(tag='p', text=text, tail=None)
-                        ps.append(p)
+                        firstParagraph.getparent().remove(firstParagraph)
+                        ps.append(firstParagraph)
                         continue
                     if len(text) > 0:
                         wordStats = self.stopwordsCls(language=self.language).getStopWordCount(text)
@@ -440,8 +442,8 @@ class ContentExtractor(object):
                         highLinkDensity = self.isHighLinkDensity(firstParagraph)
                         score = float(baselineScoreForSiblingParagraphs * siblingBaseLineScore)
                         if score < paragraphScore and not highLinkDensity:
-                            p = Parser.createElement(tag='p', text=text, tail=None)
-                            ps.append(p)
+                            firstParagraph.getparent().remove(firstParagraph)
+                            ps.append(firstParagraph)
                 return ps
 
     def getBaselineScoreForSiblings(self, topNode):
@@ -604,6 +606,7 @@ class ContentExtractor(object):
                    continue
             if e.tag not in ['h2','h3','h4']: break
             Parser.remove(e)
+
         return node
 
 class StandardContentExtractor(ContentExtractor):

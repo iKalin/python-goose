@@ -22,6 +22,7 @@ limitations under the License.
 """
 from goose.parsers import Parser
 from goose.utils import ReplaceSequence
+from HTMLParser import HTMLParser
 import lxml.html
 import re
 
@@ -37,7 +38,7 @@ class DocumentCleaner(object):
         "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
         "|cnn_stryspcvbx|^inset$|pagetools|post-attributes"
         "|welcome_form|contentTools2|the_answers|rating"
-        "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings|articlead|article-side-rail"
+        "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings|articlead|articleImage|slideshowInlineLarge|article-side-rail"
         "|date|^print$|popup|author-dropdown|tools|socialtools"
         "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
         "|source|legende|ajoutVideo|timestamp|menu"
@@ -66,7 +67,6 @@ class DocumentCleaner(object):
         nodelist = self.getNodesToDelete(docToClean)
         for node in nodelist: Parser.remove(node)  
         docToClean = self.removeListsWithLinks(docToClean)
-        docToClean = self.dropTags(docToClean,['em','strong','i'])
         docToClean = self.removeDropCaps(docToClean)
         docToClean = self.removeNodesViaRegEx(docToClean, self.captionPattern)
         docToClean = self.removeNodesViaRegEx(docToClean, self.googlePattern)
@@ -75,17 +75,17 @@ class DocumentCleaner(object):
         docToClean = self.removeNodesViaRegEx(docToClean, self.facebookBroadcastingPattern)
         docToClean = self.removeNodesViaRegEx(docToClean, self.twitterPattern)
         docToClean = self.cleanUpSpanTagsInParagraphs(docToClean)
-	docToClean = self.keepLineBreaks(docToClean)
+        docToClean = self.keepLineBreaks(docToClean)
+        docToClean = self.convertSpansToDivs(docToClean)
         docToClean = self.convertDivsToParagraphs(docToClean, 'div')
-        docToClean = self.convertDivsToParagraphs(docToClean, 'span')
         return docToClean
 
     def getNodesToDelete(self, doc):
         nodelist = []
         for node in doc:
-            if node.tag in ['script','noscript','style','option','iframe','noframe'] or isinstance(node,lxml.html.HtmlComment):
-		nodelist.append(node)
-		continue
+            if node.tag in ['script','noscript','style','option','iframe','noframe','hr'] or isinstance(node,lxml.html.HtmlComment):
+                nodelist.append(node)
+                continue
             if node.tag in ['p','span','b','h1','h2','h3','h4','h5'] and len(node) == 0: continue;
             ids = ''
             if node.attrib.has_key('class'):
@@ -96,12 +96,12 @@ class DocumentCleaner(object):
                ids += ' ' + node.attrib['name'].lower()
             good_word = ''
             for word in self.notdel:
-		if ids.find(word) >= 0: 
+                if ids.find(word) >= 0: 
                     good_word = word
                     continue
             bad_word = ''
             for word in self.todel:
-	        if ids.find(word) >= 0: 
+                if ids.find(word) >= 0: 
                     bad_word = word
                     break
             if (bad_word != '' and good_word == '') or (bad_word != '' and bad_word.find(good_word) >= 0):
@@ -233,63 +233,38 @@ class DocumentCleaner(object):
                 Parser.remove(node)
         return doc
 
+    def convertSpansToDivs(self, doc):
+        spans = doc.cssselect('span div')
+        for item in spans:
+            item.getparent().tag = 'div'
+        return doc
+
     def cleanUpSpanTagsInParagraphs(self, doc):
         spans = doc.cssselect('p > span')
         for item in spans:
             item.drop_tag()
         return doc
 
+
     def getFlushedBuffer(self, replacementText, doc):
         return Parser.textToPara('<p>' + replacementText + '</p>')
 
     def getReplacementNodes(self, doc, div):
+        goodInlineTags = ['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var']
+
         replacementText = []
         nodesToReturn = []
         nodesToRemove = []
         childs = Parser.childNodesWithText(div)
-
         for kid in childs:
-            # node is a p
-            # and already have some replacement text
-            if Parser.getTag(kid) == 'p' and len(replacementText) > 0:
-                newNode = self.getFlushedBuffer(''.join(replacementText), doc)
-                nodesToReturn.append(newNode)
-                replacementText = []
-                nodesToReturn.append(kid)
-            # node is a text node
-            elif Parser.isTextNode(kid):
-                kidTextNode = kid
-                kidText = Parser.getText(kid)
-                replaceText = self.tabsAndNewLinesReplcesments.replaceAll(kidText)
-                if(len(replaceText)) > 0:
-                    prevSibNode = Parser.previousSibling(kidTextNode)
-                    while prevSibNode is not None \
-                        and Parser.getTag(prevSibNode) == "a" \
-                        and Parser.getAttribute(prevSibNode, 'grv-usedalready') != 'yes':
-                        outer = " " + Parser.outerHtml(prevSibNode) + " "
-                        replacementText.append(outer)
-                        nodesToRemove.append(prevSibNode)
-                        Parser.setAttribute(prevSibNode,
-                                    attr='grv-usedalready', value='yes')
-                        prevSibNode = Parser.previousSibling(prevSibNode)
-                    # append replaceText
-                    replacementText.append(replaceText)
-                    #
-                    nextSibNode = Parser.nextSibling(kidTextNode)
-                    while nextSibNode is not None \
-                        and Parser.getTag(nextSibNode) == "a" \
-                        and Parser.getAttribute(nextSibNode, 'grv-usedalready') != 'yes':
-                        outer = " " + Parser.outerHtml(nextSibNode) + " "
-                        replacementText.append(outer)
-                        nodesToRemove.append(nextSibNode)
-                        Parser.setAttribute(nextSibNode,
-                                    attr='grv-usedalready', value='yes')
-                        prevSibNode = Parser.nextSibling(nextSibNode)
-
-            # otherwise
+            if Parser.isTextNode(kid):
+                replaceText = HTMLParser().unescape(kid.text).strip('\t\r\n')
+                if(len(replaceText)) > 0: replacementText.append(replaceText)
+            elif Parser.getTag(kid) in goodInlineTags:
+                outer = Parser.outerHtml(kid)
+                replacementText.append(outer)
+                nodesToRemove.append(kid)
             else:
-                if Parser.getTag(kid) == "a" and Parser.getAttribute(kid, 'grv-usedalready') == 'yes':
-                    continue
                 if(len(replacementText) > 0):
                     newNode = self.getFlushedBuffer(''.join(replacementText), doc)
                     nodesToReturn.append(newNode)
@@ -323,7 +298,7 @@ class DocumentCleaner(object):
                 badDivs += 1
             elif div is not None:
                 replaceNodes = self.getReplacementNodes(doc, div)
-		text = div.tail
+                text = div.tail
                 div.clear()
 
                 for c, n in enumerate(replaceNodes):
