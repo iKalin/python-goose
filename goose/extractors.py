@@ -308,6 +308,7 @@ class ContentExtractor(object):
             wordStats = self.stopwordsCls(language=self.language).getStopWordCount(nodeText)
             upscore = int(wordStats.getStopWordCount() + boostScore)
 
+
             # parent node
             parentNode = Parser.getParent(node)
             self.updateScore(parentNode, upscore)
@@ -569,12 +570,15 @@ class ContentExtractor(object):
         thresholdScore = float(topNodeScore * .08)
 
         if topNodeScore < 0 and currentNodeScore < 0:
-            self.updateScore(e, -currentNodeScore + 11)
             return True
 
         if not Parser.getElementsByTag(e, tag='a') and not Parser.getElementsByTag(e, tag='img'):
-            self.updateScore(e, 11)
             return True
+
+        if e.tag in ['ul']:
+            eStats = self.stopwordsCls(language=self.language).getStopWordCount(Parser.getText(e))
+            if eStats.getStopWordCount() > 5:
+                return True
 
         if (currentNodeScore < thresholdScore) and e.tag != 'td':
             return False

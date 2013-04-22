@@ -47,11 +47,11 @@ class DocumentCleaner(object):
         self.regexpNS = "http://exslt.org/regular-expressions"
         self.divToPElementsPattern = r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)"
         self.captionPattern = "^caption$"
-        self.googlePattern = " google "
-        self.entriesPattern = "^[^entry-]more.*$"
-        self.facebookPattern = "[^-]facebook"
-        self.facebookBroadcastingPattern = "facebook-broadcasting"
-        self.twitterPattern = "[^-]twitter"
+#        self.googlePattern = " google "
+#        self.entriesPattern = "^[^entry-]more.*$"
+#        self.facebookPattern = "[^-]facebook"
+#        self.facebookBroadcastingPattern = "facebook-broadcasting"
+#        self.twitterPattern = "[^-]twitter"
         self.tabsAndNewLinesReplcesments = ReplaceSequence()\
                                             .create("\n", "\n\n")\
                                             .append("\t")\
@@ -59,7 +59,6 @@ class DocumentCleaner(object):
         self.todel = self.regExRemoveNodes.lower().split('|')
         self.notdel = self.regExNotRemoveNodes.lower().split('|')
         
-
 
     def clean(self, article):
 
@@ -69,31 +68,32 @@ class DocumentCleaner(object):
         docToClean = self.removeListsWithLinks(docToClean)
         docToClean = self.removeDropCaps(docToClean)
         docToClean = self.removeNodesViaRegEx(docToClean, self.captionPattern)
-        docToClean = self.removeNodesViaRegEx(docToClean, self.googlePattern)
-        docToClean = self.removeNodesViaRegEx(docToClean, self.entriesPattern)
-        docToClean = self.removeNodesViaRegEx(docToClean, self.facebookPattern)
-        docToClean = self.removeNodesViaRegEx(docToClean, self.facebookBroadcastingPattern)
-        docToClean = self.removeNodesViaRegEx(docToClean, self.twitterPattern)
+#        docToClean = self.removeNodesViaRegEx(docToClean, self.googlePattern)
+#        docToClean = self.removeNodesViaRegEx(docToClean, self.entriesPattern)
+#        docToClean = self.removeNodesViaRegEx(docToClean, self.facebookPattern)
+#        docToClean = self.removeNodesViaRegEx(docToClean, self.facebookBroadcastingPattern)
+#        docToClean = self.removeNodesViaRegEx(docToClean, self.twitterPattern)
         docToClean = self.cleanUpSpanTagsInParagraphs(docToClean)
-        docToClean = self.keepLineBreaks(docToClean)
-        docToClean = self.convertSpansToDivs(docToClean)
         docToClean = self.convertDivsToParagraphs(docToClean, 'div')
         return docToClean
 
     def getNodesToDelete(self, doc):
         nodelist = []
         for node in doc:
-            if node.tag in ['script','noscript','style','option','iframe','noframe','hr'] or isinstance(node,lxml.html.HtmlComment):
+            if node.tag in ['script','noscript','style','option','iframe','noframe'] or isinstance(node,lxml.html.HtmlComment) or str(node.tag)[0] == '<':
                 nodelist.append(node)
                 continue
-            if node.tag in ['p','span','b','h1','h2','h3','h4','h5'] and len(node) == 0: continue;
+            if node.tag in ['p','span','b','h1','h2','h3','h4','h5'] and len(node) == 0: continue; # good top level nodes
+            if node.tag == 'div' and node.getparent().tag == 'span': node.getparent().tag = 'div' # convert span to div
+            if node.tag == 'br': # retain line breaks
+                if node.tail is not None: node.tail = u'\ufffc ' + node.tail
+                else: node.tail = u'\ufffc'
+                nodelist.append(node)
+                continue
             ids = ''
-            if node.attrib.has_key('class'):
-               ids += ' ' + node.attrib['class'].lower()
-            if node.attrib.has_key('id'):
-               ids += ' ' + node.attrib['id'].lower()
-            if node.attrib.has_key('name'):
-               ids += ' ' + node.attrib['name'].lower()
+            if node.attrib.has_key('class'): ids += ' ' + node.attrib['class'].lower() + ' '
+            if node.attrib.has_key('id'):    ids += ' ' + node.attrib['id'].lower() + ' '
+            if node.attrib.has_key('name'):  ids += ' ' + node.attrib['name'].lower() + ' '
             good_word = ''
             for word in self.notdel:
                 if ids.find(word) >= 0: 
@@ -110,21 +110,6 @@ class DocumentCleaner(object):
             nodelist += self.getNodesToDelete(node)
         return nodelist
 
-    def keepLineBreaks(self, doc):
-        items=Parser.getElementsByTag(doc, tag='br')
-	for n in items:
-	    if n.tail is not None: n.tail = u'\ufffc ' + n.tail
-            else: n.tail = u'\ufffc'
-            n.drop_tag()
-
-        items=Parser.getElementsByTag(doc, tag='p')
-	for n in items:
-	    if n.tail is not None: n.tail = u'\ufffc ' + n.tail
-            else: 
-                n.tail = u'\ufffc'
-#                if n.text is None: n.drop_tag()  # drop empty p
-	return doc
-
     def removeWrapedLinks(self, e):
         if e is None or len(e) != 1 or e[0].tag != 'a': return []
         text = ''
@@ -139,7 +124,7 @@ class DocumentCleaner(object):
         for tag in ['ol','ul']:
             items=Parser.getElementsByTag(doc, tag=tag)
             for item in items:
-		fa = 0
+                fa = 0
                 for li in item:
                     if Parser.getElementsByTag(li, tag='a'):
                         fa += 1
@@ -200,12 +185,12 @@ class DocumentCleaner(object):
         items=Parser.getElementsByTag(doc, tag='a')
         for a in items:
                 e = a.getparent()
-		if e is None: continue
-		if len(e) == 1: 
-		    toRemove = self.removeWrapedLinks(e)
-		    if len(toRemove) > 2:
-		        for bn in toRemove:
-		            Parser.remove(bn)
+                if e is None: continue
+                if len(e) == 1: 
+                    toRemove = self.removeWrapedLinks(e)
+                    if len(toRemove) > 5:
+                        for bn in toRemove:
+                            Parser.remove(bn)
 
         return doc
 
@@ -231,12 +216,6 @@ class DocumentCleaner(object):
             naughtyList = doc.xpath(reg, namespaces={'re': self.regexpNS})
             for node in naughtyList:
                 Parser.remove(node)
-        return doc
-
-    def convertSpansToDivs(self, doc):
-        spans = doc.cssselect('span div')
-        for item in spans:
-            item.getparent().tag = 'div'
         return doc
 
     def cleanUpSpanTagsInParagraphs(self, doc):

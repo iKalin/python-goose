@@ -25,7 +25,12 @@ from lxml import etree
 from copy import deepcopy
 from goose.text import innerTrim
 from goose.text import encodeValue
+from HTMLParser import HTMLParser
+import re
 
+goodInlineTags = ['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var','br']
+badInlineTags = ['abbr','acronym','basefont','bdo','dfn','font','input','kbd','label','samp','select','span','textarea','sup']
+goodBlockTags = ['p','h1','h2','h3','h4','h5','h6','blockquote']
 
 class Parser(object):
 
@@ -164,15 +169,36 @@ class Parser(object):
         return innerTrim(u' '.join(txts).strip())
 
     @classmethod
-    def getFormattedText(self, node):
-	pars = node.cssselect('h1,h2,h3,h4,h5,p,tr')
-        for p in pars:
-            if p.text is not None: p.text = u'\ufffc' + p.text
-	    else: p.text = u'\ufffc'
-            if p.tail is not None and not p.tail.startswith(u'\ufffc'): p.tail = u'\ufffc' + p.tail
-        text = Parser.getText(node)
-        if node.tail is not None:
+    def clearText(self, text):
+        if text == None: return ''
+        t = HTMLParser().unescape(text).strip('\t\r\n')
+        t = re.sub('[\t\r\n]',' ',t)
+        rt = ''; ps = ''
+        for s in t:
+            if s != ' ' or ps != ' ': rt += s
+            ps = s
+        pars = rt.split(u'\ufffc')
+        return '\n'.join(pars)
+
+    @classmethod
+    def getFormattedText(self, node, isTop = True):
+        text = ''
+        isBlock = False
+        badInline = False
+        if node.tag in goodInlineTags: pass
+        elif node.tag in badInlineTags: badInline = True
+        else: # block node
+            text = '\n'
+            isBlock = True
+        node.text = Parser.clearText(node.text)
+        text += node.text
+        for n in node: text += Parser.getFormattedText(n, False)
+        if isBlock: text += '\n'
+        if not isTop: 
+            node.tail = Parser.clearText(node.tail)
             text += node.tail
+        else: text = re.sub(u'[\u2028]',u'',text)
+        if badInline and not isTop: node.drop_tag()
         return text
 
     @classmethod
@@ -229,3 +255,63 @@ class Parser(object):
         if node.getparent() is not None:
             path = Parser.getPath(node.getparent())
         return [node.tag] + path
+
+    @classmethod
+    def adjustTopNode(self, article):
+        if article.topNode.getparent() == None:
+            e = lxml.html.HtmlElement(); e.tag = 'div';
+            e.append(article.topNode)
+        Parser.customizeBlocks(article.topNode)
+
+        for p in article.topNode:
+            if p.tag == 'div' or p.tag == 'p':
+                p.tag = 'p'
+                if len(p) == 0 and (p.text is None or p.text == '') and (p.tail is None or p.tail == ''): Parser.remove(p)
+
+    @classmethod
+    def insertBrs(self,n,pos,lst):
+        for t in lst:
+            e = lxml.html.HtmlElement(); e.tag = 'br'; e.tail = t
+            n.insert(pos,e)
+
+    @classmethod
+    def customizeBlocks(self, p, mc = True):
+        if p.text is not None: 
+            pars = p.text.split('\n')
+            if len(pars) > 1:
+                p.text = pars[0]
+                lst = pars[1:]; lst.reverse()
+                Parser.insertBrs(p,0,lst)
+        if p.tail is not None: 
+            pars = p.tail.split('\n')
+            if len(pars) > 1:
+                p.tail = pars[0]
+                lst = pars[1:]; lst.reverse()
+                pp = p.getparent()
+                Parser.insertBrs(pp,pp.index(p)+1,lst)
+        if len(p) == 0: return
+        n = list(p)[0]
+        while n is not None:
+            if not mc and n.tag not in goodInlineTags and p.tag != 'blockquote': # block in text block, fix needed
+                ni = p.index(n)
+                t = p.tail; p.tail = None
+                p.remove(n)
+                p.addnext(n)
+                if n.tag not in goodBlockTags: n.tag = 'div'
+                e = lxml.html.HtmlElement(); e.tag = 'div'; e.tail = t
+                n.addnext(e)
+                if n.tail is not None:
+                    t = lxml.html.HtmlElement(); t.tag = 'div'; t.text = n.tail; n.tail = None
+                    n.addnext(t)
+                lst = list(p)[ni:]
+                for el in lst:
+                    p.remove(el)
+                    e.append(el)
+                return
+            Parser.customizeBlocks(n, False)
+            if n.tag in goodInlineTags and n.text is None and len(n) == 0:
+                np = n; n = n.getnext()
+                Parser.remove(np)
+            else:
+                n = n.getnext()
+        return
