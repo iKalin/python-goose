@@ -28,7 +28,7 @@ from goose.text import encodeValue
 from HTMLParser import HTMLParser
 import re
 
-goodInlineTags = ['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var','br']
+goodInlineTags = ['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var']
 badInlineTags = ['abbr','acronym','basefont','bdo','dfn','font','input','kbd','label','samp','select','span','textarea','sup']
 goodBlockTags = ['p','h1','h2','h3','h4','h5','h6','blockquote']
 
@@ -292,7 +292,7 @@ class Parser(object):
         if len(p) == 0: return
         n = list(p)[0]
         while n is not None:
-            if not mc and n.tag not in goodInlineTags and p.tag != 'blockquote': # block in text block, fix needed
+            if not mc and n.tag not in goodInlineTags and p.tag != 'blockquote' and n.tag != 'br': # block in text block, fix needed
                 ni = p.index(n)
                 t = p.tail; p.tail = None
                 p.remove(n)
