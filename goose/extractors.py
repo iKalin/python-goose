@@ -604,10 +604,6 @@ class ContentExtractor(object):
                     Parser.remove(e)
 
         for e in reversed(node):
-            if e.tag == 'p' and list(e) == []:
-               if e.text is None or re.search('[^ \t\r\n]',e.text) == None:
-                   Parser.remove(e)
-                   continue
             if e.tag not in ['h2','h3','h4']: break
             Parser.remove(e)
 

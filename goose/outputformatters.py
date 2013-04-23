@@ -62,7 +62,7 @@ class OutputFormatter(object):
                     del lines[i]
                     break
         for line in lines:
-            if re.search('[^ \xa0\t\r]',line): text += line + '\n'
+            if re.search('[^ \xa0]',line): text += line + '\n'
         Parser.adjustTopNode(article)
         return text
 

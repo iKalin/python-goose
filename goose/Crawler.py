@@ -96,6 +96,7 @@ class Crawler(object):
             article.cleanedArticleText = outputFormatter.getFormattedText(article)
             article.topNode.attrib['rel'] = 'topnode' # mark html element
         article.h1 = extractor.getH1(article)
+        Parser.removeTitle(article.topNode,article.title + ' ' + article.h1)
         # cleanup tmp file
         self.releaseResources(article)
 

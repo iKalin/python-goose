@@ -263,10 +263,21 @@ class Parser(object):
             e.append(article.topNode)
         Parser.customizeBlocks(article.topNode)
 
-        for p in article.topNode:
-            if p.tag == 'div' or p.tag == 'p':
-                p.tag = 'p'
-                if len(p) == 0 and (p.text is None or p.text == '') and (p.tail is None or p.tail == ''): Parser.remove(p)
+    @classmethod
+    def removeTitle(self,n,title,lines = 4):
+        if n.tag == 'h1': 
+            Parser.remove(n)
+            return 0
+        lines -= 1;
+        if lines <= 0: return 0
+        if n.text != None and len(n.text) > 4 and title.find(n.text.strip()) >= 0:
+            Parser.remove(n)
+        if n.tail != None and len(n.tail) > 4 and title.find(n.tail.strip()) >= 0:
+            n.tail = None
+        for c in n:
+            lines = Parser.removeTitle(c,title,lines)
+            if lines <= 0: return 0
+        return lines
 
     @classmethod
     def insertBrs(self,n,pos,lst):
@@ -275,7 +286,18 @@ class Parser(object):
             n.insert(pos,e)
 
     @classmethod
+    def isEmpty(self,e):
+        if len(e) == 0 and e.tag != 'br':
+            if (e.text is None or re.search('[^ \xa0]',e.text) == None): 
+                if (e.tail is None or re.search('[^ \xa0]',e.tail) == None):
+                    return True
+        return False
+
+    @classmethod
     def customizeBlocks(self, p, mc = True):
+        if p.tag not in goodBlockTags and p.tag not in goodInlineTags and p.tag != 'br': p.tag = 'p'
+        for k in p.attrib:
+            if k not in ['href','src']: del p.attrib[k]
         if p.text is not None: 
             pars = p.text.split('\n')
             if len(pars) > 1:
@@ -297,21 +319,22 @@ class Parser(object):
                 t = p.tail; p.tail = None
                 p.remove(n)
                 p.addnext(n)
-                if n.tag not in goodBlockTags: n.tag = 'div'
-                e = lxml.html.HtmlElement(); e.tag = 'div'; e.tail = t
+                if n.tag not in goodBlockTags: n.tag = 'p'
+                e = lxml.html.HtmlElement(); e.tag = 'div'; e.tail = t; e.text = n.tail; n.tail = None
                 n.addnext(e)
-                if n.tail is not None:
-                    t = lxml.html.HtmlElement(); t.tag = 'div'; t.text = n.tail; n.tail = None
-                    n.addnext(t)
                 lst = list(p)[ni:]
                 for el in lst:
                     p.remove(el)
                     e.append(el)
                 return
             Parser.customizeBlocks(n, False)
-            if n.tag in goodInlineTags and n.text is None and len(n) == 0:
-                np = n; n = n.getnext()
-                Parser.remove(np)
-            else:
-                n = n.getnext()
+            np = n; n = n.getnext()
+            if np.tag == 'br' and p.tag == 'p':
+                ni = p.index(np)
+                if ni == 0 and (p.text is None or p.text == ''): Parser.remove(np)
+                elif ni == len(p) - 1 and (np.tail is None or np.tail == ''): Parser.remove(np)
+            if np.tag in goodInlineTags:
+                if np.text is None and len(np) == 0: Parser.remove(np)
+            elif n != None and n.tag != 'br':
+                if Parser.isEmpty(np) and n.tag not in goodInlineTags: Parser.remove(np)
         return
