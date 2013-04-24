@@ -55,12 +55,6 @@ class OutputFormatter(object):
         text = Parser.getFormattedText(self.topNode)
         lines = text.split('\n')
         text = ''
-        # cutting title from article text if found in first 4 rows
-        if len(lines) > 4:
-            for i in range(0,4):
-                if lines[i] == article.h1 or lines[i] == article.title:
-                    del lines[i]
-                    break
         for line in lines:
             if re.search('[^ \xa0]',line): text += line + '\n'
         Parser.adjustTopNode(article)

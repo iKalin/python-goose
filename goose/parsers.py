@@ -264,16 +264,21 @@ class Parser(object):
         Parser.customizeBlocks(article.topNode)
 
     @classmethod
-    def removeTitle(self,n,title,lines = 4):
-        if n.tag == 'h1': 
+    def removeTitle(self,n,title,lines = 10):
+        if n.tag == 'h1':
+            pr = n.getprevious()
+            p = n.getparent()
+            while pr != None:
+                np = pr; pr = pr.getprevious()
+                p.remove(np)
+            p.text = None
             Parser.remove(n)
             return 0
         lines -= 1;
         if lines <= 0: return 0
-        if n.text != None and len(n.text) > 4 and title.find(n.text.strip()) >= 0:
-            Parser.remove(n)
-        if n.tail != None and len(n.tail) > 4 and title.find(n.tail.strip()) >= 0:
-            n.tail = None
+        if n.tag in goodBlockTags and n.text != None:
+            text = Parser.clearText(n.text).strip()
+            if len(text) > 5 and title == text: Parser.remove(n)
         for c in n:
             lines = Parser.removeTitle(c,title,lines)
             if lines <= 0: return 0
@@ -296,8 +301,6 @@ class Parser(object):
     @classmethod
     def customizeBlocks(self, p, mc = True):
         if p.tag not in goodBlockTags and p.tag not in goodInlineTags and p.tag != 'br': p.tag = 'p'
-        for k in p.attrib:
-            if k not in ['href','src']: del p.attrib[k]
         if p.text is not None: 
             pars = p.text.split('\n')
             if len(pars) > 1:
@@ -331,10 +334,14 @@ class Parser(object):
             np = n; n = n.getnext()
             if np.tag == 'br' and p.tag == 'p':
                 ni = p.index(np)
-                if ni == 0 and (p.text is None or p.text == ''): Parser.remove(np)
-                elif ni == len(p) - 1 and (np.tail is None or np.tail == ''): Parser.remove(np)
+                if ni == 0 and (p.text is None or re.search('[^ \xa0]',p.text) == None): 
+                    Parser.remove(np)
+                    continue
+                elif ni == len(p) - 1 and (np.tail is None or re.search('[^ \xa0]',np.tail) == None): 
+                    Parser.remove(np)
+                    continue
             if np.tag in goodInlineTags:
                 if np.text is None and len(np) == 0: Parser.remove(np)
             elif n != None and n.tag != 'br':
-                if Parser.isEmpty(np) and n.tag not in goodInlineTags: Parser.remove(np)
+                if Parser.isEmpty(np) and n.tag not in goodInlineTags: np.drop_tag()
         return

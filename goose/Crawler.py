@@ -83,6 +83,7 @@ class Crawler(object):
         article.doc = docCleaner.clean(article)
 
         # big stuff
+        article.h1 = ''
         article.topNode = extractor.calculateBestNodeBasedOnClustering(article)
         if article.topNode is not None:
             # TODO
@@ -92,11 +93,11 @@ class Crawler(object):
                 imageExtractor = self.getImageExtractor(article)
                 article.topImage = imageExtractor.getBestImage(article.rawDoc, article.topNode)
 
-            article.topNode = extractor.postExtractionCleanup(article.topNode)
-            article.cleanedArticleText = outputFormatter.getFormattedText(article)
             article.topNode.attrib['rel'] = 'topnode' # mark html element
-        article.h1 = extractor.getH1(article)
-        Parser.removeTitle(article.topNode,article.title + ' ' + article.h1)
+            article.h1 = extractor.getH1(article)
+            article.topNode = extractor.postExtractionCleanup(article.topNode)
+            Parser.removeTitle(article.topNode,article.title)
+            article.cleanedArticleText = outputFormatter.getFormattedText(article)
         # cleanup tmp file
         self.releaseResources(article)
 
