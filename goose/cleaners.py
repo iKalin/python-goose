@@ -83,6 +83,9 @@ class DocumentCleaner(object):
             if node.tag in ['script','noscript','style','option','iframe','noframe'] or isinstance(node,lxml.html.HtmlComment) or str(node.tag)[0] == '<':
                 nodelist.append(node)
                 continue
+            if node.tag == 'span' and len(node) == 0 and (node.text == None or len(node.text) < 30):
+                node.drop_tag()
+                continue
             if node.tag in ['p','span','b','h1','h2','h3','h4','h5'] and len(node) == 0: continue; # good top level nodes
             if node.tag == 'div' and node.getparent().tag == 'span': node.getparent().tag = 'div' # convert span to div
             if node.tag == 'br': # retain line breaks

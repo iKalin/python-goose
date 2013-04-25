@@ -262,25 +262,33 @@ class Parser(object):
             e = lxml.html.HtmlElement(); e.tag = 'div';
             e.append(article.topNode)
         Parser.customizeBlocks(article.topNode)
+        article.topNode.tag = 'div'
 
     @classmethod
-    def removeTitle(self,n,title,lines = 10):
+    def removeHead(self,n):
+        pr = n.getprevious()
+        p = n.getparent()
+        while pr != None:
+            np = pr; pr = pr.getprevious()
+            p.remove(np)
+        p.text = None
+        Parser.remove(n)
+
+    @classmethod
+    def removeTitle(self,n,title,h1,lines = 10):
         if n.tag == 'h1':
-            pr = n.getprevious()
-            p = n.getparent()
-            while pr != None:
-                np = pr; pr = pr.getprevious()
-                p.remove(np)
-            p.text = None
-            Parser.remove(n)
+            Parser.removeHead(n)
             return 0
         lines -= 1;
         if lines <= 0: return 0
-        if n.tag in goodBlockTags and n.text != None:
+        if n.text != None and len(n) == 0 and n.tag not in goodInlineTags and n.tag not in badInlineTags:
             text = Parser.clearText(n.text).strip()
-            if len(text) > 5 and title == text: Parser.remove(n)
+            if len(text) > 5:
+                if (title == text or (len(text) > 20 and title.find(text) >= 0)) or (h1 == text or (len(text) > 20 and h1.find(text) >= 0)): 
+                    Parser.removeHead(n)
+                    return 0
         for c in n:
-            lines = Parser.removeTitle(c,title,lines)
+            lines = Parser.removeTitle(c,title,h1,lines)
             if lines <= 0: return 0
         return lines
 

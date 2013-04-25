@@ -79,6 +79,10 @@ class ContentExtractor(object):
         titleText = Parser.getText(titleElem[0])
         usedDelimeter = False
 
+        title = MOTLEY_REPLACEMENT.replaceAll(titleText)
+        return title
+
+
         # split title with |
         if '|' in titleText:
             titleText = self.doTitleSplits(titleText, PIPE_SPLITTER)
@@ -135,14 +139,11 @@ class ContentExtractor(object):
                 if i.tag != 'h1':
                     break
                 lastTag = i
-            	h1 = Parser.getText(lastTag)
-            
-            # H1 into main article
+                h1 = Parser.getText(i)
             if lastTag == '':
-                for i in article.doc.cssselect('[rel=topnode], h1'):
-                    if i.tag == 'h1':
-                        lastTag = i
-                        break
+                for i in article.doc.cssselect('[rel=topnode] h1'):
+                    h1 = Parser.getText(i)
+                    break
         else:
             # Get first H1 tag
             h1Elem = Parser.getElementsByTag(article.doc, tag='h1')
