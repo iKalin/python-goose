@@ -110,8 +110,18 @@ class DocumentCleaner(object):
             if (bad_word != '' and good_word == '') or (bad_word != '' and bad_word.find(good_word) >= 0):
                 nodelist.append(node)
                 continue 
+            if 'mod-washingtonpostarticletext' in ids: # washingtonpost hack
+                self.aggregateBlocks(doc, '.mod-washingtonpostarticletext')
             nodelist += self.getNodesToDelete(node)
         return nodelist
+
+    def aggregateBlocks(self, doc, selector):
+        divs = doc.cssselect(selector)
+        if len(divs) <= 1: return
+        for i in range(1,len(divs)):
+            divs[0].append(divs[i])
+            divs[i].tail = None
+            divs[i].attrib['class'] = '' # drop all attributes
 
     def removeWrapedLinks(self, e):
         if e is None or len(e) != 1 or e[0].tag != 'a': return []
