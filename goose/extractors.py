@@ -435,7 +435,7 @@ class ContentExtractor(object):
                     text = Parser.getText(firstParagraph)
                     if path == good_path and len(Parser.getElementsByTag(firstParagraph, tag='a')) == 0:
                         firstParagraph.getparent().remove(firstParagraph)
-                        ps.append(firstParagraph)
+                        ps.insert(0,firstParagraph)
                         continue
                     if len(text) > 0:
                         wordStats = self.stopwordsCls(language=self.language).getStopWordCount(text)
@@ -445,7 +445,7 @@ class ContentExtractor(object):
                         score = float(baselineScoreForSiblingParagraphs * siblingBaseLineScore)
                         if score < paragraphScore and not highLinkDensity:
                             firstParagraph.getparent().remove(firstParagraph)
-                            ps.append(firstParagraph)
+                            ps.insert(0,firstParagraph)
                 return ps
 
     def getBaselineScoreForSiblings(self, topNode):
@@ -607,7 +607,6 @@ class ContentExtractor(object):
         for e in reversed(node):
             if e.tag not in ['h2','h3','h4']: break
             Parser.remove(e)
-
         return node
 
 class StandardContentExtractor(ContentExtractor):
