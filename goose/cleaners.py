@@ -250,7 +250,8 @@ class DocumentCleaner(object):
         childs = Parser.childNodesWithText(div)
         for kid in childs:
             if Parser.isTextNode(kid):
-                replaceText = HTMLParser().unescape(kid.text).strip('\t\r\n')
+                if kid.text != None: replaceText = HTMLParser().unescape(kid.text).strip('\t\r\n')
+		else replaceText = ''
                 if(len(replaceText)) > 0: replacementText.append(replaceText)
             elif Parser.getTag(kid) in goodInlineTags:
                 outer = Parser.outerHtml(kid)
