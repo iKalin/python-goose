@@ -419,7 +419,7 @@ class ContentExtractor(object):
         """\
         adds any siblings that may have a decent score to this node
         """
-        if currentSibling.tag == 'p' and len(Parser.getText(currentSibling)) > 0:
+        if currentSibling.tag in ['p','h2','h3','h4'] and len(Parser.getText(currentSibling)) > 0:
             e0 = currentSibling
             if e0.tail:
                 e0 = deepcopy(e0)
