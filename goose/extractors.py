@@ -188,7 +188,8 @@ class ContentExtractor(object):
         if attr:
             value = attr[:2]
             if re.search(RE_LANG, value):
-                self.language = value.lower()
+                if isinstance(self.language,str): self.language = [self.language]
+                self.language.append(value.lower())
                 return value.lower()
 
         return None

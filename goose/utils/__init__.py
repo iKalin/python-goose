@@ -68,7 +68,8 @@ class FileHelper(object):
         dirpath = os.path.dirname(goose.__file__)
         path = '%s/resources/%s' % (dirpath, filename)
         try:
-            f = codecs.open(path, 'r', 'utf-8')
+#            f = codecs.open(path, 'r', 'utf-8')
+            f = open(path, 'rb')
             content = f.read()
             f.close()
             return content

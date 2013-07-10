@@ -92,13 +92,18 @@ class StopWords(object):
     def __init__(self, language='en'):
         # TODO replace 'x' with class
         # to generate dynamic path for file to load
-        if not language in self._cached_stop_words:
-            path = 'text/stopwords-%s.txt' % language
-	    try:
-                self._cached_stop_words[language] = set(FileHelper.loadResourceFile(path).splitlines())
-	    except:
-                self._cached_stop_words[language] = set(FileHelper.loadResourceFile('text/stopwords-en.txt').splitlines())
-        self.STOP_WORDS = self._cached_stop_words[language]
+        if isinstance(language,str): language = [language]
+        language = set(language)
+        self.STOP_WORDS = None
+        for l in language:
+            if not l in StopWords._cached_stop_words:
+                path = 'text/stopwords-%s.txt' % l
+                try:
+                    StopWords._cached_stop_words[l] = set(FileHelper.loadResourceFile(path).splitlines())
+                except: pass
+            if l in StopWords._cached_stop_words:
+                if self.STOP_WORDS is None: self.STOP_WORDS = StopWords._cached_stop_words[l]
+                else: self.STOP_WORDS |= StopWords._cached_stop_words[l]
 
     def removePunctuation(self, content):
         # code taken form
