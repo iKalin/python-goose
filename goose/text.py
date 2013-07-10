@@ -117,6 +117,7 @@ class StopWords(object):
             return WordStats()
         ws = WordStats()
         strippedInput = self.removePunctuation(content)
+        strippedInput = strippedInput.replace('\xc2\xa0',' ')
         candidateWords = strippedInput.split(' ')
         overlappingStopWords = []
         for w in candidateWords:
