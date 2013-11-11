@@ -34,7 +34,7 @@ class DocumentCleaner(object):
         self.regExRemoveNodes = (
         "^side$|combx|retweet|fontresize|mediaarticlerelated|menucontainer|navbar"
         "|comment|PopularQuestions|foot|footer|Footer|footnote"
-        "|cnn_strycaptiontxt|links|meta$|scroll|shoutbox|sponsor"
+        "|cnn_strycaptiontxt|cnn_html_slideshow|links|meta$|scroll|shoutbox|sponsor"
         "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
         "|cnn_stryspcvbx|^inset$|pagetools|post-attributes"
         "|welcome_form|contentTools2|the_answers|rating"
