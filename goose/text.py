@@ -117,50 +117,50 @@ class StopWords(object):
             return WordStats()
         ws = WordStats()
         strippedInput = self.removePunctuation(content)
-        strippedInput = strippedInput.replace('\xc2\xa0',' ')
+        strippedInput = strippedInput.replace('\xc2\xa0',' ').lower()
         candidateWords = strippedInput.split(' ')
         overlappingStopWords = []
         for w in candidateWords:
-            if w.lower() in self.STOP_WORDS:
-                overlappingStopWords.append(w.lower())
+            if w in self.STOP_WORDS:
+                overlappingStopWords.append(w)
 
         ws.setWordCount(len(candidateWords))
         ws.setStopWordCount(len(overlappingStopWords))
         ws.setStopWords(overlappingStopWords)
         return ws
 
-
 class StopWordsChinese(StopWords):
     """
-
+    Chinese segmentation
     """
     def __init__(self, language='zh'):
         # force zh languahe code
-        language = 'zh'
-        if not language in self._cached_stop_words:
-            path = 'text/stopwords-%s.txt' % language
-            self._cached_stop_words[language] = set(FileHelper.loadResourceFile(path).splitlines())
-        self.STOP_WORDS = self._cached_stop_words[language]
+        super(StopWordsChinese, self).__init__(language='zh')
 
-    def getStopWordCount(self, content):
+    def candiate_words(self, stripped_input):
         # jieba build a tree that takes sometime
         # avoid building the tree if we don't use
         # chinese language
         import jieba
+        return jieba.cut(stripped_input, cut_all=True)
 
-        if not content:
-            return WordStats()
-        ws = WordStats()
-        strippedInput = self.removePunctuation(content)
-        candidateWords = jieba.cut(strippedInput, cut_all=True)
-        overlappingStopWords = []
-        c = 0
-        for w in candidateWords:
-            c += 1
-            if w.lower() in self.STOP_WORDS:
-                overlappingStopWords.append(w.lower())
 
-        ws.setWordCount(c)
-        ws.setStopWordCount(len(overlappingStopWords))
-        ws.setStopWords(overlappingStopWords)
-        return ws
+class StopWordsArabic(StopWords):
+    """
+    Arabic segmentation
+    """
+    def __init__(self, language='ar'):
+        # force ar languahe code
+        super(StopWordsArabic, self).__init__(language='ar')
+
+    def remove_punctuation(self, content):
+        return content
+
+    def candiate_words(self, stripped_input):
+        import nltk
+        s = nltk.stem.isri.ISRIStemmer()
+        words = []
+        for word in nltk.tokenize.wordpunct_tokenize(stripped_input):
+            words.append(s.stem(word))
+        return words
+
