@@ -112,13 +112,16 @@ class StopWords(object):
             content = content.encode('utf-8')
         return content.translate(self.TRANS_TABLE, string.punctuation)
 
+    def candiate_words(self, stripped_input):
+        return stripped_input.split(' ')
+
     def getStopWordCount(self, content):
         if not content:
             return WordStats()
         ws = WordStats()
         strippedInput = self.removePunctuation(content)
         strippedInput = strippedInput.replace('\xc2\xa0',' ').lower()
-        candidateWords = strippedInput.split(' ')
+        candidateWords = candiate_words(strippedInput)
         overlappingStopWords = []
         for w in candidateWords:
             if w in self.STOP_WORDS:
