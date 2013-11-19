@@ -61,7 +61,7 @@ class Crawler(object):
         extractor = self.getExtractor()
         docCleaner = self.getDocCleaner()
         outputFormatter = self.getOutputFormatter()
-
+        
         # article
         article.finalUrl = parseCandidate.url
         article.linkhash = parseCandidate.linkhash

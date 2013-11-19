@@ -43,7 +43,7 @@ class DocumentCleaner(object):
         "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
         "|source|legende|ajoutVideo|timestamp|menu|story-feature wide|error"
         )
-        self.regExNotRemoveNodes = ("and|no|article|body|column|main|shadow")
+        self.regExNotRemoveNodes = ("and|no|article|body|column|main|shadow|commented")
         self.regexpNS = "http://exslt.org/regular-expressions"
         self.divToPElementsPattern = r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)"
         self.captionPattern = "^caption$"
@@ -58,35 +58,33 @@ class DocumentCleaner(object):
                                             .append("^\\s+$")
         self.todel = self.regExRemoveNodes.lower().split('|')
         self.notdel = self.regExNotRemoveNodes.lower().split('|')
+        self.goodInlineTags = set(['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var'])
         
 
     def clean(self, article):
-
         docToClean = article.doc
         nodelist = self.getNodesToDelete(docToClean)
         for node in nodelist: Parser.remove(node)  
         docToClean = self.removeListsWithLinks(docToClean)
         docToClean = self.removeDropCaps(docToClean)
         docToClean = self.removeNodesViaRegEx(docToClean, self.captionPattern)
-#        docToClean = self.removeNodesViaRegEx(docToClean, self.googlePattern)
-#        docToClean = self.removeNodesViaRegEx(docToClean, self.entriesPattern)
-#        docToClean = self.removeNodesViaRegEx(docToClean, self.facebookPattern)
-#        docToClean = self.removeNodesViaRegEx(docToClean, self.facebookBroadcastingPattern)
-#        docToClean = self.removeNodesViaRegEx(docToClean, self.twitterPattern)
         docToClean = self.cleanUpSpanTagsInParagraphs(docToClean)
         docToClean = self.convertDivsToParagraphs(docToClean, 'div')
         return docToClean
 
     def getNodesToDelete(self, doc):
+        bad_tags = (['script','noscript','style','option','iframe','noframe'])
+        good_tags = (['p','span','b','h1','h2','h3','h4','h5'])
         nodelist = []
         for node in doc:
-            if node.tag in ['script','noscript','style','option','iframe','noframe'] or isinstance(node,lxml.html.HtmlComment) or str(node.tag)[0] == '<':
+            node.attrib['goose_attributes'] = ''
+            if node.tag in bad_tags or isinstance(node,lxml.html.HtmlComment) or str(node.tag)[0] == '<':
                 nodelist.append(node)
                 continue
             if node.tag == 'span' and len(node) == 0 and (node.text == None or len(node.text) < 30):
                 node.drop_tag()
                 continue
-            if node.tag in ['p','span','b','h1','h2','h3','h4','h5'] and len(node) == 0: continue; # good top level nodes
+            if node.tag in good_tags and len(node) == 0: continue; # good top level nodes
             if node.tag == 'div' and node.getparent().tag == 'span': node.getparent().tag = 'div' # convert span to div
             if node.tag == 'br': # retain line breaks
                 if node.tail is not None: node.tail = u'\ufffc ' + node.tail
@@ -94,9 +92,11 @@ class DocumentCleaner(object):
                 nodelist.append(node)
                 continue
             ids = ''
-            if node.attrib.has_key('class'): ids += ' ' + node.attrib['class'].lower() + ' '
-            if node.attrib.has_key('id'):    ids += ' ' + node.attrib['id'].lower() + ' '
-            if node.attrib.has_key('name'):  ids += ' ' + node.attrib['name'].lower() + ' '
+            if node.attrib.has_key('class'): ids += ' ' + node.attrib['class'] + ' '
+            if node.attrib.has_key('id'):    ids += ' ' + node.attrib['id'] + ' '
+            if node.attrib.has_key('name'):  ids += ' ' + node.attrib['name'] + ' '
+            ids = ids.lower()
+            node.attrib['goose_attributes'] = ids
             good_word = ''
             for word in self.notdel:
                 if ids.find(word) >= 0: 
@@ -242,7 +242,6 @@ class DocumentCleaner(object):
         return Parser.textToPara('<p>' + replacementText + '</p>')
 
     def getReplacementNodes(self, doc, div):
-        goodInlineTags = ['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var']
 
         replacementText = []
         nodesToReturn = []
@@ -253,7 +252,7 @@ class DocumentCleaner(object):
                 if kid.text != None: replaceText = HTMLParser().unescape(kid.text).strip('\t\r\n')
 		else: replaceText = ''
                 if(len(replaceText)) > 0: replacementText.append(replaceText)
-            elif Parser.getTag(kid) in goodInlineTags:
+            elif Parser.getTag(kid) in self.goodInlineTags:
                 outer = Parser.outerHtml(kid)
                 replacementText.append(outer)
                 nodesToRemove.append(kid)
@@ -282,14 +281,17 @@ class DocumentCleaner(object):
         badDivs = 0
         elseDivs = 0
         divs = Parser.getElementsByTag(doc, tag=domType)
-        tags = ['a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul']
+        tags = set(['a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'])
 
         for div in divs:
-            items = Parser.getElementsByTags(div, tags)
-            if div is not None and len(items) == 0:
+            if div is None: continue
+            attrs = ''
+            if div.attrib.has_key('goose_attributes'): attrs = div.attrib['goose_attributes']
+            if not Parser.hasChildTags(div, tags):
                 self.replaceElementsWithPara(doc, div)
                 badDivs += 1
-            elif div is not None:
+            elif attrs.find('gallery') >= 0 or attrs.find('photo') >= 0 or attrs.find('slide') >= 0: continue
+            else:
                 replaceNodes = self.getReplacementNodes(doc, div)
                 text = div.tail
                 div.clear()

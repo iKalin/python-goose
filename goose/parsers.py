@@ -28,9 +28,9 @@ from goose.text import encodeValue
 from HTMLParser import HTMLParser
 import re
 
-goodInlineTags = ['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var']
-badInlineTags = ['abbr','acronym','basefont','bdo','dfn','font','input','kbd','label','samp','select','span','textarea','sup']
-goodBlockTags = ['p','h1','h2','h3','h4','h5','h6','blockquote']
+goodInlineTags = set(['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var'])
+badInlineTags = set(['abbr','acronym','basefont','bdo','dfn','font','input','kbd','label','samp','select','span','textarea','sup'])
+goodBlockTags = set(['p','h1','h2','h3','h4','h5','h6','blockquote'])
 
 class Parser(object):
 
@@ -125,6 +125,12 @@ class Parser(object):
         if node in elems:
             elems.remove(node)
         return elems
+
+    @classmethod
+    def hasChildTags(self, node, tags):
+        for n in node:
+            if n.tag in tags or self.hasChildTags(n, tags): return True
+        return False
 
     @classmethod
     def createElement(self, tag='p', text=None, tail=None):

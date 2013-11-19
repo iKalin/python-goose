@@ -37,9 +37,8 @@ ARROWS_SPLITTER = StringSplitter("»")
 COLON_SPLITTER = StringSplitter(":")
 SPACE_SPLITTER = StringSplitter(' ')
 NO_STRINGS = set()
-# TODO
-# A_REL_TAG_SELECTOR = "a[rel=tag], a[href*=/tag/]"
 A_REL_TAG_SELECTOR = "a[rel=tag]"
+A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='/topic/'], a[href*='?keyword=']"
 RE_LANG = r'^[A-Za-z]{2}$'
 
 
@@ -247,12 +246,14 @@ class ContentExtractor(object):
         node = article.doc
 
         # node doesn't have chidren
-        if len(list(node)) == 0:
+        if len(node) == 0:
             return NO_STRINGS
 
         elements = node.cssselect(A_REL_TAG_SELECTOR)
-        if elements is None:
-            return NO_STRINGS
+        if not elements:
+            elements = node.cssselect(A_HREF_TAG_SELECTOR)
+            if not elements:
+                return NO_STRINGS
 
         tags = []
         for el in elements:
@@ -295,6 +296,7 @@ class ContentExtractor(object):
             oks = self.isOkToBoost(node)
             while oks > 0:
                 boostScore += float((1.0 / startingBoost) * 50)
+                if oks < 1: boostScore *= oks
                 startingBoost += 1
                 oks -= 1
             # numberOfNodes
@@ -359,6 +361,7 @@ class ContentExtractor(object):
         maxStepsAwayFromNode = 3
 
         paraText = ''
+        paraStops = 0
         if node.text is not None: paraText += node.text
         for b in node:
             if b.tail is not None: paraText += b.tail
@@ -373,6 +376,7 @@ class ContentExtractor(object):
             lout -= 1
             wordStats = self.stopwordsCls(language=self.language).getStopWordCount(p)
             if wordStats.getStopWordCount() > minimumStopWordCount: lout = 3
+            paraStops += wordStats.getStopWordCount()
         if oks > 0: return oks
 
         nodes = self.walkSiblings(node)
@@ -386,6 +390,7 @@ class ContentExtractor(object):
                 if wordStats.getStopWordCount() > minimumStopWordCount:
                     return 1
                 stepsAway += 1
+        if paraStops > 20: return 0.5
         return 0
 
     def walkSiblings(self, node):
