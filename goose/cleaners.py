@@ -101,7 +101,7 @@ class DocumentCleaner(object):
             for word in self.notdel:
                 if ids.find(word) >= 0: 
                     good_word = word
-                    continue
+                    break
             bad_word = ''
             for word in self.todel:
                 if ids.find(word) >= 0: 

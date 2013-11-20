@@ -47,7 +47,7 @@ class ContentExtractor(object):
     def __init__(self, config):
         self.config = config
         self.language = config.targetLanguage
-        self.stopwordsCls = config.stopwordsCls
+        self.stopwordsObj = config.stopwordsCls(language=self.language)
 
     def getLanguage(self, article):
         """\
@@ -60,6 +60,7 @@ class ContentExtractor(object):
             if article.metaLang:
                 self.language = article.metaLang[:2]
         self.language = self.config.targetLanguage
+        self.stopwordsObj = self.config.stopwordsCls(language=self.language)
 
     def getTitle(self, article):
         """\
@@ -277,7 +278,7 @@ class ContentExtractor(object):
         
         for node in nodesToCheck:
             nodeText = Parser.getText(node)
-            wordStats = self.stopwordsCls(language=self.language).getStopWordCount(nodeText)
+            wordStats = self.stopwordsObj.getStopWordCount(nodeText)
             highLinkDensity = self.isHighLinkDensity(node)
             if wordStats.getStopWordCount() > 2 and not highLinkDensity:
                 nodesWithText.append(node)
@@ -309,7 +310,7 @@ class ContentExtractor(object):
                         boostScore = float(5)
 
             nodeText = Parser.getText(node)
-            wordStats = self.stopwordsCls(language=self.language).getStopWordCount(nodeText)
+            wordStats = self.stopwordsObj.getStopWordCount(nodeText)
             upscore = int(wordStats.getStopWordCount() + boostScore)
 
 
@@ -374,7 +375,7 @@ class ContentExtractor(object):
         for p in paraList:
             if lout > 0: oks += 1
             lout -= 1
-            wordStats = self.stopwordsCls(language=self.language).getStopWordCount(p)
+            wordStats = self.stopwordsObj.getStopWordCount(p)
             if wordStats.getStopWordCount() > minimumStopWordCount: lout = 3
             paraStops += wordStats.getStopWordCount()
         if oks > 0: return oks
@@ -386,7 +387,7 @@ class ContentExtractor(object):
                 if stepsAway >= maxStepsAwayFromNode:
                     return 0
                 paraText = Parser.getText(currentNode)
-                wordStats = self.stopwordsCls(language=self.language).getStopWordCount(paraText)
+                wordStats = self.stopwordsObj.getStopWordCount(paraText)
                 if wordStats.getStopWordCount() > minimumStopWordCount:
                     return 1
                 stepsAway += 1
@@ -444,7 +445,7 @@ class ContentExtractor(object):
                         ps.insert(0,firstParagraph)
                         continue
                     if len(text) > 0:
-                        wordStats = self.stopwordsCls(language=self.language).getStopWordCount(text)
+                        wordStats = self.stopwordsObj.getStopWordCount(text)
                         paragraphScore = wordStats.getStopWordCount()
                         siblingBaseLineScore = float(.30)
                         highLinkDensity = self.isHighLinkDensity(firstParagraph)
@@ -471,7 +472,7 @@ class ContentExtractor(object):
 
         for node in nodesToCheck:
             nodeText = Parser.getText(node)
-            wordStats = self.stopwordsCls(language=self.language).getStopWordCount(nodeText)
+            wordStats = self.stopwordsObj.getStopWordCount(nodeText)
             highLinkDensity = self.isHighLinkDensity(node)
             if wordStats.getStopWordCount() > 2 and not highLinkDensity:
                 numberOfParagraphs += 1
@@ -583,7 +584,7 @@ class ContentExtractor(object):
             return True
 
         if e.tag in ['ul']:
-            eStats = self.stopwordsCls(language=self.language).getStopWordCount(Parser.getText(e))
+            eStats = self.stopwordsObj.getStopWordCount(Parser.getText(e))
             if eStats.getStopWordCount() > 5:
                 return True
 
