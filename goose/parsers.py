@@ -133,6 +133,12 @@ class Parser(object):
         return False
 
     @classmethod
+    def hasChildTag(self, node, tag):
+        for n in node:
+            if n.tag == tag or self.hasChildTags(n, tag): return True
+        return False
+
+    @classmethod
     def createElement(self, tag='p', text=None, tail=None):
         t = lxml.html.HtmlElement()
         t.tag = tag

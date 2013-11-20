@@ -56,8 +56,10 @@ class DocumentCleaner(object):
                                             .create("\n", "\n\n")\
                                             .append("\t")\
                                             .append("^\\s+$")
-        self.todel = self.regExRemoveNodes.lower().split('|')
-        self.notdel = self.regExNotRemoveNodes.lower().split('|')
+#        self.todel = self.regExRemoveNodes.lower().split('|')
+#        self.notdel = self.regExNotRemoveNodes.lower().split('|')
+        self.re_todel = re.compile(self.regExRemoveNodes.lower())
+        self.re_notdel = re.compile(self.regExNotRemoveNodes.lower())
         self.goodInlineTags = set(['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var'])
         
 
@@ -98,15 +100,19 @@ class DocumentCleaner(object):
             ids = ids.lower()
             node.attrib['goose_attributes'] = ids
             good_word = ''
-            for word in self.notdel:
-                if ids.find(word) >= 0: 
-                    good_word = word
-                    break
+            match_obj = self.re_notdel.search(ids)
+            if match_obj is not None: good_word = match_obj.group()
+#            for word in self.notdel:
+#                if ids.find(word) >= 0: 
+#                    good_word = word
+#                    break
             bad_word = ''
-            for word in self.todel:
-                if ids.find(word) >= 0: 
-                    bad_word = word
-                    break
+            match_obj = self.re_todel.search(ids)
+            if match_obj is not None: bad_word = match_obj.group()
+#            for word in self.todel:
+#                if ids.find(word) >= 0: 
+#                    bad_word = word
+#                    break
             if (bad_word != '' and good_word == '') or (bad_word != '' and bad_word.find(good_word) >= 0):
                 nodelist.append(node)
                 continue 
@@ -139,7 +145,7 @@ class DocumentCleaner(object):
             for item in items:
                 fa = 0
                 for li in item:
-                    if Parser.getElementsByTag(li, tag='a'):
+                    if Parser.hasChildTag(li, 'a'):
                         fa += 1
                         if fa > 2:
                             parent = item.getparent()
@@ -211,8 +217,7 @@ class DocumentCleaner(object):
         for tag in tags:
             ems = Parser.getElementsByTag(doc, tag=tag)
             for node in ems:
-                images = Parser.getElementsByTag(node, tag='img')
-                if len(images) == 0:
+                if not Parser.hasChildTag(node, 'img'):
                     node.drop_tag()
         return doc
 
@@ -290,7 +295,7 @@ class DocumentCleaner(object):
             if not Parser.hasChildTags(div, tags):
                 self.replaceElementsWithPara(doc, div)
                 badDivs += 1
-            elif attrs.find('gallery') >= 0 or attrs.find('photo') >= 0 or attrs.find('slide') >= 0: continue
+            elif attrs.find('gallery') >= 0 or attrs.find('photo') >= 0 or attrs.find('slide') >= 0 or attrs.find('caption') >= 0: continue
             else:
                 replaceNodes = self.getReplacementNodes(doc, div)
                 text = div.tail

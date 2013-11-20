@@ -70,13 +70,13 @@ class ContentExtractor(object):
         title = ''
         doc = article.doc
 
-        titleElem = Parser.getElementsByTag(doc, tag='title')
+        titleElem = doc.find('.//title')
         # no title found
-        if titleElem is None or len(titleElem) == 0:
+        if titleElem is None:
             return title
 
         # title elem found
-        titleText = Parser.getText(titleElem[0])
+        titleText = Parser.getText(titleElem)
         usedDelimeter = False
 
         title = MOTLEY_REPLACEMENT.replaceAll(titleText)
@@ -146,11 +146,11 @@ class ContentExtractor(object):
                     break
         else:
             # Get first H1 tag
-            h1Elem = Parser.getElementsByTag(article.doc, tag='h1')
+            h1Elem = article.doc.find('.//h1')
             """ no h1 found """
-            if h1Elem is None or len(h1Elem) == 0:
+            if h1Elem is None:
                 return h1
-            h1 = Parser.getText(h1Elem[0])
+            h1 = Parser.getText(h1Elem)
         return h1
         
     def getMetaFavicon(self, article):
@@ -410,9 +410,9 @@ class ContentExtractor(object):
         else:
             results = self.walkSiblings(topNode)
 
-        good_ps = Parser.getElementsByTag(topNode, tag='p')
+        good_ps = topNode.find('.//p')
         good_path = []
-        if len(good_ps) > 0: good_path = Parser.getPath(good_ps[0])
+        if good_ps is not None: good_path = Parser.getPath(good_ps)
 
         for currentNode in results:
             ps = self.getSiblingContent(currentNode, baselineScoreForSiblingParagraphs, good_path)
@@ -440,7 +440,7 @@ class ContentExtractor(object):
                 for firstParagraph in potentialParagraphs:
                     path = Parser.getPath(firstParagraph)
                     text = Parser.getText(firstParagraph)
-                    if path == good_path and len(Parser.getElementsByTag(firstParagraph, tag='a')) == 0:
+                    if path == good_path and not Parser.hasChildTag(firstParagraph, 'a'):
                         firstParagraph.getparent().remove(firstParagraph)
                         ps.insert(0,firstParagraph)
                         continue
@@ -567,8 +567,7 @@ class ContentExtractor(object):
             if len(txt) < 25:
                 Parser.remove(p)
 
-        subParagraphs2 = Parser.getElementsByTag(e, tag='p')
-        if len(subParagraphs2) == 0 and e.tag is not "td":
+        if not Parser.hasChildTag(e, 'p') and e.tag is not "td":
             return True
         return False
 
@@ -580,7 +579,7 @@ class ContentExtractor(object):
         if topNodeScore < 0 and currentNodeScore < 0:
             return True
 
-        if not Parser.getElementsByTag(e, tag='a') and not Parser.getElementsByTag(e, tag='img'):
+        if not Parser.hasChildTags(e, ['a','img']):
             return True
 
         if e.tag in ['ul']:
