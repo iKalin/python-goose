@@ -130,6 +130,7 @@ class Crawler(object):
         return StandardContentExtractor(self.config)
 
     def releaseResources(self, article):
+        UpgradedImageIExtractor.purgeStoredDetails(article.linkhash, self.config)
         path = '%s/%s_*' % (self.config.localStoragePath, article.linkhash)
         for fname in glob.glob(path):
             try:

@@ -77,6 +77,10 @@ class UpgradedImageIExtractor(ImageExtractor):
             "|mediaplex.com|adsatt|view.atdmt"
         )
 
+    @classmethod
+    def purgeStoredDetails(self, linkhash, config):
+        ImageUtils.purgeStoredDetails(linkhash, config)
+
     def getBestImage(self, doc, topNode):
         image = self.checkForKnownElements()
         if image:

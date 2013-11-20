@@ -35,6 +35,9 @@ class ImageDetails(object):
         # the mimeType of the image JPEG / PNG
         self.mimeType = None
 
+        # size of the image in bytes
+        self.size = 0
+
     def getWidth(self):
         return self.width
 
@@ -46,6 +49,12 @@ class ImageDetails(object):
 
     def setHeight(self, height):
         self.height = height
+
+    def getSize(self):
+        return self.size
+
+    def setSize(self, size):
+        self.size = size
 
     def getMimeType(self):
         return self.mimeType
