@@ -213,7 +213,7 @@ class ContentExtractor(object):
         """\
         if the article has meta description set in the source, use that
         """
-        return self.getMetaContent(article.doc, "meta[name=description]")
+        return self.getMetaContent(article.doc, "meta[name='description'], meta[name='Description'], meta[property$=':description']")
 
     def getMetaKeywords(self, article):
         """\
