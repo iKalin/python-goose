@@ -33,7 +33,7 @@ class ImageDetails(object):
         self.height = 0
 
         # the mimeType of the image JPEG / PNG
-        self.mimeType = None
+        self.mimeType = 'na'
 
         # size of the image in bytes
         self.size = 0
