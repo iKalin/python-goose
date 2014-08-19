@@ -101,7 +101,8 @@ class DocumentCleaner(object):
             if 'class' in node.attrib: ids.append(node.attrib['class'])
             if 'id' in node.attrib:    ids.append(node.attrib['id'])
             if 'name' in node.attrib:  ids.append(node.attrib['name'])
-            node.attrib['goose_attributes'] = ' '.join(ids).lower()
+            ids = ' '.join(ids).lower()
+            node.attrib['goose_attributes'] = ids
             match_obj = self.re_notdel.search(ids)
             good_word = match_obj.group() if match_obj is not None else ''
             match_obj = self.re_todel.search(ids)
