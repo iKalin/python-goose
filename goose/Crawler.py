@@ -31,7 +31,6 @@ from goose.outputformatters import StandardOutputFormatter
 from goose.parsers import Parser
 from goose.images.UpgradedImageExtractor import UpgradedImageIExtractor
 from goose.network import HtmlFetcher
-import time
 
 
 class CrawlCandidate(object):
@@ -58,6 +57,7 @@ class Crawler(object):
             return article
 
         doc = self.getDocument(parseCandidate.url, rawHtml)
+        if doc is None: return article
 
         extractor = self.getExtractor()
         docCleaner = self.getDocCleaner()
@@ -74,6 +74,9 @@ class Crawler(object):
         # article.publishDate = config.publishDateExtractor.extract(doc)
         # article.additionalData = config.getAdditionalDataExtractor.extract(doc)
         article.metaLang = extractor.getMetaLang(article)
+        if article.metaLang is not None and type(self.config.targetLanguage) is list and article.metaLang not in self.config.targetLanguage: 
+            self.config.targetLanguage.append(article.metaLang)
+            extractor.setLanguage(self.config.targetLanguage)
         article.metaFavicon = extractor.getMetaFavicon(article)
         article.metaDescription = extractor.getMetaDescription(article)
         article.metaKeywords = extractor.getMetaKeywords(article)
@@ -123,8 +126,11 @@ class Crawler(object):
         return StandardDocumentCleaner()
 
     def getDocument(self, url, rawHtml):
-        doc = Parser.fromstring(rawHtml)
-        return doc
+        try:
+            doc = Parser.fromstring(rawHtml)
+            return doc
+        except:
+            return None
 
     def getExtractor(self):
         return StandardContentExtractor(self.config)

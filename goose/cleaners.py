@@ -61,58 +61,51 @@ class DocumentCleaner(object):
         self.re_todel = re.compile(self.regExRemoveNodes.lower())
         self.re_notdel = re.compile(self.regExNotRemoveNodes.lower())
         self.goodInlineTags = set(['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var'])
+        self.bad_tags = set(['script','noscript','style','option','iframe','noframe'])
+        self.good_tags = set(['p','span','b','h1','h2','h3','h4','h5'])
+        self.child_tags = set(['a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'])
         
 
     def clean(self, article):
         docToClean = article.doc
         nodelist = self.getNodesToDelete(docToClean)
-        for node in nodelist: Parser.remove(node)  
+        for node in nodelist: Parser.remove(node)
         docToClean = self.removeListsWithLinks(docToClean)
         docToClean = self.removeDropCaps(docToClean)
         docToClean = self.removeNodesViaRegEx(docToClean, self.captionPattern)
         docToClean = self.cleanUpSpanTagsInParagraphs(docToClean)
         docToClean = self.convertDivsToParagraphs(docToClean, 'div')
+        docToClean = self.convertDivsToParagraphs(docToClean, 'dl')
         return docToClean
 
     def getNodesToDelete(self, doc):
-        bad_tags = (['script','noscript','style','option','iframe','noframe'])
-        good_tags = (['p','span','b','h1','h2','h3','h4','h5'])
         nodelist = []
         for node in doc:
-            node.attrib['goose_attributes'] = ''
-            if node.tag in bad_tags or isinstance(node,lxml.html.HtmlComment) or str(node.tag)[0] == '<':
+#            node.attrib['goose_attributes'] = ''
+            if node.tag in self.bad_tags or isinstance(node,lxml.html.HtmlComment) or str(node.tag)[0] == '<':
                 nodelist.append(node)
                 continue
             if node.tag == 'span' and len(node) == 0 and (node.text == None or len(node.text) < 30):
                 node.drop_tag()
                 continue
-            if node.tag in good_tags and len(node) == 0: continue; # good top level nodes
-            if node.tag == 'div' and node.getparent().tag == 'span': node.getparent().tag = 'div' # convert span to div
-            if node.tag == 'br': # retain line breaks
-                if node.tail is not None: node.tail = u'\ufffc ' + node.tail
-                else: node.tail = u'\ufffc'
+            if node.tag in self.good_tags and len(node) == 0: continue;  # good top level nodes
+            if node.tag == 'div' and node.getparent().tag == 'span': node.getparent().tag = 'div'  # convert span to div
+            if node.tag == 'br':  # retain line breaks
+                node.tail = u'\ufffc ' + node.tail if node.tail is not None else u'\ufffc'
                 nodelist.append(node)
                 continue
-            ids = ''
-            if node.attrib.has_key('class'): ids += ' ' + node.attrib['class'] + ' '
-            if node.attrib.has_key('id'):    ids += ' ' + node.attrib['id'] + ' '
-            if node.attrib.has_key('name'):  ids += ' ' + node.attrib['name'] + ' '
-            ids = ids.lower()
-            node.attrib['goose_attributes'] = ids
-            good_word = ''
+            if node.tag in ['body']:
+                nodelist += self.getNodesToDelete(node)
+                continue
+            ids = []
+            if 'class' in node.attrib: ids.append(node.attrib['class'])
+            if 'id' in node.attrib:    ids.append(node.attrib['id'])
+            if 'name' in node.attrib:  ids.append(node.attrib['name'])
+            node.attrib['goose_attributes'] = ' '.join(ids).lower()
             match_obj = self.re_notdel.search(ids)
-            if match_obj is not None: good_word = match_obj.group()
-#            for word in self.notdel:
-#                if ids.find(word) >= 0: 
-#                    good_word = word
-#                    break
-            bad_word = ''
+            good_word = match_obj.group() if match_obj is not None else ''
             match_obj = self.re_todel.search(ids)
-            if match_obj is not None: bad_word = match_obj.group()
-#            for word in self.todel:
-#                if ids.find(word) >= 0: 
-#                    bad_word = word
-#                    break
+            bad_word = match_obj.group() if match_obj is not None else ''
             if (bad_word != '' and good_word == '') or (bad_word != '' and bad_word.find(good_word) >= 0):
                 nodelist.append(node)
                 continue 
@@ -124,20 +117,10 @@ class DocumentCleaner(object):
     def aggregateBlocks(self, doc, selector):
         divs = doc.cssselect(selector)
         if len(divs) <= 1: return
-        for i in range(1,len(divs)):
+        for i in xrange(1,len(divs)):
             divs[0].append(divs[i])
             divs[i].tail = None
             divs[i].attrib['class'] = '' # drop all attributes
-
-    def removeWrapedLinks(self, e):
-        if e is None or len(e) != 1 or e[0].tag != 'a': return []
-        text = ''
-        if e.text is not None: text += e.text
-        if e[0].tail is not None: text += e[0].tail
-        if e.tail is not None: text += e.tail
-        if re.search('[^ \t\r\n]',text): return []
-        toRemove = [e] + self.removeWrapedLinks(Parser.nextSibling(e))
-        return toRemove
 
     def removeListsWithLinks(self, doc):
         for tag in ['ol','ul']:
@@ -198,18 +181,6 @@ class DocumentCleaner(object):
 			continue
 		         
 	        Parser.remove(e)
-
-        return doc
-
-        items=Parser.getElementsByTag(doc, tag='a')
-        for a in items:
-                e = a.getparent()
-                if e is None: continue
-                if len(e) == 1: 
-                    toRemove = self.removeWrapedLinks(e)
-                    if len(toRemove) > 5:
-                        for bn in toRemove:
-                            Parser.remove(bn)
 
         return doc
 
@@ -286,12 +257,11 @@ class DocumentCleaner(object):
         badDivs = 0
         elseDivs = 0
         divs = Parser.getElementsByTag(doc, tag=domType)
-        tags = set(['a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'])
+        tags = self.child_tags
 
         for div in divs:
             if div is None: continue
-            attrs = ''
-            if div.attrib.has_key('goose_attributes'): attrs = div.attrib['goose_attributes']
+            attrs = div.attrib['goose_attributes'] if 'goose_attributes' in div.attrib else ''
             if not Parser.hasChildTags(div, tags):
                 self.replaceElementsWithPara(doc, div)
                 badDivs += 1

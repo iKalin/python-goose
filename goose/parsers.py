@@ -22,7 +22,6 @@ limitations under the License.
 """
 import lxml.html
 from lxml import etree
-from copy import deepcopy
 from goose.text import innerTrim
 from goose.text import encodeValue
 from HTMLParser import HTMLParser
@@ -40,7 +39,7 @@ class Parser(object):
         try:
             self.doc = lxml.html.fromstring(html)
         except:
-            html = html.encode('utf-8','replace')
+            html = html.encode('ascii','replace')
             self.doc = lxml.html.fromstring(html)
         return self.doc
 
@@ -162,11 +161,11 @@ class Parser(object):
                 prev = node.getprevious()
                 if prev is None:
                     if not parent.text:
-                        parent.text = ''
+                        parent.text = u''
                     parent.text += u' ' + node.tail
                 else:
                     if not prev.tail:
-                        prev.tail = ''
+                        prev.tail = u''
                     prev.tail += u' ' + node.tail
             node.clear()
             parent.remove(node)
@@ -183,29 +182,29 @@ class Parser(object):
     @classmethod
     def clearText(self, text):
         if text == None: return ''
-        t = HTMLParser().unescape(text).strip('\t\r\n')
-        t = re.sub('[\t\r\n]',' ',t)
-        rt = ''; ps = ''
+        t = HTMLParser().unescape(text).strip(u'\t\r\n')
+        t = re.sub('[\t\r\n]',u' ',t)
+        rt = u''; ps = u''
         for s in t:
-            if s != ' ' or ps != ' ': rt += s
+            if s != u' ' or ps != u' ': rt += s
             ps = s
         pars = rt.split(u'\ufffc')
-        return '\n'.join(pars)
+        return u'\n'.join(pars)
 
     @classmethod
     def getFormattedText(self, node, isTop = True):
-        text = ''
+        text = u''
         isBlock = False
         badInline = False
         if node.tag in goodInlineTags: pass
         elif node.tag in badInlineTags: badInline = True
         else: # block node
-            text = '\n'
+            text = u'\n'
             isBlock = True
         node.text = Parser.clearText(node.text)
         text += node.text
         for n in node: text += Parser.getFormattedText(n, False)
-        if isBlock: text += '\n'
+        if isBlock: text += u'\n'
         if not isTop: 
             node.tail = Parser.clearText(node.tail)
             text += node.tail
@@ -255,11 +254,11 @@ class Parser(object):
 
     @classmethod
     def outerHtml(self, node):
-        e0 = node
-        if e0.tail:
-            e0 = deepcopy(e0)
-            e0.tail = None
-        return self.nodeToString(e0)
+        tail = node.tail
+        node.tail = None
+        outer = self.nodeToString(node)
+        node.tail = tail
+        return outer
 
     @classmethod
     def getPath(self, node):
@@ -322,13 +321,13 @@ class Parser(object):
     def customizeBlocks(self, p, mc = True):
         if p.tag not in goodBlockTags and p.tag not in goodInlineTags and p.tag != 'br': p.tag = 'p'
         if p.text is not None: 
-            pars = p.text.split('\n')
+            pars = p.text.split(u'\n')
             if len(pars) > 1:
                 p.text = pars[0]
                 lst = pars[1:]; lst.reverse()
                 Parser.insertBrs(p,0,lst)
         if p.tail is not None: 
-            pars = p.tail.split('\n')
+            pars = p.tail.split(u'\n')
             if len(pars) > 1:
                 p.tail = pars[0]
                 lst = pars[1:]; lst.reverse()

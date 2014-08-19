@@ -94,7 +94,7 @@ class URLHelper(object):
         finalUrl = urlToCrawl.replace('#!', '?_escaped_fragment_=') \
                     if '#!' in urlToCrawl else urlToCrawl
 
-        linkhash = '%s.%s' % (hashlib.md5(finalUrl).hexdigest(), time.time())
+        linkhash = '%s.%s' % (hashlib.md5(finalUrl.encode('utf-8')).hexdigest(), time.time())
 
         return ParsingCandidate(finalUrl, linkhash, finalUrl)
 
