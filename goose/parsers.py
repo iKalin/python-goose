@@ -88,30 +88,6 @@ class Parser(object):
         return list(node)
 
     @classmethod
-    def childNodesWithText(self, node):
-        root = node
-        # create the first text node
-        # if we have some text in the node
-        if root.text:
-            t = lxml.html.HtmlElement()
-            t.text = root.text
-            t.tag = 'text'
-            root.text = None
-            root.insert(0, t)
-        # loop childs
-        for c, n in enumerate(list(root)):
-            idx = root.index(n)
-            # don't process texts nodes
-            if n.tag == 'text':
-                continue
-            # create a text node for tail
-            if n.tail:
-                t = self.createElement(tag='text', text=n.tail, tail=None)
-                n.tail = None
-                root.insert(idx + 1, t)
-        return list(root)
-
-    @classmethod
     def textToPara(self, text):
         return self.fromstring(text)
 

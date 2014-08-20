@@ -32,38 +32,32 @@ class DocumentCleaner(object):
     def __init__(self):
 
         self.regExRemoveNodes = (
-        "^side$|combx|retweet|fontresize|mediaarticlerelated|menucontainer|navbar"
+        " side |combx|retweet|fontresize|mediaarticlerelated|menucontainer|navbar"
         "|comment|PopularQuestions|foot|footer|Footer|footnote"
-        "|cnn_strycaptiontxt|cnn_html_slideshow|links|meta$|scroll|shoutbox|sponsor"
+        "|cnn_strycaptiontxt|cnn_html_slideshow|links|meta |scroll|shoutbox|sponsor"
         "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
-        "|cnn_stryspcvbx|^inset$|pagetools|post-attributes"
+        "|cnn_stryspcvbx| inset |pagetools|post-attributes"
         "|welcome_form|contentTools2|the_answers|rating"
         "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings|articlead|articleImage|slideshowInlineLarge|article-side-rail"
-        "|date|^print$|popup|author-dropdown|tools|socialtools"
-        "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
+        "|date| print |popup|author-dropdown|tools|socialtools"
+        "|konafilter|KonaFilter|breadcrumbs| fn |wp-caption-text"
         "|source|legende|ajoutVideo|timestamp|menu|story-feature wide|error"
         )
         self.regExNotRemoveNodes = ("and|no|article|body|column|main|shadow|commented")
         self.regexpNS = "http://exslt.org/regular-expressions"
         self.divToPElementsPattern = r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)"
-        self.captionPattern = "^caption$"
-#        self.googlePattern = " google "
-#        self.entriesPattern = "^[^entry-]more.*$"
-#        self.facebookPattern = "[^-]facebook"
-#        self.facebookBroadcastingPattern = "facebook-broadcasting"
-#        self.twitterPattern = "[^-]twitter"
         self.tabsAndNewLinesReplcesments = ReplaceSequence()\
                                             .create("\n", "\n\n")\
                                             .append("\t")\
                                             .append("^\\s+$")
-#        self.todel = self.regExRemoveNodes.lower().split('|')
-#        self.notdel = self.regExNotRemoveNodes.lower().split('|')
         self.re_todel = re.compile(self.regExRemoveNodes.lower())
         self.re_notdel = re.compile(self.regExNotRemoveNodes.lower())
+        self.re_dontconvert = re.compile("gallery|photo|slide|caption")
         self.goodInlineTags = set(['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var'])
         self.bad_tags = set(['script','noscript','style','option','iframe','noframe'])
         self.good_tags = set(['p','span','b','h1','h2','h3','h4','h5'])
         self.child_tags = set(['a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'])
+        self.parser = HTMLParser()
         
 
     def clean(self, article):
@@ -72,10 +66,8 @@ class DocumentCleaner(object):
         for node in nodelist: Parser.remove(node)
         docToClean = self.removeListsWithLinks(docToClean)
         docToClean = self.removeDropCaps(docToClean)
-        docToClean = self.removeNodesViaRegEx(docToClean, self.captionPattern)
         docToClean = self.cleanUpSpanTagsInParagraphs(docToClean)
-        docToClean = self.convertDivsToParagraphs(docToClean, 'div')
-        docToClean = self.convertDivsToParagraphs(docToClean, 'dl')
+        docToClean = self.convertDivsToParagraphs(docToClean, ('div','dl'))
         return docToClean
 
     def getNodesToDelete(self, doc):
@@ -88,7 +80,6 @@ class DocumentCleaner(object):
             if node.tag == 'span' and len(node) == 0 and (node.text == None or len(node.text) < 30):
                 node.drop_tag()
                 continue
-            if node.tag in self.good_tags and len(node) == 0: continue;  # good top level nodes
             if node.tag == 'div' and node.getparent().tag == 'span': node.getparent().tag = 'div'  # convert span to div
             if node.tag == 'br':  # retain line breaks
                 node.tail = u'\ufffc ' + node.tail if node.tail is not None else u'\ufffc'
@@ -97,12 +88,19 @@ class DocumentCleaner(object):
             if node.tag in ['body']:
                 nodelist += self.getNodesToDelete(node)
                 continue
-            ids = []
+            ids = ['']
             if 'class' in node.attrib: ids.append(node.attrib['class'])
             if 'id' in node.attrib:    ids.append(node.attrib['id'])
             if 'name' in node.attrib:  ids.append(node.attrib['name'])
+            ids.append('')
             ids = ' '.join(ids).lower()
             node.attrib['goose_attributes'] = ids
+
+            if ids.find(" caption ") >= 0: 
+                nodelist.append(node)
+                continue
+            if node.tag in self.good_tags and len(node) == 0: continue;  # good top level nodes
+
             match_obj = self.re_notdel.search(ids)
             good_word = match_obj.group() if match_obj is not None else ''
             match_obj = self.re_todel.search(ids)
@@ -124,23 +122,21 @@ class DocumentCleaner(object):
             divs[i].attrib['class'] = '' # drop all attributes
 
     def removeListsWithLinks(self, doc):
-        for tag in ['ol','ul']:
-            items=Parser.getElementsByTag(doc, tag=tag)
-            for item in items:
-                fa = 0
-                for li in item:
-                    if Parser.hasChildTag(li, 'a'):
-                        fa += 1
-                        if fa > 2:
-                            parent = item.getparent()
-                            Parser.remove(item)
-                            if parent is not None:
-                                if len(parent) == 0 or len(Parser.getText(parent).split()) < 4:
-                                    Parser.remove(parent)
-                            break
-                    else:
-                       fa = 0
-
+        items=Parser.getElementsByTags(doc, ('ol','ul'))
+        for item in items:
+            fa = 0
+            for li in item:
+                if Parser.hasChildTag(li, 'a'):
+                    fa += 1
+                    if fa > 2:
+                        parent = item.getparent()
+                        Parser.remove(item)
+                        if parent is not None:
+                            if len(parent) == 0 or len(Parser.getText(parent).split()) < 4:
+                                Parser.remove(parent)
+                        break
+                else:
+                   fa = 0
         items=Parser.getElementsByTag(doc, tag='a')
         for a in items:
                 e = a.getparent()
@@ -214,68 +210,60 @@ class DocumentCleaner(object):
             item.drop_tag()
         return doc
 
-
-    def getFlushedBuffer(self, replacementText, doc):
-        return Parser.textToPara('<p>' + replacementText + '</p>')
-
-    def getReplacementNodes(self, doc, div):
+    def getReplacementNodes(self, div):
 
         replacementText = []
         nodesToReturn = []
-        nodesToRemove = []
-        childs = Parser.childNodesWithText(div)
-        for kid in childs:
-            if Parser.isTextNode(kid):
-                if kid.text != None: replaceText = HTMLParser().unescape(kid.text).strip('\t\r\n')
-		else: replaceText = ''
-                if(len(replaceText)) > 0: replacementText.append(replaceText)
-            elif Parser.getTag(kid) in self.goodInlineTags:
-                outer = Parser.outerHtml(kid)
-                replacementText.append(outer)
-                nodesToRemove.append(kid)
+        p = Parser.createElement(tag='p', text='', tail=None)
+        last_inline_node = None
+        if div.text is not None: 
+            div.text = self.parser.unescape(div.text).strip('\t\r\n')
+            if len(div.text): replacementText.append(div.text)
+
+        for kid in list(div):
+            if kid.tail is not None: kid.tail = self.parser.unescape(kid.tail).strip('\t\r\n')
+            if replacementText: 
+                text = ''.join(replacementText)
+                replacementText = []
+                if len(p):  last_inline_node.tail = text
+                else: p.text = text
+            if kid.tag in self.goodInlineTags:
+                p.append(kid)
+                last_inline_node = kid
             else:
-                if(len(replacementText) > 0):
-                    newNode = self.getFlushedBuffer(''.join(replacementText), doc)
-                    nodesToReturn.append(newNode)
-                    replacementText = []
+                if len(p) or len(p.text):
+                    nodesToReturn.append(p)
+                    p = Parser.createElement(tag='p', text='', tail=None)
+                if kid.tail is not None and len(kid.tail): replacementText.append(kid.tail)
+                kid.tail = None
                 nodesToReturn.append(kid)
 
         # flush out anything still remaining
-        if(len(replacementText) > 0):
-            newNode = self.getFlushedBuffer(''.join(replacementText), doc)
-            nodesToReturn.append(newNode)
-            replacementText = []
-
-        for n in nodesToRemove:
-            Parser.remove(n)
+        if replacementText:
+            text = ''.join(replacementText)
+            if len(p):  last_inline_node.tail = text
+            else: p.text = text
+        if len(p) or len(p.text): nodesToReturn.append(p)
 
         return nodesToReturn
 
-    def replaceElementsWithPara(self, doc, div):
-        Parser.replaceTag(div, 'p')
-
-    def convertDivsToParagraphs(self, doc, domType):
-        badDivs = 0
-        elseDivs = 0
-        divs = Parser.getElementsByTag(doc, tag=domType)
+    def convertDivsToParagraphs(self, doc, domTypes):
+        divs = Parser.getElementsByTags(doc, domTypes)
         tags = self.child_tags
 
         for div in divs:
             if div is None: continue
             attrs = div.attrib['goose_attributes'] if 'goose_attributes' in div.attrib else ''
-            if not Parser.hasChildTags(div, tags):
-                self.replaceElementsWithPara(doc, div)
-                badDivs += 1
-            elif attrs.find('gallery') >= 0 or attrs.find('photo') >= 0 or attrs.find('slide') >= 0 or attrs.find('caption') >= 0: continue
+            if not Parser.hasChildTags(div, tags): div.tag = 'p'
+            elif self.re_dontconvert.search(attrs) is not None: continue
             else:
-                replaceNodes = self.getReplacementNodes(doc, div)
+                replaceNodes = self.getReplacementNodes(div)
                 text = div.tail
+                attrib = div.attrib
                 div.clear()
-
-                for c, n in enumerate(replaceNodes):
-                    div.insert(c, n)
+                div.extend(replaceNodes)
                 div.tail = text
-                elseDivs += 1
+                for a in attrib: div.attrib[a] = attrib[a]
 
         return doc
 
