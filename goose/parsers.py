@@ -31,6 +31,7 @@ goodInlineTags = set(['b','strong','em','i','a','img','big','cite','code','q','s
 badInlineTags = set(['abbr','acronym','basefont','bdo','dfn','font','input','kbd','label','samp','select','span','textarea','sup'])
 goodBlockTags = set(['p','h1','h2','h3','h4','h5','h6','blockquote'])
 re_removeblanks = re.compile('[\t\r\n ]+')
+unescape = HTMLParser().unescape
 
 class Parser(object):
 
@@ -159,7 +160,7 @@ class Parser(object):
     @classmethod
     def clearText(self, text):
         if text == None: return ''
-        t = HTMLParser().unescape(text).strip(u'\t\r\n')
+        t = unescape(text).strip(u'\t\r\n')
         t = re_removeblanks.sub(u' ',t)
         return t.replace(u'\ufffc',u'\n')
 
