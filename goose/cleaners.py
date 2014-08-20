@@ -33,15 +33,15 @@ class DocumentCleaner(object):
 
         self.regExRemoveNodes = (
         " side |combx|retweet|fontresize|mediaarticlerelated|menucontainer|navbar"
-        "|comment|PopularQuestions|foot|footer|Footer|footnote"
+        "|comment|popularquestions|foot|footer|footnote"
         "|cnn_strycaptiontxt|cnn_html_slideshow|links|meta |scroll|shoutbox|sponsor"
-        "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
+        "|tags|socialnetworking|socialnetworking|cnnstryhghlght"
         "|cnn_stryspcvbx| inset |pagetools|post-attributes"
-        "|welcome_form|contentTools2|the_answers|rating"
-        "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings|articlead|articleImage|slideshowInlineLarge|article-side-rail"
+        "|welcome_form|contenttools2|the_answers|rating"
+        "|communitypromo|runaroundleft|subscribe|vcard|articleheadings|articlead|articleimage|slideshowinlinelarge|article-side-rail"
         "|date| print |popup|author-dropdown|tools|socialtools"
-        "|konafilter|KonaFilter|breadcrumbs| fn |wp-caption-text"
-        "|source|legende|ajoutVideo|timestamp|menu|story-feature wide|error"
+        "|konafilter|breadcrumbs| fn |wp-caption-text"
+        "|source|legende|ajoutvideo|timestamp|menu|story-feature wide|error"
         )
         self.regExNotRemoveNodes = ("and|no|article|body|column|main|shadow|commented")
         self.regexpNS = "http://exslt.org/regular-expressions"
@@ -73,7 +73,6 @@ class DocumentCleaner(object):
     def getNodesToDelete(self, doc):
         nodelist = []
         for node in doc:
-#            node.attrib['goose_attributes'] = ''
             if node.tag in self.bad_tags or isinstance(node,lxml.html.HtmlComment) or str(node.tag)[0] == '<':
                 nodelist.append(node)
                 continue
@@ -96,7 +95,7 @@ class DocumentCleaner(object):
             ids = ' '.join(ids).lower()
             node.attrib['goose_attributes'] = ids
 
-            if ids.find(" caption ") >= 0: 
+            if " caption " in ids: 
                 nodelist.append(node)
                 continue
             if node.tag in self.good_tags and len(node) == 0: continue;  # good top level nodes
@@ -105,7 +104,7 @@ class DocumentCleaner(object):
             good_word = match_obj.group() if match_obj is not None else ''
             match_obj = self.re_todel.search(ids)
             bad_word = match_obj.group() if match_obj is not None else ''
-            if (bad_word != '' and good_word == '') or (bad_word != '' and bad_word.find(good_word) >= 0):
+            if len(bad_word) and (not len(good_word) or good_word in bad_word):
                 nodelist.append(node)
                 continue 
             if 'mod-washingtonpostarticletext' in ids: # washingtonpost hack
@@ -162,7 +161,7 @@ class DocumentCleaner(object):
                     flag = 0; flag1 = 0; flag2 = 0; flag3 = 0
 	            for ldel in ldels:
 			if ldel == ldels[0]: flag += 1
-                        if len(ldel) > 3 or ldel.find(',') >= 0: flag1 = 1
+                        if len(ldel) > 3 or ',' in ldel: flag1 = 1
 			if ldel != '': flag2 = 1
                         if len(ldel) > 1: flag3 = 1
                     if flag2 == 0 and len(ldels) > 1: 

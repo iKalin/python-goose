@@ -30,6 +30,7 @@ import re
 goodInlineTags = set(['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var'])
 badInlineTags = set(['abbr','acronym','basefont','bdo','dfn','font','input','kbd','label','samp','select','span','textarea','sup'])
 goodBlockTags = set(['p','h1','h2','h3','h4','h5','h6','blockquote'])
+re_removeblanks = re.compile('[\t\r\n ]+')
 
 class Parser(object):
 
@@ -159,13 +160,8 @@ class Parser(object):
     def clearText(self, text):
         if text == None: return ''
         t = HTMLParser().unescape(text).strip(u'\t\r\n')
-        t = re.sub('[\t\r\n]',u' ',t)
-        rt = u''; ps = u''
-        for s in t:
-            if s != u' ' or ps != u' ': rt += s
-            ps = s
-        pars = rt.split(u'\ufffc')
-        return u'\n'.join(pars)
+        t = re_removeblanks.sub(u' ',t)
+        return t.replace(u'\ufffc',u'\n')
 
     @classmethod
     def getFormattedText(self, node, isTop = True):
@@ -184,7 +180,7 @@ class Parser(object):
         if not isTop: 
             node.tail = Parser.clearText(node.tail)
             text += node.tail
-        else: text = re.sub(u'[\u2028]',u'',text)
+        else: text = text.replace(u'\u2028',u'')
         if badInline and not isTop: node.drop_tag()
         return text
 

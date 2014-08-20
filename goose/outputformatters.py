@@ -53,10 +53,10 @@ class OutputFormatter(object):
 
     def convertToText(self,article):
         text = Parser.getFormattedText(self.topNode)
-        lines = text.split('\n')
-        text = ''
+        lines = text.split(u'\n')
+        text = u''
         for line in lines:
-            if re.search('[^ \xa0]',line): text += line + '\n'
+            if re.search('[^ \xa0]',line): text += line + u'\n'
         Parser.adjustTopNode(article)
         return text
 
