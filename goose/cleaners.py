@@ -31,6 +31,7 @@ class DocumentCleaner(object):
 
     def __init__(self):
 
+        # to remove: navbar
         self.regExRemoveNodes = (
         " side |combx|retweet|fontresize|mediaarticlerelated|menucontainer|navbar"
         "|comment|popularquestions|foot|footer|footnote"
@@ -38,8 +39,8 @@ class DocumentCleaner(object):
         "|tags|socialnetworking|socialnetworking|cnnstryhghlght"
         "|cnn_stryspcvbx| inset |pagetools|post-attributes"
         "|welcome_form|contenttools2|the_answers|rating"
-        "|communitypromo|runaroundleft|subscribe|vcard|articleheadings|articlead|articleimage|slideshowinlinelarge|article-side-rail"
-        "|date| print |popup|author-dropdown|tools|socialtools"
+        "|communitypromo|runaroundleft| subscribe |vcard|articleheadings|articlead|articleimage|slideshowinlinelarge|article-side-rail"
+        "| date | wndate | print |popup|author-dropdown|tools|socialtools"
         "|konafilter|breadcrumbs| fn |wp-caption-text"
         "|source|legende|ajoutvideo|timestamp|menu|story-feature wide|error"
         )
@@ -62,6 +63,7 @@ class DocumentCleaner(object):
 
     def clean(self, article):
         docToClean = article.doc
+#        print repr(Parser.nodeToString(docToClean))
         nodelist = self.getNodesToDelete(docToClean)
         for node in nodelist: Parser.remove(node)
         docToClean = self.removeListsWithLinks(docToClean)
@@ -105,8 +107,9 @@ class DocumentCleaner(object):
             match_obj = self.re_todel.search(ids)
             bad_word = match_obj.group() if match_obj is not None else ''
             if len(bad_word) and (not len(good_word) or good_word in bad_word):
-                nodelist.append(node)
-                continue 
+                if node.tag != 'nav' or bad_word != 'navbar' or not Parser.getElementsByTag(node,tag='article'):  # bogus article in nav case
+                    nodelist.append(node)
+                    continue 
             if 'mod-washingtonpostarticletext' in ids: # washingtonpost hack
                 self.aggregateBlocks(doc, '.mod-washingtonpostarticletext')
             nodelist += self.getNodesToDelete(node)

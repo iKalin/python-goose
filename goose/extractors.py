@@ -280,10 +280,8 @@ class ContentExtractor(object):
         nodesWithText = []
 
         for node in nodesToCheck:
-            nodeText = Parser.getText(node)
-            wordStats = self.stopwordsObj.getStopWordCount(nodeText)
-            highLinkDensity = self.isHighLinkDensity(node,nodeText)
-            if wordStats.getStopWordCount() > 2 and not highLinkDensity:
+            textLen,stopCount,isHighLink = self.getTextStats(node)
+            if stopCount > 2 and not isHighLink:
                 nodesWithText.append(node)
 
         numberOfNodes = len(nodesWithText)
@@ -312,9 +310,8 @@ class ContentExtractor(object):
                     if negscore > 40:
                         boostScore = 5.0
 
-            nodeText = Parser.getText(node)
-            wordStats = self.stopwordsObj.getStopWordCount(nodeText)
-            upscore = int(wordStats.getStopWordCount() + boostScore)
+            textLen,stopCount,isHighLink = self.getTextStats(node)
+            upscore = int(stopCount + boostScore)
 
             # parent node
             parentNode = Parser.getParent(node)
@@ -388,13 +385,25 @@ class ContentExtractor(object):
             if currentNode.tag == para:
                 if stepsAway >= maxStepsAwayFromNode:
                     return 0
-                paraText = Parser.getText(currentNode)
-                wordStats = self.stopwordsObj.getStopWordCount(paraText)
-                if wordStats.getStopWordCount() > minimumStopWordCount:
+                textLen,stopCount,isHighLink = self.getTextStats(currentNode)
+                if stopCount > minimumStopWordCount:
                     return 1
                 stepsAway += 1
         if paraStops > 20: return 0.5
         return 0
+
+    def getTextStats(self, node):
+        if "gravityStats" in node.attrib:
+            textLen,stopCount,isHighLink = node.attrib["gravityStats"].split(',')
+            return int(textLen),int(stopCount),int(isHighLink)
+        nodeText = Parser.getText(node)
+        wordStats = self.stopwordsObj.getStopWordCount(nodeText)
+        highLinkDensity = self.isHighLinkDensity(node,nodeText)
+        textLen = len(nodeText)
+        stopCount = wordStats.getStopWordCount()
+        isHighLink = int(highLinkDensity)
+        node.attrib["gravityStats"] = "%s,%s,%s" % (str(textLen),str(stopCount),str(isHighLink))
+        return textLen,stopCount,isHighLink
 
     def walkSiblings(self, node):
         currentSibling = Parser.previousSibling(node)
@@ -436,17 +445,13 @@ class ContentExtractor(object):
                 ps = []
                 for firstParagraph in potentialParagraphs:
                     path = Parser.getPath(firstParagraph)
-                    text = Parser.getText(firstParagraph)
+                    textLen,stopCount,isHighLink = self.getTextStats(firstParagraph)
                     if path == good_path and not Parser.hasChildTag(firstParagraph, 'a'):
                         ps.insert(0,firstParagraph)
                         continue
-                    if len(text) > 0:
-                        wordStats = self.stopwordsObj.getStopWordCount(text)
-                        paragraphScore = wordStats.getStopWordCount()
-                        siblingBaseLineScore = float(.30)
-                        highLinkDensity = self.isHighLinkDensity(firstParagraph,text)
-                        score = float(baselineScoreForSiblingParagraphs * siblingBaseLineScore)
-                        if score < paragraphScore and not highLinkDensity:
+                    if textLen > 0:
+                        score = float(baselineScoreForSiblingParagraphs * 0.30)
+                        if score < stopCount and not isHighLink:
                             ps.insert(0,firstParagraph)
                 return ps
 
@@ -466,12 +471,10 @@ class ContentExtractor(object):
         nodesToCheck = Parser.getElementsByTag(topNode, tag='p')
 
         for node in nodesToCheck:
-            nodeText = Parser.getText(node)
-            wordStats = self.stopwordsObj.getStopWordCount(nodeText)
-            highLinkDensity = self.isHighLinkDensity(node,nodeText)
-            if wordStats.getStopWordCount() > 2 and not highLinkDensity:
+            textLen,stopCount,isHighLink = self.getTextStats(node)
+            if stopCount > 2 and not isHighLink:
                 numberOfParagraphs += 1
-                scoreOfParagraphs += wordStats.getStopWordCount()
+                scoreOfParagraphs += stopCount
 
         if numberOfParagraphs > 0:
             base = scoreOfParagraphs / numberOfParagraphs
@@ -542,17 +545,6 @@ class ContentExtractor(object):
             return None
         return int(grvScoreString)
 
-    def getNodesToCheck(self, doc):
-        """\
-        returns a list of nodes we want to search
-        on like paragraphs and tables
-        """
-        nodesToCheck = []
-        for tag in ['p', 'pre', 'td', 'font']:
-            items = Parser.getElementsByTag(doc, tag=tag)
-            nodesToCheck += items
-        return nodesToCheck
-
     def isTableTagAndNoParagraphsExist(self, e):
         return False
         subParagraphs = Parser.getElementsByTag(e, tag='p')
@@ -568,7 +560,7 @@ class ContentExtractor(object):
     def isNodeScoreThreshholdMet(self, node, e):
         topNodeScore = self.getScore(node)
         currentNodeScore = self.getScore(e)
-        thresholdScore = float(topNodeScore * .08)
+        thresholdScore = topNodeScore * 0.08
 
         if topNodeScore < 0 and currentNodeScore < 0:
             return True
@@ -577,11 +569,11 @@ class ContentExtractor(object):
             return True
 
         if e.tag in ['ul']:
-            eStats = self.stopwordsObj.getStopWordCount(Parser.getText(e))
-            if eStats.getStopWordCount() > 5:
+            textLen,stopCount,isHighLink = self.getTextStats(e)
+            if stopCount > 5:
                 return True
 
-        if (currentNodeScore < thresholdScore) and e.tag != 'td':
+        if currentNodeScore < thresholdScore and e.tag != 'td':
             return False
         return True
 
@@ -599,7 +591,8 @@ class ContentExtractor(object):
         for e in node:
             if e.tag in ['h2','h3','h4']: continue
             if e.tag not in ['p','pre','font']:
-                if self.isHighLinkDensity(e, Parser.getText(e)) \
+                textLen,stopCount,isHighLink = self.getTextStats(e)
+                if isHighLink \
                     or self.isTableTagAndNoParagraphsExist(e) \
                     or not self.isNodeScoreThreshholdMet(node, e):
                     Parser.remove(e)
