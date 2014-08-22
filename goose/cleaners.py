@@ -31,11 +31,11 @@ class DocumentCleaner(object):
 
     def __init__(self):
 
-        # to remove: navbar
+        # to remove: navbar, scroll
         self.regExRemoveNodes = (
         " side |combx|retweet|fontresize|mediaarticlerelated|menucontainer|navbar"
-        "|comment|popularquestions|foot|footer|footnote"
-        "|cnn_strycaptiontxt|cnn_html_slideshow|links|meta |scroll|shoutbox|sponsor"
+        "|comment|popularquestions|foot|footer|footnote| credit "
+        "|cnn_strycaptiontxt|cnn_html_slideshow|links|meta |scroller|shoutbox|sponsor"
         "|tags|socialnetworking|socialnetworking|cnnstryhghlght"
         "|cnn_stryspcvbx| inset |pagetools|post-attributes"
         "|welcome_form|contenttools2|the_answers|rating"

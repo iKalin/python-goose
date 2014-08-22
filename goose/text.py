@@ -96,10 +96,10 @@ class StopWords(object):
                 path = 'text/stopwords-%s.txt' % l
                 try:
                     StopWords._cached_stop_words[l] = set(FileHelper.loadResourceFile(path).splitlines())
-                except: pass
-            if l in StopWords._cached_stop_words:
-                if self.STOP_WORDS is None: self.STOP_WORDS = StopWords._cached_stop_words[l]
-                else: self.STOP_WORDS |= StopWords._cached_stop_words[l]
+                except:
+                    StopWords._cached_stop_words[l] = set()
+            if self.STOP_WORDS is None: self.STOP_WORDS = StopWords._cached_stop_words[l]
+            else: self.STOP_WORDS |= StopWords._cached_stop_words[l]
 
     def removePunctuation(self, content):
         if isinstance(content, unicode):

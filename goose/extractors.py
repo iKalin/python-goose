@@ -172,30 +172,35 @@ class ContentExtractor(object):
 
     def getMetaLang(self, article):
         """\
-        Extract content language from meta
+        Extract content languages from metas
         """
         # we have a lang attribute in html
+        meta_langs = []
         attr = Parser.getAttribute(article.doc, attr='lang')
-        if attr is None:
-            # look up for a Content-Language in meta
-            items = [
-                {'tag': 'meta', 'attr': 'http-equiv', 'value': 'content-language'},
-                {'tag': 'meta', 'attr': 'name', 'value': 'lang'}
-            ]
-            for item in items:
-                meta = Parser.getElementsByTag(article.doc, **item)
-                if meta:
-                    attr = Parser.getAttribute(meta[0], attr='content')
-                    break
+        if attr is not None: meta_langs += attr.replace(' ','').lower().split(',')
+        # look up for a Content-Language in meta
+        attrs = {
+            'http-equiv':'content-language',
+            'name':'lang',
+            'name':'og:lang',
+        }
+        head = article.doc.find('head')
+        if head is not None:
+            metas = Parser.getElementsByTag(head, tag='meta')
+            for meta in metas:
+                for attr in attrs:
+                    if meta.attrib.get(attr,'').lower().startswith(attrs[attr]):
+                        langs = meta.attrib.get('content',None)
+                        if langs is not None: meta_langs += langs.replace(' ','').lower().split(',')
+                if 'lang' in meta.attrib: meta_langs += meta.attrib['lang'].replace(' ','').lower().split(',')
 
-        if attr:
-            value = attr[:2]
-            if re.search(RE_LANG, value):
-#                if isinstance(self.language,str): self.language = [self.language]
-#                self.language.append(value.lower())
-                return value.lower()
+        result = []
+        for lang in meta_langs:
+            lang = lang[:2]
+            if re.search(RE_LANG, lang):
+                result.append(lang)
 
-        return None
+        return result
 
     def getMetaContent(self, doc, metaName):
         """\
