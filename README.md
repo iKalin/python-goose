@@ -25,6 +25,9 @@ The python version was rewrite by:
 
  - Xavier Grangier (Recrutae.com)
 
+## Online Demo
+http://string.velocityweather.com/pgapi?form=yes
+
 ##Licensing
 If you find Goose useful or have issues please drop me a line, I'd love to hear how you're using it or what features should be improved
 
