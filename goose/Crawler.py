@@ -31,6 +31,7 @@ from goose.outputformatters import StandardOutputFormatter
 from goose.parsers import Parser
 from goose.images.UpgradedImageExtractor import UpgradedImageIExtractor
 from goose.network import HtmlFetcher
+from goose.text import get_languages
 
 
 class CrawlCandidate(object):
