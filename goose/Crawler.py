@@ -74,8 +74,9 @@ class Crawler(object):
         # article.publishDate = config.publishDateExtractor.extract(doc)
         # article.additionalData = config.getAdditionalDataExtractor.extract(doc)
         article.metaLang = extractor.getMetaLang(article)
-        if article.metaLang is not None and type(self.config.targetLanguage) is list and article.metaLang not in self.config.targetLanguage: 
-            self.config.targetLanguage.append(article.metaLang)
+        if not isinstance(self.config.targetLanguage,list): self.config.targetLanguage = [self.config.targetLanguage]
+        if article.metaLang:
+            self.config.targetLanguage.extend(article.metaLang)
             extractor.setLanguage(self.config.targetLanguage)
         article.metaFavicon = extractor.getMetaFavicon(article)
         article.metaDescription = extractor.getMetaDescription(article)
@@ -83,8 +84,13 @@ class Crawler(object):
         article.canonicalLink = extractor.getCanonicalLink(article)
         article.domain = extractor.getDomain(article.finalUrl)
         article.tags = extractor.extractTags(article)
-        # # before we do any calcs on the body itself let's clean up the document
+        # before we do any calcs on the body itself let's clean up the document
         article.doc = docCleaner.clean(article)
+
+        # detects languages by unicode range
+        langs = get_languages(Parser.getText(article.doc))
+        self.config.targetLanguage.extend(langs)
+        extractor.setLanguage(self.config.targetLanguage)
 
         # big stuff
         article.h1 = ''

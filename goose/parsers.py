@@ -138,12 +138,10 @@ class Parser(object):
             if node.tail:
                 prev = node.getprevious()
                 if prev is None:
-                    if not parent.text:
-                        parent.text = u''
+                    if parent.text is None: parent.text = u''
                     parent.text += u' ' + node.tail
                 else:
-                    if not prev.tail:
-                        prev.tail = u''
+                    if prev.tail is None: prev.tail = u''
                     prev.tail += u' ' + node.tail
             node.clear()
             parent.remove(node)
@@ -155,11 +153,11 @@ class Parser(object):
     @classmethod
     def getText(self, node):
         txts = [i for i in node.itertext()]
-        return innerTrim(u' '.join(txts).strip())
+        return innerTrim(u' '.join(txts))
 
     @classmethod
     def clearText(self, text):
-        if text == None: return ''
+        if text is None: return ''
         t = unescape(text).strip(u'\t\r\n')
         t = re_removeblanks.sub(u' ',t)
         return t.replace(u'\ufffc',u'\n')
@@ -242,7 +240,7 @@ class Parser(object):
 
     @classmethod
     def adjustTopNode(self, article):
-        if article.topNode.getparent() == None:
+        if article.topNode.getparent() is None:
             e = lxml.html.HtmlElement(); e.tag = 'div';
             e.append(article.topNode)
         Parser.customizeBlocks(article.topNode)
@@ -252,7 +250,7 @@ class Parser(object):
     def removeHead(self,n):
         pr = n.getprevious()
         p = n.getparent()
-        while pr != None:
+        while pr is not None:
             np = pr; pr = pr.getprevious()
             p.remove(np)
         p.text = None
@@ -265,7 +263,7 @@ class Parser(object):
             return 0
         lines -= 1;
         if lines <= 0: return 0
-        if n.text != None and len(n) == 0 and n.tag not in goodInlineTags and n.tag not in badInlineTags:
+        if n.text is not None and len(n) == 0 and n.tag not in goodInlineTags and n.tag not in badInlineTags:
             text = Parser.clearText(n.text).strip()
             if len(text) > 5:
                 if (title == text or (len(text) > 20 and title.find(text) >= 0)) or (h1 == text or (len(text) > 20 and h1.find(text) >= 0)): 
@@ -285,8 +283,8 @@ class Parser(object):
     @classmethod
     def isEmpty(self,e):
         if len(e) == 0 and e.tag != 'br':
-            if (e.text is None or re.search('[^ \xa0]',e.text) == None): 
-                if (e.tail is None or re.search('[^ \xa0]',e.tail) == None):
+            if (e.text is None or re.search('[^ \xa0]',e.text) is None): 
+                if (e.tail is None or re.search('[^ \xa0]',e.tail) is None):
                     return True
         return False
 
@@ -324,16 +322,20 @@ class Parser(object):
                 return
             Parser.customizeBlocks(n, False)
             np = n; n = n.getnext()
+#            if n is not None and np.tag == 'br' and n.tag == 'br':
+#                if np.tail is None or re.search('[^ \xa0]',np.tail) is None:
+#                    Parser.remove(np)
+#                    continue
             if np.tag == 'br' and p.tag == 'p':
                 ni = p.index(np)
-                if ni == 0 and (p.text is None or re.search('[^ \xa0]',p.text) == None): 
+                if ni == 0 and (p.text is None or re.search('[^ \xa0]',p.text) is None): 
                     Parser.remove(np)
                     continue
-                elif ni == len(p) - 1 and (np.tail is None or re.search('[^ \xa0]',np.tail) == None): 
+                elif ni == len(p) - 1 and (np.tail is None or re.search('[^ \xa0]',np.tail) is None): 
                     Parser.remove(np)
                     continue
             if np.tag in goodInlineTags:
                 if np.text is None and len(np) == 0: Parser.remove(np)
-            elif n != None and n.tag != 'br':
+            elif n is not None and n.tag != 'br':
                 if Parser.isEmpty(np) and n.tag not in goodInlineTags: np.drop_tag()
         return

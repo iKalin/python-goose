@@ -31,10 +31,10 @@ class DocumentCleaner(object):
 
     def __init__(self):
 
-        # to remove: navbar, scroll
+        # to remove: navbar, scroll, source
         self.regExRemoveNodes = (
         " side |combx|retweet|fontresize|mediaarticlerelated|menucontainer|navbar"
-        "|comment|popularquestions|foot|footer|footnote| credit "
+        "|comment|popularquestions|copyrighttext | sitemap | credit |footnote "
         "|cnn_strycaptiontxt|cnn_html_slideshow|links|meta |scroller|shoutbox|sponsor"
         "|tags|socialnetworking|socialnetworking|cnnstryhghlght"
         "|cnn_stryspcvbx| inset |pagetools|post-attributes"
@@ -42,7 +42,7 @@ class DocumentCleaner(object):
         "|communitypromo|runaroundleft| subscribe |vcard|articleheadings|articlead|articleimage|slideshowinlinelarge|article-side-rail"
         "| date | wndate | print |popup|author-dropdown|tools|socialtools"
         "|konafilter|breadcrumbs| fn |wp-caption-text"
-        "|source|legende|ajoutvideo|timestamp|menu|story-feature wide|error"
+        "|legende|ajoutvideo|timestamp|menu|story-feature wide|error"
         )
         self.regExNotRemoveNodes = ("and|no|article|body|column|main|shadow|commented")
         self.regexpNS = "http://exslt.org/regular-expressions"
@@ -66,6 +66,7 @@ class DocumentCleaner(object):
 #        print repr(Parser.nodeToString(docToClean))
         nodelist = self.getNodesToDelete(docToClean)
         for node in nodelist: Parser.remove(node)
+
         docToClean = self.removeListsWithLinks(docToClean)
         docToClean = self.removeDropCaps(docToClean)
         docToClean = self.cleanUpSpanTagsInParagraphs(docToClean)
@@ -261,7 +262,8 @@ class DocumentCleaner(object):
             else:
                 replaceNodes = self.getReplacementNodes(div)
                 text = div.tail
-                attrib = div.attrib
+                attrib = {}
+                for a in div.attrib: attrib[a] = div.attrib[a]
                 div.clear()
                 div.extend(replaceNodes)
                 div.tail = text

@@ -22,6 +22,8 @@ limitations under the License.
 """
 import re
 import string
+from array import array
+import os.path
 from goose.utils import FileHelper
 from goose.utils.encoding import smart_unicode
 from goose.utils.encoding import smart_str
@@ -47,6 +49,71 @@ def encodeValue(value):
         value = string_org
     return value
 
+lang_codes = array('c','\x00'*65536)
+lang_map = {}
+lang_num = 1
+unilang2iso = {
+    'Greek':'el', 'Georgian':'ka', 'Armenian':'hy', 'Arabic':'ar', 'Telugu':'te',
+    'Thai':'th', 'Mongolian':'mn', 'Avestan':'ae', 'Bengali':'bn', 'Tamil':'ta',
+    'Sinhala':'si', 'Khmer':'km', 'Sundanese':'su', 'Hebrew':'he', 'Oriya':'or',
+    'Malayalam':'ml', 'Tibetan':'bo', 'Tagalog':'tl', 'Gujarati':'gu', 'Kannada':'kn',
+    'Lao':'lo', 'Javanese':'jv',
+}
+
+def load_unicode_script():
+    global lang_codes, lang_map, lang_num
+    data_path = os.path.join(os.path.dirname(__file__), "resources/unicode/Scripts.txt")
+    f = open(data_path,'rb')
+    lang_map_r = {}
+    for l in f:
+        if l[0] == "#" or len(l) < 10: continue
+        spl = l.partition(';')
+        if not spl[2]: continue
+        lang = spl[2].partition("#")[0].strip()
+        if lang not in lang_map_r:
+            lang_map_r[lang] = chr(lang_num)
+            lang_num += 1
+        lang = lang_map_r[lang]
+        urange = spl[0].strip().partition("..")
+        bc = int(urange[0],16)
+        if bc > 65535: continue
+        if not urange[2]: ec = bc + 1
+        else: ec = int(urange[2],16) + 1
+        for c in xrange(bc,ec):
+            lang_codes[c] = lang
+    f.close()
+    lang_codes = lang_codes.tostring()
+    for l in lang_map_r: lang_map[lang_map_r[l]] = l
+    lang_map['\x00'] = "undefined"
+load_unicode_script()
+
+def get_languages(txt):
+    langs = {}
+    lang_match = [0]*lang_num
+    txt_len = len(txt)
+    for c in txt:
+        code = ord(c)
+        if code > 65535: continue
+        lang_match[ord(lang_codes[code])] += 1
+    lang_match = [(lang_match[i],chr(i)) for i in xrange(lang_num)]
+    lang_match.sort()
+    lang_match.reverse()
+    for l in lang_match:
+        if l[0] < 10 or l[0] < txt_len*0.01: break
+        txt_len -= l[0]
+        langs[lang_map[l[1]]] = l[0]
+    result = []
+    # cjk detection
+    chinese = langs.get('Han',0)
+    japan = langs.get('Hiragana',0) + langs.get('Katakana',0)
+    korean = langs.get('Hangul',0)
+    if korean and korean > chinese*0.1 and korean > japan: result.append('ko')
+    elif japan and japan > chinese*0.1 and japan > korean: result.append('ja')
+    elif chinese: result.append('zh')
+    # some other unicode languages detection
+    for k in langs:
+        if k in unilang2iso: result.append(unilang2iso[k])
+    return result
 
 class WordStats(object):
 
@@ -90,12 +157,16 @@ class StopWords(object):
         # to generate dynamic path for file to load
         if isinstance(language,str): language = [language]
         language = set(language)
+        self.char_split = False
+        if 'zh' in language or 'ko' in language or 'ja' in language: self.char_split = True
         self.STOP_WORDS = None
         for l in language:
             if not l in StopWords._cached_stop_words:
                 path = 'text/stopwords-%s.txt' % l
                 try:
-                    StopWords._cached_stop_words[l] = set(FileHelper.loadResourceFile(path).splitlines())
+                    _stop_list = FileHelper.loadResourceFile(path)
+                    if l in ['zh','ko','ja']: _stop_list = _stop_list.decode('utf-8')
+                    StopWords._cached_stop_words[l] = set(_stop_list.splitlines())
                 except:
                     StopWords._cached_stop_words[l] = set()
             if self.STOP_WORDS is None: self.STOP_WORDS = StopWords._cached_stop_words[l]
@@ -120,6 +191,11 @@ class StopWords(object):
         for w in candidateWords:
             if w in self.STOP_WORDS:
                 overlappingStopWords.append(w)
+
+        if self.char_split:
+            for w in content:
+                if w in self.STOP_WORDS:
+                    overlappingStopWords.append(w)
 
         ws.setWordCount(len(candidateWords))
         ws.setStopWordCount(len(overlappingStopWords))
