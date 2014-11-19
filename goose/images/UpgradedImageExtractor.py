@@ -365,12 +365,12 @@ class UpgradedImageIExtractor(ImageExtractor):
 
         for knownName in KNOWN_IMG_DOM_NAMES:
             known = Parser.getElementById(self.article.rawDoc, knownName)
-            if not known:
+            if known is None:
                 known = Parser.getElementsByTag(self.article.rawDoc,
                                                 attr='class', value=knownName)
-                if known:
-                    known = known[0]
-            if known:
+                known = known[0] if known else None
+
+            if known is not None:
                 mainImage = Parser.getElementsByTag(known, tag='img')
                 if mainImage:
                     knownImage = mainImage[0]

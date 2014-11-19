@@ -29,7 +29,7 @@ import re
 
 goodInlineTags = set(['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var'])
 badInlineTags = set(['abbr','acronym','basefont','bdo','dfn','font','input','kbd','label','samp','select','span','textarea','sup'])
-goodBlockTags = set(['p','h1','h2','h3','h4','h5','h6','blockquote'])
+goodBlockTags = set(['p','a','h1','h2','h3','h4','h5','h6','blockquote'])
 re_removeblanks = re.compile('[\t\r\n ]+')
 unescape = HTMLParser().unescape
 
@@ -289,6 +289,20 @@ class Parser(object):
         return False
 
     @classmethod
+    def splitBlock(self, p, n):
+        ni = p.index(n)
+        t = p.tail; p.tail = None
+        p.remove(n)
+        p.addnext(n)
+        if n.tag not in goodBlockTags: n.tag = 'p'
+        e = lxml.html.HtmlElement(); e.tag = 'div'; e.tail = t; e.text = n.tail; n.tail = None
+        n.addnext(e)
+        lst = list(p)[ni:]
+        for el in lst:
+            p.remove(el)
+            e.append(el)
+
+    @classmethod
     def customizeBlocks(self, p, mc = True):
         if p.tag not in goodBlockTags and p.tag not in goodInlineTags and p.tag != 'br': p.tag = 'p'
         if p.text is not None: 
@@ -304,23 +318,19 @@ class Parser(object):
                 lst = pars[1:]; lst.reverse()
                 pp = p.getparent()
                 Parser.insertBrs(pp,pp.index(p)+1,lst)
-        if len(p) == 0: return
+        if len(p) == 0: return False
         n = list(p)[0]
+        split_parent = False
         while n is not None:
-            if not mc and n.tag not in goodInlineTags and p.tag != 'blockquote' and n.tag != 'br': # block in text block, fix needed
-                ni = p.index(n)
-                t = p.tail; p.tail = None
-                p.remove(n)
-                p.addnext(n)
-                if n.tag not in goodBlockTags: n.tag = 'p'
-                e = lxml.html.HtmlElement(); e.tag = 'div'; e.tail = t; e.text = n.tail; n.tail = None
-                n.addnext(e)
-                lst = list(p)[ni:]
-                for el in lst:
-                    p.remove(el)
-                    e.append(el)
-                return
-            Parser.customizeBlocks(n, False)
+            if not mc and n.tag not in goodInlineTags and p.tag not in ('blockquote','a') and n.tag != 'br': # block in text block, fix needed
+                Parser.splitBlock(p, n)
+                return split_parent
+            if not mc and n.tag not in goodInlineTags and p.tag in ('blockquote','a') and n.tag != 'br':
+                pp = p.getparent()
+                if pp.tag == 'p': split_parent = True
+            if Parser.customizeBlocks(n, False) and not mc:
+                Parser.splitBlock(p, n)
+                return split_parent
             np = n; n = n.getnext()
 #            if n is not None and np.tag == 'br' and n.tag == 'br':
 #                if np.tail is None or re.search('[^ \xa0]',np.tail) is None:
@@ -338,4 +348,4 @@ class Parser(object):
                 if np.text is None and len(np) == 0: Parser.remove(np)
             elif n is not None and n.tag != 'br':
                 if Parser.isEmpty(np) and n.tag not in goodInlineTags: np.drop_tag()
-        return
+        return split_parent
