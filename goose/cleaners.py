@@ -55,7 +55,7 @@ class DocumentCleaner(object):
         self.re_notdel = re.compile(self.regExNotRemoveNodes.lower())
         self.re_dontconvert = re.compile("gallery|photo|slide|caption")
         self.goodInlineTags = set(['b','strong','em','i','a','img','big','cite','code','q','s','small','strike','sub','tt','u','var'])
-        self.bad_tags = set(['script','noscript','style','option','iframe','noframe'])
+        self.bad_tags = set(['script','style','option','iframe','noframe'])
         self.good_tags = set(['p','span','b','h1','h2','h3','h4','h5'])
         self.child_tags = set(['a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'])
         self.parser = HTMLParser()
@@ -77,6 +77,9 @@ class DocumentCleaner(object):
         nodelist = []
         for node in doc:
             if node.tag in self.bad_tags or isinstance(node,lxml.html.HtmlComment) or str(node.tag)[0] == '<':
+                nodelist.append(node)
+                continue
+            if node.tag == 'noscript' and len(node) < 2:
                 nodelist.append(node)
                 continue
             if node.tag == 'span' and len(node) == 0 and (node.text == None or len(node.text) < 30):
