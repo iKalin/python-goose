@@ -114,7 +114,7 @@ class ImageUtils(object):
     @classmethod
     def readExistingFileInfo(self, linkhash, imageSrc, config):
         localImageName = self.getLocalFileName(linkhash, imageSrc, config)
-        if ImageUtils.details.has_key(localImageName):
+        if localImageName in ImageUtils.details:
             identify = config.imagemagickIdentifyPath
             imageDetails = ImageUtils.details[localImageName]
             fileExtension = self.getFileExtensionName(imageDetails)
