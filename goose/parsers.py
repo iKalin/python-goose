@@ -266,7 +266,7 @@ class Parser(object):
         if n.text is not None and len(n) == 0 and n.tag not in goodInlineTags and n.tag not in badInlineTags:
             text = Parser.clearText(n.text).strip()
             if len(text) > 5:
-                if (title == text or (len(text) > 20 and title.find(text) >= 0)) or (h1 == text or (len(text) > 20 and h1.find(text) >= 0)): 
+                if (title == text or (len(text) > 20 and text in title)) or (h1 == text or (len(text) > 20 and text in h1)): 
                     Parser.removeHead(n)
                     return 0
         for c in n:

@@ -211,8 +211,8 @@ class ContentExtractor(object):
         if meta is not None and len(meta) > 0:
             content = meta[0].attrib.get('content')
 
-        if content:
-            return content.strip()
+        if content is not None:
+            return Parser.clearText(content.strip())
 
         return ''
 
@@ -265,7 +265,7 @@ class ContentExtractor(object):
 
         tags = []
         for el in elements:
-            tag = Parser.getText(el)
+            tag = Parser.clearText(Parser.getText(el).strip())
             if tag:
                 tags.append(tag)
 
@@ -592,6 +592,7 @@ class ContentExtractor(object):
            targetNode.insert(0, e)
 
         node = self.addSiblings(targetNode)
+
         for e in node:
             if e.tag in ['h2','h3','h4']: continue
             if e.tag not in ['p','pre','font']:
@@ -604,6 +605,7 @@ class ContentExtractor(object):
         for e in reversed(node):
             if e.tag not in ['h2','h3','h4']: break
             Parser.remove(e)
+
         return node
 
 class StandardContentExtractor(ContentExtractor):

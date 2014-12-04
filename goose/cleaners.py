@@ -31,20 +31,20 @@ class DocumentCleaner(object):
 
     def __init__(self):
 
-        # to remove: navbar, scroll, source
+        # to remove: navbar, scroll, source, fn
         self.regExRemoveNodes = (
         " side |combx|retweet|fontresize|mediaarticlerelated|menucontainer|navbar"
         "|comment|popularquestions|copyrighttext | sitemap | credit |footnote "
         "|cnn_strycaptiontxt|cnn_html_slideshow|links|meta |scroller|shoutbox|sponsor"
-        "|tags|socialnetworking|socialnetworking|cnnstryhghlght"
+        "|tags|socialnetworking|socialnetworking|cnnstryhghlght|feedbackentry"
         "|cnn_stryspcvbx| inset |pagetools|post-attributes"
         "|welcome_form|contenttools2|the_answers|rating"
         "|communitypromo|runaroundleft| subscribe |vcard|articleheadings|articlead|articleimage|slideshowinlinelarge|article-side-rail"
         "| date | wndate | print |popup|author-dropdown|tools|socialtools"
-        "|konafilter|breadcrumbs| fn |wp-caption-text"
+        "|konafilter|breadcrumbs|wp-caption-text"
         "|legende|ajoutvideo|timestamp|menu|story-feature wide|error"
         )
-        self.regExNotRemoveNodes = ("and|no|article|body|column|main|shadow|commented")
+        self.regExNotRemoveNodes = ("and|no|article|body|column|main|shadow|commented|content|author")
         self.regexpNS = "http://exslt.org/regular-expressions"
         self.divToPElementsPattern = r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)"
         self.tabsAndNewLinesReplcesments = ReplaceSequence()\
@@ -63,13 +63,11 @@ class DocumentCleaner(object):
 
     def clean(self, article):
         docToClean = article.doc
-#        print repr(Parser.nodeToString(docToClean))
         nodelist = self.getNodesToDelete(docToClean)
         for node in nodelist: Parser.remove(node)
 
         docToClean = self.removeListsWithLinks(docToClean)
         docToClean = self.removeDropCaps(docToClean)
-        docToClean = self.cleanUpSpanTagsInParagraphs(docToClean)
         docToClean = self.convertDivsToParagraphs(docToClean, ('div','dl'))
         return docToClean
 
@@ -85,7 +83,7 @@ class DocumentCleaner(object):
             if node.tag == 'span' and len(node) == 0 and (node.text == None or len(node.text) < 30):
                 node.drop_tag()
                 continue
-            if node.tag == 'div' and node.getparent().tag == 'span': node.getparent().tag = 'div'  # convert span to div
+            if node.tag == 'div' and doc.tag == 'span': doc.tag = 'div'  # convert span to div
             if node.tag == 'br':  # retain line breaks
                 node.tail = u'\ufffc ' + node.tail if node.tail is not None else u'\ufffc'
                 nodelist.append(node)
@@ -117,6 +115,9 @@ class DocumentCleaner(object):
             if 'mod-washingtonpostarticletext' in ids: # washingtonpost hack
                 self.aggregateBlocks(doc, '.mod-washingtonpostarticletext')
             nodelist += self.getNodesToDelete(node)
+        parent = doc.getparent()
+        if doc.tag == 'span':
+            if parent.tag == 'p' or (len(parent) == 1 and parent.tag in ('div','span')): doc.drop_tag()
         return nodelist
 
     def aggregateBlocks(self, doc, selector):
@@ -208,12 +209,6 @@ class DocumentCleaner(object):
             naughtyList = doc.xpath(reg, namespaces={'re': self.regexpNS})
             for node in naughtyList:
                 Parser.remove(node)
-        return doc
-
-    def cleanUpSpanTagsInParagraphs(self, doc):
-        spans = doc.cssselect('p > span')
-        for item in spans:
-            item.drop_tag()
         return doc
 
     def getReplacementNodes(self, div):

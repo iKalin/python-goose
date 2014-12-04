@@ -180,7 +180,7 @@ class UpgradedImageIExtractor(ImageExtractor):
             fileExtension = locallyStoredImage.fileExtension
 
             if fileExtension != '.gif' or fileExtension != 'NA':
-                if (depthLevel >= 1 and locallyStoredImage.width > 300) or depthLevel < 1:
+                if (depthLevel >= 1 and (width > 250 or height > 200)) or depthLevel < 1:
                     if not self.isBannerDimensions(width, height):
                         if width > MIN_WIDTH:
                             sequenceScore = float(1.0 / cnt)
@@ -195,7 +195,6 @@ class UpgradedImageIExtractor(ImageExtractor):
                                 totalScore = sequenceScore * areaDifference
 
                             imageResults.update({locallyStoredImage: totalScore})
-                            cnt += 1
                             cnt += 1
         return imageResults
 
