@@ -174,7 +174,7 @@ class StopWords(object):
 
     def removePunctuation(self, content):
         if isinstance(content, unicode):
-            content = content..replace('\ufffc', ' ').replace('\u00a0', ' ').encode('utf-8')
+            content = content.replace('\ufffc', ' ').replace('\u00a0', ' ').encode('utf-8')
         return content.translate(TRANS_TABLE, '')
 
     def candiate_words(self, stripped_input):
