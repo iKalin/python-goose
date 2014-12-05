@@ -174,7 +174,7 @@ class StopWords(object):
 
     def removePunctuation(self, content):
         if isinstance(content, unicode):
-            content = content.encode('utf-8')
+            content = content..replace('\ufffc', ' ').replace('\u00a0', ' ').encode('utf-8')
         return content.translate(TRANS_TABLE, '')
 
     def candiate_words(self, stripped_input):
@@ -185,7 +185,7 @@ class StopWords(object):
             return WordStats()
         ws = WordStats()
         strippedInput = self.removePunctuation(content)
-        strippedInput = strippedInput.replace('\xc2\xa0',' ').lower()
+        strippedInput = strippedInput.lower()
         candidateWords = self.candiate_words(strippedInput)
         overlappingStopWords = []
         for w in candidateWords:

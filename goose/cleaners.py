@@ -85,7 +85,7 @@ class DocumentCleaner(object):
                 continue
             if node.tag == 'div' and doc.tag == 'span': doc.tag = 'div'  # convert span to div
             if node.tag == 'br':  # retain line breaks
-                node.tail = u'\ufffc ' + node.tail if node.tail is not None else u'\ufffc'
+                node.tail = u'\ufffc' + node.tail if node.tail is not None else u'\ufffc'
                 nodelist.append(node)
                 continue
             if node.tag in ['body']:
