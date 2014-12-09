@@ -45,12 +45,6 @@ class DocumentCleaner(object):
         "|legende|ajoutvideo|timestamp|menu|story-feature wide|error"
         )
         self.regExNotRemoveNodes = ("and|no|article|body|column|main|shadow|commented|content|author")
-        self.regexpNS = "http://exslt.org/regular-expressions"
-        self.divToPElementsPattern = r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)"
-        self.tabsAndNewLinesReplcesments = ReplaceSequence()\
-                                            .create("\n", "\n\n")\
-                                            .append("\t")\
-                                            .append("^\\s+$")
         self.re_todel = re.compile(self.regExRemoveNodes.lower())
         self.re_notdel = re.compile(self.regExNotRemoveNodes.lower())
         self.re_dontconvert = re.compile("gallery|photo|slide|caption")
@@ -67,7 +61,6 @@ class DocumentCleaner(object):
         for node in nodelist: Parser.remove(node)
 
         docToClean = self.removeListsWithLinks(docToClean)
-        docToClean = self.removeDropCaps(docToClean)
         docToClean = self.convertDivsToParagraphs(docToClean, ('div','dl'))
         return docToClean
 
@@ -80,7 +73,7 @@ class DocumentCleaner(object):
             if node.tag == 'noscript' and len(node) < 2:
                 nodelist.append(node)
                 continue
-            if node.tag == 'span' and len(node) == 0 and (node.text == None or len(node.text) < 30):
+            if node.tag == 'span' and len(node) == 0 and (node.text is None or len(node.text) < 30):
                 node.drop_tag()
                 continue
             if node.tag == 'div' and doc.tag == 'span': doc.tag = 'div'  # convert span to div
@@ -115,9 +108,12 @@ class DocumentCleaner(object):
             if 'mod-washingtonpostarticletext' in ids: # washingtonpost hack
                 self.aggregateBlocks(doc, '.mod-washingtonpostarticletext')
             nodelist += self.getNodesToDelete(node)
-        parent = doc.getparent()
         if doc.tag == 'span':
-            if parent.tag == 'p' or (len(parent) == 1 and parent.tag in ('div','span')): doc.drop_tag()
+            parent = doc.getparent()
+            if parent is not None:
+                if parent.tag == 'p' or (len(parent) == 1 and parent.tag in ('div','span')): doc.drop_tag()
+                elif 'class' in doc.attrib and ('dropcap' in doc.attrib['class'] or 'drop_cap' in doc.attrib['class']):
+                    doc.drop_tag()
         return nodelist
 
     def aggregateBlocks(self, doc, selector):
@@ -186,29 +182,6 @@ class DocumentCleaner(object):
 		         
 	        Parser.remove(e)
 
-        return doc
-
-    def dropTags(self, doc, tags):
-        for tag in tags:
-            ems = Parser.getElementsByTag(doc, tag=tag)
-            for node in ems:
-                if not Parser.hasChildTag(node, 'img'):
-                    node.drop_tag()
-        return doc
-
-    def removeDropCaps(self, doc):
-        items = doc.cssselect("span[class~=dropcap], span[class~=drop_cap]")
-        for item in items:
-            item.drop_tag()
-
-        return doc
-
-    def removeNodesViaRegEx(self, doc, pattern):
-        for selector in ['id', 'class']:
-            reg = "//*[re:test(@%s, '%s', 'i')]" % (selector, pattern)
-            naughtyList = doc.xpath(reg, namespaces={'re': self.regexpNS})
-            for node in naughtyList:
-                Parser.remove(node)
         return doc
 
     def getReplacementNodes(self, div):

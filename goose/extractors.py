@@ -338,7 +338,7 @@ class ContentExtractor(object):
 
         topNodeScore = -100000
         for e in parentNodes:
-        
+
             score = self.getScore(e)
 
             if score > topNodeScore:
