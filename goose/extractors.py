@@ -440,7 +440,7 @@ class ContentExtractor(object):
         """\
         adds any siblings that may have a decent score to this node
         """
-        if currentSibling.tag in ['p','h2','h3','h4'] and len(Parser.getText(currentSibling)) > 0:
+        if currentSibling.tag in ('p','h2','h3','h4') and len(Parser.getText(currentSibling)) > 0:
             return [currentSibling]
         else:
             potentialParagraphs = Parser.getElementsByTag(currentSibling, tag='p')
@@ -594,8 +594,8 @@ class ContentExtractor(object):
         node = self.addSiblings(targetNode)
 
         for e in node:
-            if e.tag in ['h2','h3','h4']: continue
-            if e.tag not in ['p','pre','font']:
+            if e.tag in ('h2','h3','h4'): continue
+            if e.tag not in ('p','pre','font'):
                 textLen,stopCount,isHighLink = self.getTextStats(e)
                 if isHighLink \
                     or self.isTableTagAndNoParagraphsExist(e) \
@@ -603,7 +603,7 @@ class ContentExtractor(object):
                     Parser.remove(e)
 
         for e in reversed(node):
-            if e.tag not in ['h2','h3','h4']: break
+            if e.tag not in ('h2','h3','h4'): break
             Parser.remove(e)
 
         return node

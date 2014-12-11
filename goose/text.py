@@ -57,7 +57,7 @@ unilang2iso = {
     'Thai':'th', 'Mongolian':'mn', 'Avestan':'ae', 'Bengali':'bn', 'Tamil':'ta',
     'Sinhala':'si', 'Khmer':'km', 'Sundanese':'su', 'Hebrew':'he', 'Oriya':'or',
     'Malayalam':'ml', 'Tibetan':'bo', 'Tagalog':'tl', 'Gujarati':'gu', 'Kannada':'kn',
-    'Lao':'lo', 'Javanese':'jv',
+    'Lao':'lo', 'Javanese':'jv', 'Cyrillic':'ru,be,sr,bg,uk',
 }
 
 def load_unicode_script():
@@ -112,7 +112,7 @@ def get_languages(txt):
     elif chinese: result.append('zh')
     # some other unicode languages detection
     for k in langs:
-        if k in unilang2iso: result.append(unilang2iso[k])
+        if k in unilang2iso: result += unilang2iso[k].split(',')
     return result
 
 class WordStats(object):
