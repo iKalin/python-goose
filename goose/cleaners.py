@@ -61,7 +61,7 @@ class DocumentCleaner(object):
         for node in nodelist: Parser.remove(node)
 
         docToClean = self.removeListsWithLinks(docToClean)
-        docToClean = self.convertDivsToParagraphs(docToClean, ('div','dl'))
+        docToClean = self.convertDivsToParagraphs(docToClean, ('div','dl','article'))
         return docToClean
 
     def getNodesToDelete(self, doc):
@@ -114,6 +114,7 @@ class DocumentCleaner(object):
                 if parent.tag == 'p' or (len(parent) == 1 and parent.tag in ('div','span')): doc.drop_tag()
                 elif 'class' in doc.attrib and ('dropcap' in doc.attrib['class'] or 'drop_cap' in doc.attrib['class']):
                     doc.drop_tag()
+        if doc.tag == 'index': doc.drop_tag()
         return nodelist
 
     def aggregateBlocks(self, doc, selector):
