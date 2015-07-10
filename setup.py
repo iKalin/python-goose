@@ -12,5 +12,5 @@ setup(name='goose',
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=['PIL', 'lxml', 'cssselect', 'jieba']
+    install_requires=['lxml', 'cssselect', 'jieba']
 )
